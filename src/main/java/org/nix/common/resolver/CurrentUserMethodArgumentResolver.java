@@ -2,7 +2,6 @@ package org.nix.common.resolver;
 import org.nix.annotation.CurrentUser;
 import org.nix.entity.User;
 import org.springframework.core.MethodParameter;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
