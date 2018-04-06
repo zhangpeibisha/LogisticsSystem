@@ -30,33 +30,33 @@ public class AuthenticationInterceptor implements HandlerInterceptor  {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 如果不是映射到方法直接通过
-        if (!(handler instanceof HandlerMethod)) {
-            return true;
-        }
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        Method method = handlerMethod.getMethod();
-        // 判断接口是否需要登录
-        LoginRequired methodAnnotation = method.getAnnotation(LoginRequired.class);
-        // 有 @LoginRequired 注解，需要认证
-        if (methodAnnotation != null) {
-            // 判断是否存在令牌信息，如果存在，则允许登录
-            String accessToken = request.getParameter(ACCESS_TOKEN);
-            if (null == accessToken) {
-                throw new RuntimeException("无token，请重新登录");
-            }
-            Claims claims = Token.parseJWT(accessToken);
-            String userName = claims.getId();
-
-//            SysUser user = userService.findByUserName(userName);
-            User user = null;
-            if (user == null) {
-                throw new RuntimeException("用户不存在，请重新登录");
-            }
-            // 当前登录用户@CurrentUser
-//            request.setAttribute(CurrentUserConstants.CURRENT_USER, user);
-            return true;
-        }
-        return false;
+//        if (!(handler instanceof HandlerMethod)) {
+//            return true;
+//        }
+//        HandlerMethod handlerMethod = (HandlerMethod) handler;
+//        Method method = handlerMethod.getMethod();
+//        // 判断接口是否需要登录
+//        LoginRequired methodAnnotation = method.getAnnotation(LoginRequired.class);
+//        // 有 @LoginRequired 注解，需要认证
+//        if (methodAnnotation != null) {
+//            // 判断是否存在令牌信息，如果存在，则允许登录
+//            String accessToken = request.getParameter(ACCESS_TOKEN);
+//            if (null == accessToken) {
+//                throw new RuntimeException("无token，请重新登录");
+//            }
+//            Claims claims = Token.parseJWT(accessToken);
+//            String userName = claims.getId();
+//
+////            SysUser user = userService.findByUserName(userName);
+//            User user = null;
+//            if (user == null) {
+//                throw new RuntimeException("用户不存在，请重新登录");
+//            }
+//            // 当前登录用户@CurrentUser
+////            request.setAttribute(CurrentUserConstants.CURRENT_USER, user);
+//            return true;
+//        }
+        return true;
     }
 
     /**

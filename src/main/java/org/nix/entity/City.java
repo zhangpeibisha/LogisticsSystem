@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author 11723
+ */
 @Entity
 @Table(name = "city")
 public class City implements Comparable<City>,Serializable {
@@ -16,19 +19,18 @@ public class City implements Comparable<City>,Serializable {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid",strategy = "increment")
     Integer id;
-
     /**
      * 城市名
      * */
-    @Column(name = "cityName",unique = true)
+    @Column(name = "city_name",unique = true,length = 50)
     private String cityName;
 
     /**
      * 直连城市
      * */
     @OneToMany(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
-    @JoinColumn(name = "srcCityName")
-    private List<CityDis> disList;
+    @JoinColumn(name = "src_city_id")
+    private List<CityDis> dstList;
     
     /**
      * 最短路径长度
@@ -119,12 +121,12 @@ public class City implements Comparable<City>,Serializable {
         }
     }
 
-    public List<CityDis> getDisList() {
-        return disList;
+    public List<CityDis> getDstList() {
+        return dstList;
     }
 
-    public void setDisList(List<CityDis> disList) {
-        this.disList = disList;
+    public void setDstList(List<CityDis> disList) {
+        this.dstList = disList;
     }
 
     @Override

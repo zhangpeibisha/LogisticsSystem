@@ -159,15 +159,15 @@ public class Graph {
             if (cities.get(i).equals(dstModel)) {
                 dstModel = cities.get(i);
             }
-            for (int j = 0;j < cities.get(i).getDisList().size() ;j ++) {
+            for (int j = 0;j < cities.get(i).getDstList().size() ;j ++) {
                 int k = -1;
                 for (int c = 0;c < cities.size();c ++) {
-                    if (cities.get(c).getCityName().equals(cities.get(i).getDisList().get(j).getDstCity().getCityName())) {
+                    if (cities.get(c).getCityName().equals(cities.get(i).getDstList().get(j).getPrimaryKey().getDstCity().getCityName())) {
                         k = c;
                     }
                 }
                 if (k != -1) {
-                    doubles[i][k] = cities.get(i).getDisList().get(j).getDistance();
+                    doubles[i][k] = cities.get(i).getDstList().get(j).getDistance();
                     doubles[k][i] = doubles[i][k];
                 }
             }
