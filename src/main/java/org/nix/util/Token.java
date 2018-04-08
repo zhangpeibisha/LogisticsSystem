@@ -29,8 +29,8 @@ public class Token {
      * @return
      */
     public static String createJwtToken(String id) {
-        String issuer = "www.guangyuanbj.com";
-        String subject = "luomouren@xxx.com";
+        String issuer = "www.nix.com";
+        String subject = "ceShi";
         long ttlMillis = System.currentTimeMillis();
         return createJwtToken(id, issuer, subject, ttlMillis);
     }

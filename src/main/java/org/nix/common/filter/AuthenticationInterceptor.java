@@ -2,7 +2,6 @@ package org.nix.common.filter;
 
 import io.jsonwebtoken.Claims;
 import org.nix.annotation.LoginRequired;
-import org.nix.entity.User;
 import org.nix.util.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
