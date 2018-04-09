@@ -52,8 +52,17 @@ public class CityAndDistancesController {
     /**
      * 删除一个城市信息
      * */
+    @RequestMapping("/delete")
     public ReturnObject delete(@RequestParam("ids")Integer[] ids) {
         cityService.deleteCities(ids);
         return ReturnUtil.success(null);
+    }
+
+    /**
+     * 根据输入城市名部分查询数据库已经存在的城市
+     * */
+    @RequestMapping("/search")
+    public ReturnObject searchCity(@RequestParam("name") String name) {
+        return null;
     }
 }

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.List;
+
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class CityServiceImpl extends BaseServiceImpl<City,Integer> implements CityService {
@@ -74,5 +76,15 @@ public class CityServiceImpl extends BaseServiceImpl<City,Integer> implements Ci
         for (Integer id:ids) {
             cityJpa.delete(id);
         }
+    }
+
+    /**
+     * 模糊搜索城市
+     *
+     * @param name
+     */
+    @Override
+    public List<City> search(String name) {
+        return cityJpa.search("%" + name.replaceAll(" ","%") + "%");
     }
 }

@@ -4,6 +4,8 @@ import org.nix.entity.City;
 import org.nix.service.base.BaseService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author 11723
  */
@@ -29,4 +31,9 @@ public interface CityService extends BaseService<City,Integer> {
      * @param ids
      * */
     void deleteCities(Integer[] ids);
+
+    /**
+     * 模糊搜索城市
+     * */
+    List<City> search(String name);
 }
