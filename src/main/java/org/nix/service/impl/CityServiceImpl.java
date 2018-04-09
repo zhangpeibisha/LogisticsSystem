@@ -1,5 +1,6 @@
 package org.nix.service.impl;
 
+import org.nix.Exception.SelectObjectException;
 import org.nix.dao.repositories.CityDisJpa;
 import org.nix.entity.City;
 import org.nix.dao.repositories.CityJpa;
@@ -45,5 +46,19 @@ public class CityServiceImpl extends BaseServiceImpl<City,Integer> implements Ci
             default:break;
         }
         return 1;
+    }
+
+    /**
+     * todo: 通过这个城市的名字找到这个城市的实体
+     * @see SelectObjectException 如果没有找到这个城市，那么将抛出这个异常
+     * @param cityName 城市名字
+     * @return 城市实体
+     */
+    public City findCityByCityName(String cityName){
+        City city = cityJpa.findCityByCityName(cityName);
+        if (city == null){
+            throw new SelectObjectException();
+        }
+        return city;
     }
 }

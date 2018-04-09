@@ -4,6 +4,7 @@ import org.nix.annotation.LoginRequired;
 import org.nix.common.ReturnObject;
 import org.nix.dao.impl.SysUserDao;
 import org.nix.dao.repositories.SysUserJpa;
+import org.nix.entity.City;
 import org.nix.entity.SysOrder;
 import org.nix.entity.SysUser;
 import org.nix.service.impl.SysUserServiceImpl;
@@ -47,35 +48,7 @@ public class GeneralUserController {
         return ReturnUtil.success(null, null);
     }
 
-    /**
-     * todo: 用户下订单接口
-     * @param price 订单价格
-     * @param startCity 订单起始城市
-     * @param endCity 订单目的地城市
-     * @param currentCity 订单当前城市
-     * @param node 订单备注
-     * @param cargoName 运送货物的名字
-     * @param cargoPrice 运送货物的价值
-     * @param request 用户请求对象
-     * @return 处理结果
-     */
-    @RequestMapping(value = "/publishOrders" , method = RequestMethod.POST)
-    @LoginRequired
-    public ReturnObject publishOrders(@RequestParam("price")double price,
-                                      @RequestParam("startCity")String startCity,
-                                      @RequestParam("endCity")String endCity,
-                                      @RequestParam("currentCity")String currentCity,
-                                      @RequestParam("node")String node,
-                                      @RequestParam("cargoName")String cargoName,
-                                      @RequestParam("cargoPrice")String cargoPrice,
-                                      HttpServletRequest request){
 
-
-
-
-        return ReturnUtil.success(null,null);
-
-    }
 
 
 }

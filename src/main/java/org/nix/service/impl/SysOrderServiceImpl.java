@@ -1,5 +1,6 @@
 package org.nix.service.impl;
 
+import org.apache.log4j.Logger;
 import org.nix.common.sysenum.SessionKeyEnum;
 import org.nix.common.sysenum.SysOrderEnum;
 import org.nix.dao.repositories.SysOrderJpa;
@@ -20,6 +21,8 @@ import java.util.Date;
 @Service
 public class SysOrderServiceImpl {
 
+    private Logger logger = Logger.getLogger(SysOrderServiceImpl.class);
+
     @Autowired
     private SysOrderJpa sysOrderJpa;
 
@@ -35,17 +38,21 @@ public class SysOrderServiceImpl {
      */
     @Transactional
     public void createOrder(SysOrder sysOrder, HttpServletRequest request) {
+
         SysUser sysUser = (SysUser) request
                 .getSession()
                 .getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
 
-        if (sysUser == null)
+        if (sysUser == null){
+            logger.info("用户未登陆，下订单失败");
             throw new NullPointerException("session中没有key:" + SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
+        }
 
         sysOrder.setCreateTime(new Date());
         sysOrder.setOrderStatus(SysOrderEnum.ORDER_PENDING_PAYMENT);
         sysOrder.setSysUser(sysUser);
         sysOrderJpa.save(sysOrder);
+        logger.info(sysUser.getId() + "在" + new Date() + "下订单" + sysOrder.getId());
     }
 
 }

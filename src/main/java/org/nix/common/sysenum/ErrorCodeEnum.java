@@ -8,12 +8,14 @@ package org.nix.common.sysenum;
  * 100-200 数据库自定义异常
  * 200-300 web异常
  * 300-400 服务异常
+ *
  */
 public enum ErrorCodeEnum {
     ERROR_WEB_EXEEPTION(201, "web的异常"),
     ERROR_DB_SELECT(101, "查询持久态对象失败"),
     ERROR_SYS_UNKONWN(-1,"未知错误，该错误还没有被确认"),
-    ERROR_SYS_REQUEST_METHON_NOT_SUPPORTED(202,"请求方法错误，没有找到相应的请求方法接口");
+    ERROR_SYS_REQUEST_METHON_NOT_SUPPORTED(202,"请求方法错误，没有找到相应的请求方法接口"),
+    ERROR_DB_CONSTRAINT_VIOLATION(102,"修改数据库时，违反字段约束，如长度等属性、主键唯一性");
 
     private Integer errorCode;
     private String message;

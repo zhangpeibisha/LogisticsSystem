@@ -9,10 +9,10 @@ public enum SessionKeyEnum {
 
     SESSION_KEY_CURRENT_USER("CurrentUser","当前会话用户对象信息");
 
-    private Object key;
+    private String key;
     private Object value;
 
-    SessionKeyEnum(Object key, Object value) {
+    SessionKeyEnum(String key, Object value) {
         this.key = key;
         this.value = value;
     }
@@ -21,7 +21,7 @@ public enum SessionKeyEnum {
         return key;
     }
 
-    public void setKey(Object key) {
+    public void setKey(String key) {
         this.key = key;
     }
 
