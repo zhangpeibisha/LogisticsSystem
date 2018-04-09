@@ -1,5 +1,6 @@
 package org.nix.common.resolver;
 import org.nix.annotation.CurrentUser;
+import org.nix.common.sysenum.SessionKeyEnum;
 import org.nix.entity.SysUser;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -24,10 +25,10 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         SysUser user = (SysUser) webRequest
-                .getAttribute(CurrentUserConstants.CURRENT_USER, RequestAttributes.SCOPE_REQUEST);
+                .getAttribute(String.valueOf(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey()), RequestAttributes.SCOPE_REQUEST);
         if (user != null) {
             return user;
         }
-        throw new MissingServletRequestPartException(CurrentUserConstants.CURRENT_USER);
+        throw new MissingServletRequestPartException(String.valueOf(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey()));
     }
 }

@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface SysUserJpa extends JpaRepository<SysUser,Integer> {
 
     @Query(nativeQuery = true,
-    value = "SELECT * FROM sys_user WHERE account = ?1 AND `password` = ?2")
-    SysUser findSysUserByAccountAndPassword(String account , String password);
+    value = "SELECT * FROM sys_user WHERE account = ?1")
+    SysUser findSysUserByAccount(String account);
 
 }

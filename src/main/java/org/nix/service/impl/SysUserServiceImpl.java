@@ -1,6 +1,8 @@
 package org.nix.service.impl;
 
 import org.nix.Exception.SelectObjectException;
+import org.nix.annotation.CurrentUser;
+import org.nix.common.sysenum.SessionKeyEnum;
 import org.nix.dao.impl.SysUserDao;
 import org.nix.dao.repositories.SysUserJpa;
 import org.nix.entity.SysUser;
@@ -9,13 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Create by zhangpe0312@qq.com on 2018/4/9.
- *
+ * <p>
  * TODO: 为系统用户提供一些服务
  */
 @Service
-public class SysUserServiceImpl extends BaseServiceImpl<SysUser,Integer>{
+public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer> {
 
     @Autowired
     private SysUserJpa sysUserJpa;
@@ -30,33 +34,38 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,Integer>{
 
     /**
      * todo: 一般用于登陆时使用
-     * @param account 用户账号
-     * @param password 用户密码
-     * @return 如果查询成功则返回用户信息，如果没有查询成功则抛出异常
+     *
+     * @param sysUser 装载了用户的账户和密码信息的对象
+     *                如果查询成功则将用户信息存入session中，如果没有查询成功则抛出异常
      * @throws SelectObjectException
      */
-    public SysUser findUserByAccountAndPassword(String account , String password) throws SelectObjectException{
-        SysUser sysUser =  sysUserJpa.findSysUserByAccountAndPassword(account,password);
-        if (sysUser == null)
+    public void login(@CurrentUser SysUser sysUser, HttpServletRequest request) throws SelectObjectException {
+        SysUser findUser = sysUserJpa
+                .findSysUserByAccount(sysUser.getAccount());
+        if (findUser == null || !findUser.getPassword().equals(sysUser.getPassword()))
             throw new SelectObjectException();
-      return sysUser;
+
+        sysUser.setPassword(null);
+        request.getSession().setAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey(), sysUser);
     }
 
     /**
      * todo: 一般用于用户注册时使用，如果重复注册将会抛出异常
+     *
      * @param sysUser 注册用户实体
      */
     @Transactional
-    public void insertUser(SysUser sysUser){
+    public void register(SysUser sysUser) {
         sysUserJpa.save(sysUser);
     }
 
     /**
      * todo: 一般用于更新用户信息,如果信息更新违反了数据库完整性，数据将混滚，更新失败
+     *
      * @param sysUser 信息更改后需要持久化的用户信息
      */
     @Transactional
-    public void updateUser(SysUser sysUser){
+    public void updateUser(SysUser sysUser) {
         sysUserDao.updateSysUser(sysUser);
     }
 
