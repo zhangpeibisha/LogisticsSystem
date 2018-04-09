@@ -13,3 +13,18 @@ url:/public/login
   account:用户账号
   password:用户密码
 }
+
+*注册接口
+method: POST
+url:/generalUser/register
+{
+  account:用户账号
+  password:用户密码
+}
+
+* 修改密码
+method: POST
+url:/public/updatePassword
+{
+  password:用户密码
+}
