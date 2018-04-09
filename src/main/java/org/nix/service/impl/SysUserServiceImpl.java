@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * Create by zhangpe0312@qq.com on 2018/4/9.
@@ -56,6 +57,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer> {
      */
     @Transactional
     public void register(SysUser sysUser) {
+        sysUser.setCreateTime(new Date());
         sysUserJpa.save(sysUser);
     }
 

@@ -24,6 +24,10 @@ public class SysOrder extends BasicEntity {
     private String node;
     //订单到达当前地点时的时间为
     private Date TimeOfArrival;
+    //货物名字
+    private String cargoName;
+    //货物价值
+    private double cargoPrice;
 
     //该订单所属的用户
     private SysUser sysUser;
@@ -62,12 +66,19 @@ public class SysOrder extends BasicEntity {
         return TimeOfArrival;
     }
 
+    @Column(name = "cargoName", length = 100 , nullable = false)
+    public String getCargoName() {
+        return cargoName;
+    }
+    @Column(name = "cargoPrice", nullable = false)
+    public double getCargoPrice() {
+        return cargoPrice;
+    }
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = SysUser.class)
     @JoinColumn(name = "sysUser")
     public SysUser getSysUser() {
         return sysUser;
     }
-
 
     @ManyToOne(targetEntity = City.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "currentCity")
@@ -118,5 +129,13 @@ public class SysOrder extends BasicEntity {
 
     public void setEndCity(City endCity) {
         this.endCity = endCity;
+    }
+
+    public void setCargoName(String cargoName) {
+        this.cargoName = cargoName;
+    }
+
+    public void setCargoPrice(double cargoPrice) {
+        this.cargoPrice = cargoPrice;
     }
 }
