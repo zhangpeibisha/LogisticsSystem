@@ -8,8 +8,10 @@ import org.nix.service.CityService;
 import org.nix.service.base.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class CityServiceImpl extends BaseServiceImpl<City,Integer> implements CityService {
     @Autowired
     private CityJpa cityJpa;
