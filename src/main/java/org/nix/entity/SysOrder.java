@@ -70,10 +70,12 @@ public class SysOrder extends BasicEntity {
     public String getCargoName() {
         return cargoName;
     }
+
     @Column(name = "cargoPrice", nullable = false)
     public double getCargoPrice() {
         return cargoPrice;
     }
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = SysUser.class)
     @JoinColumn(name = "sysUser")
     public SysUser getSysUser() {
