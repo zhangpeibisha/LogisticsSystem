@@ -1,6 +1,7 @@
 package org.nix.controller;
 
 import org.nix.annotation.CurrentUser;
+import org.nix.annotation.LoginRequired;
 import org.nix.common.ReturnObject;
 import org.nix.entity.SysUser;
 import org.nix.service.impl.SysUserServiceImpl;
@@ -28,9 +29,9 @@ public class PublicController {
 
     /**
      * todo: 用户登陆使用接口
-     * @param account
-     * @param password
-     * @return
+     * @param account 用户账号
+     * @param password 用户登陆密码
+     * @return 处理结果
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ReturnObject login(@RequestParam("account") String account,
@@ -45,6 +46,19 @@ public class PublicController {
         return ReturnUtil.success(null , null);
     }
 
+    /**
+     * todo: 修改账户密码
+     * @param password 修改后的密码
+     * @param request 客户端请求对象
+     * @return 处理结果
+     */
+    @RequestMapping(value = "/updatePassword")
+    @LoginRequired
+    public ReturnObject updateUser(@RequestParam("password")String password,
+                                   HttpServletRequest request){
 
+        sysUserService.updatePassword(password,request);
+        return ReturnUtil.success(null,null);
+    }
 
 }

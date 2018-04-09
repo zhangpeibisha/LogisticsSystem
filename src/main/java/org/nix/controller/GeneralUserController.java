@@ -1,5 +1,6 @@
 package org.nix.controller;
 
+import org.nix.annotation.LoginRequired;
 import org.nix.common.ReturnObject;
 import org.nix.dao.impl.SysUserDao;
 import org.nix.dao.repositories.SysUserJpa;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Create by zhangpe0312@qq.com on 2018/4/8.

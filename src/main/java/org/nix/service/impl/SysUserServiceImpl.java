@@ -62,10 +62,14 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer> {
     /**
      * todo: 一般用于更新用户信息,如果信息更新违反了数据库完整性，数据将混滚，更新失败
      *
-     * @param sysUser 信息更改后需要持久化的用户信息
+     * @param password 用户更新后的密码
      */
     @Transactional
-    public void updateUser(SysUser sysUser) {
+    public void updatePassword(String password , HttpServletRequest request) {
+        SysUser sysUser = (SysUser) request.getSession().getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
+        if (sysUser == null)
+            throw new NullPointerException("session中没有key:"+SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
+        sysUser.setPassword(password);
         sysUserDao.updateSysUser(sysUser);
     }
 
