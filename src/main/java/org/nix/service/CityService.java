@@ -23,4 +23,10 @@ public interface CityService extends BaseService<City,Integer> {
      * @return
      * */
     Integer manageNeighborCity(Integer srcCityId,Integer dstCityId,Double distance,String stats);
+
+    /**
+     * 删除城市信息
+     * @param ids
+     * */
+    void deleteCities(Integer[] ids);
 }

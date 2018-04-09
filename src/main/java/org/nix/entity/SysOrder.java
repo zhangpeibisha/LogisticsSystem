@@ -7,6 +7,7 @@ import org.nix.entity.basic.BasicEntity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Create by zhangpe0312@qq.com on 2018/4/8.
@@ -37,6 +38,21 @@ public class SysOrder extends BasicEntity {
     private City startCity;
     //订单的目的地
     private City endCity;
+
+    /**
+     * 订单的最短路径
+     * */
+    private List<OrderWays> orderWays;
+
+    @OneToMany(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    public List<OrderWays> getOrderWays() {
+        return orderWays;
+    }
+
+    public void setOrderWays(List<OrderWays> orderWays) {
+        this.orderWays = orderWays;
+    }
 
     @Column(name = "cost", nullable = false)
     public double getCost() {

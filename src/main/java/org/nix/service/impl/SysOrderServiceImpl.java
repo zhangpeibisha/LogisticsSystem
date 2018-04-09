@@ -3,15 +3,22 @@ package org.nix.service.impl;
 import org.apache.log4j.Logger;
 import org.nix.common.sysenum.SessionKeyEnum;
 import org.nix.common.sysenum.SysOrderEnum;
+import org.nix.dao.repositories.CityJpa;
 import org.nix.dao.repositories.SysOrderJpa;
+import org.nix.entity.City;
+import org.nix.entity.OrderWays;
 import org.nix.entity.SysOrder;
 import org.nix.entity.SysUser;
+import org.nix.util.Graph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Create by zhangpe0312@qq.com on 2018/4/9.
@@ -25,6 +32,8 @@ public class SysOrderServiceImpl {
 
     @Autowired
     private SysOrderJpa sysOrderJpa;
+    @Autowired
+    private CityJpa cityJpa;
 
     /**
      * todo: 生成订单服务,此时用户并没有付钱
@@ -53,6 +62,25 @@ public class SysOrderServiceImpl {
         sysOrder.setSysUser(sysUser);
         sysOrderJpa.save(sysOrder);
         logger.info(sysUser.getId() + "在" + new Date() + "下订单" + sysOrder.getId());
+    }
+
+    /**
+     * 设置订单的最短路劲经过的城市
+     * */
+    private void setOrderWay(SysOrder order) {
+        List<City> cities = (List<City>) Graph.getMinWay(order.getStartCity(),order.getEndCity(),cityJpa.findAll()).get("way");
+        List<OrderWays> ways = new ArrayList<>();
+        if (cities != null) {
+            for (City city:cities) {
+                OrderWays orderWays = new OrderWays();
+                orderWays.setCity(city);
+                orderWays.setFinish(false);
+                orderWays.setExpectedDate(new Date());
+                orderWays.setArriveDate(null);
+                ways.add(orderWays);
+            }
+        }
+        order.setOrderWays(ways);
     }
 
 }

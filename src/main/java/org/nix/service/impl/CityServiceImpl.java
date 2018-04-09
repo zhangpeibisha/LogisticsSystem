@@ -10,6 +10,7 @@ import org.nix.service.base.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -60,5 +61,18 @@ public class CityServiceImpl extends BaseServiceImpl<City,Integer> implements Ci
             throw new SelectObjectException();
         }
         return city;
+    }
+
+    /**
+     * 删除城市信息
+     *
+     * @param ids
+     */
+    @Override
+    public void deleteCities(Integer[] ids) {
+        Assert.notNull(ids,"id不能为空");
+        for (Integer id:ids) {
+            cityJpa.delete(id);
+        }
     }
 }

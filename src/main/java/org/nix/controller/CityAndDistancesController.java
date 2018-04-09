@@ -1,6 +1,4 @@
 package org.nix.controller;
-
-import com.sun.istack.internal.Interned;
 import org.nix.annotation.LoginRequired;
 import org.nix.common.ReturnObject;
 import org.nix.entity.City;
@@ -50,5 +48,12 @@ public class CityAndDistancesController {
             return ReturnUtil.success(null);
         }
         return ReturnUtil.fail("null");
+    }
+    /**
+     * 删除一个城市信息
+     * */
+    public ReturnObject delete(@RequestParam("ids")Integer[] ids) {
+        cityService.deleteCities(ids);
+        return ReturnUtil.success(null);
     }
 }
