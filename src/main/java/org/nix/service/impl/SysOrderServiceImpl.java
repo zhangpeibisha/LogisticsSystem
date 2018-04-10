@@ -1,10 +1,14 @@
 package org.nix.service.impl;
 
 import org.apache.log4j.Logger;
+import org.nix.Exception.LoginErrorException;
+import org.nix.Exception.OrderProcessFlowException;
+import org.nix.Exception.PaymentException;
 import org.nix.common.sysenum.SessionKeyEnum;
 import org.nix.common.sysenum.SysOrderEnum;
 import org.nix.dao.repositories.CityJpa;
 import org.nix.dao.repositories.SysOrderJpa;
+import org.nix.dao.repositories.SysUserJpa;
 import org.nix.entity.City;
 import org.nix.entity.OrderWays;
 import org.nix.entity.SysOrder;
@@ -34,7 +38,8 @@ public class SysOrderServiceImpl {
     private SysOrderJpa sysOrderJpa;
     @Autowired
     private CityJpa cityJpa;
-
+    @Autowired
+    private SysUserJpa sysUserJpa;
     /**
      * todo: 生成订单服务,此时用户并没有付钱
      * 由于此时用户才定订单，因此发货时间不确定，因此到达起始时间应该为付账
@@ -54,14 +59,40 @@ public class SysOrderServiceImpl {
 
         if (sysUser == null){
             logger.info("用户未登陆，下订单失败");
-            throw new NullPointerException("session中没有key:" + SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
+            throw new LoginErrorException();
         }
 
         sysOrder.setCreateTime(new Date());
         sysOrder.setOrderStatus(SysOrderEnum.ORDER_PENDING_PAYMENT);
         sysOrder.setSysUser(sysUser);
+        setOrderWay(sysOrder);
+
         sysOrderJpa.save(sysOrder);
         logger.info(sysUser.getId() + "在" + new Date() + "下订单" + sysOrder.getId());
+    }
+
+    /**
+     * todo:执行订单支付操作
+     * @see org.nix.Exception.PaymentException 用户余额不足时抛出
+     * @see LoginErrorException session会话中无用户信息时将抛出异常
+     * @see OrderProcessFlowException 如果这个订单的处理上级不符合规则，则抛出异常
+     * @param sysOrder 要处理的订单
+     * @param request 用户请求
+     */
+    @Transactional
+    public void paymentOrder(SysOrder sysOrder , HttpServletRequest request){
+        if (!sysOrder.getOrderStatus().equals(SysOrderEnum.ORDER_PENDING_PAYMENT)) {
+            throw new OrderProcessFlowException();
+        }
+        SysUser user = (SysUser) request
+                .getSession().getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
+        if (user == null)
+            throw new LoginErrorException();
+        user = sysUserJpa.findSysUserByAccount(user.getAccount());
+        if (sysOrder.getCost()>user.getBalance())
+            throw new PaymentException();
+
+
     }
 
     /**
