@@ -112,19 +112,22 @@ public class SysOrderServiceImpl {
         //更改订单状态
         sysOrder.setOrderStatus(SysOrderEnum.ORDER_PAID_NO_SHIPPED);
 
+        logger.info(user.getId() + "已经支付订单" + sysOrder.getId() + "，正在准备派送到" + sysOrder.getEndCity().getCityName());
+
     }
 
     /**
      * todo: 运送中的订单，调用此方法将让订单进入下一个城市
+     *
      * @param sysOrder 需要处理的订单
      */
     @Transactional
-    public void shippedOrder(SysOrder sysOrder){
+    public void shippedOrder(SysOrder sysOrder) {
 
         City current = findNextCityBySysOrder(sysOrder);
 
         // 表示订单已经到达了目的地
-        if (current == null){
+        if (current == null) {
             sysOrder.setCurrentCity(sysOrder.getEndCity());
             sysOrder.setTimeOfArrival(new Date());
             sysOrder.setOrderStatus(SysOrderEnum.ORDER_ARRIVALS);
@@ -134,17 +137,19 @@ public class SysOrderServiceImpl {
 
         sysOrder.setCurrentCity(current);
         sysOrder.setTimeOfArrival(new Date());
+        sysOrder.setOrderStatus(SysOrderEnum.ORDER_BEING_SHIPPED);
         sysOrderJpa.saveAndFlush(sysOrder);
-        return;
+
     }
 
     /**
      * todo: 用户签收订单
-     * @see LoginErrorException 如果用户未登陆，则抛出异常，执行签收失败
+     *
      * @param sysOrder 需要处理的订单
+     * @see LoginErrorException 如果用户未登陆，则抛出异常，执行签收失败
      */
     @Transactional
-    public void SysUserSign(SysOrder sysOrder , HttpServletRequest request){
+    public void SysUserSign(SysOrder sysOrder, HttpServletRequest request) {
         SysUser sysUser = (SysUser) request
                 .getSession().getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
         if (sysUser == null)
@@ -153,11 +158,11 @@ public class SysOrderServiceImpl {
         sysOrder.setTimeOfArrival(new Date());
         sysOrder.setOrderStatus(SysOrderEnum.ORDER_SIGN);
         sysOrderJpa.saveAndFlush(sysOrder);
+        logger.info(sysUser.getId() + "已经签收订单" + sysOrder.getId());
     }
 
 
     /**
-     *
      * 设置订单的最短路劲经过的城市
      */
     private void setOrderWay(SysOrder order) {
@@ -185,5 +190,7 @@ public class SysOrderServiceImpl {
     public City findNextCityBySysOrder(SysOrder sysOrder) {
         return null;
     }
+
+
 
 }
