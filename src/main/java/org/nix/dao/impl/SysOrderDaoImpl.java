@@ -27,7 +27,7 @@ public class SysOrderDaoImpl extends HibernateSession {
         if (conditions != null && !conditions.isEmpty()) {
             hql += "where " + conditions;
         }
-        if (offset != null && offset != -1) {
+        if (offset != null && offset != 0) {
             hql += " limit " + offset + "," + limit;
         }
         if (order != null && !order.isEmpty()) {

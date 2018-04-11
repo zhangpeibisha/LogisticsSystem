@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 import org.hibernate.validator.constraints.Length;
 import org.nix.common.constant.SysManger;
 import org.nix.entity.basic.BasicEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -86,9 +87,11 @@ public class SysUser extends BasicEntity{
         this.sysOrder = sysOrder;
     }
 
+    @Transient
     public boolean isFinanceAdmin() {
         return SysManger.FINANCE_ACCOUNT.equals(getAccount());
     }
+    @Transient
     public boolean isSysAdmin() {
         return SysManger.SYS_MANGER_ACCOUNT.equals(getAccount());
     }

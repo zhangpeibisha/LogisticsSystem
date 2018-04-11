@@ -1,9 +1,12 @@
 package org.nix.service.impl;
+import org.nix.common.sysenum.SysOrderEnum;
 import org.nix.dao.impl.SysOrderDaoImpl;
 import org.nix.dao.repositories.SysOrderJpa;
 import org.nix.entity.SysOrder;
+import org.nix.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.PreDestroy;
@@ -30,5 +33,19 @@ public class AdministratorServiceImpl {
             conditions = field + " = '%" + content + "%'";
         }
         return sysOrderDao.list((page - 1) * size,size,order,sort,conditions);
+    }
+
+    /**
+     *
+     * 受理订单
+     * */
+    @Transactional(rollbackFor = Exception.class)
+    public boolean orderHandler(SysOrder order, SysUser sysUser) {
+        if (sysUser.isSysAdmin()) {
+            order.setOrderStatus(SysOrderEnum.ORDER_PAID_NO_SHIPPED);
+            sysOrderJpa.saveAndFlush(order);
+            return true;
+        }
+        return false;
     }
 }

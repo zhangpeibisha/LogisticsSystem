@@ -2,14 +2,12 @@ package org.nix.controller;
 
 import org.nix.common.ReturnObject;
 import org.nix.common.sysenum.SessionKeyEnum;
+import org.nix.entity.SysOrder;
 import org.nix.entity.SysUser;
 import org.nix.service.impl.AdministratorServiceImpl;
 import org.nix.util.ReturnUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,5 +40,17 @@ public class AdministratorController {
             return ReturnUtil.fail(null,"权限不足",null);
         }
         return ReturnUtil.success(administratorService.list(page,size,order,sort,field,content,fullMatch));
+    }
+
+    /**
+     * 订单受理
+     * */
+    public ReturnObject orderHandler(@ModelAttribute SysOrder order,HttpServletRequest request) {
+        if (administratorService.orderHandler(order,(SysUser) request
+                .getSession()
+                .getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey()))) {
+            return ReturnUtil.success("受理成功");
+        }
+        return ReturnUtil.fail("受理失败");
     }
 }
