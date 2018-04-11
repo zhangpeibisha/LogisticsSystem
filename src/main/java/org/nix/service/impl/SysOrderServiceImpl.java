@@ -115,6 +115,49 @@ public class SysOrderServiceImpl {
     }
 
     /**
+     * todo: 运送中的订单，调用此方法将让订单进入下一个城市
+     * @param sysOrder 需要处理的订单
+     */
+    @Transactional
+    public void shippedOrder(SysOrder sysOrder){
+
+        City current = findNextCityBySysOrder(sysOrder);
+
+        // 表示订单已经到达了目的地
+        if (current == null){
+            sysOrder.setCurrentCity(sysOrder.getEndCity());
+            sysOrder.setTimeOfArrival(new Date());
+            sysOrder.setOrderStatus(SysOrderEnum.ORDER_ARRIVALS);
+            sysOrderJpa.saveAndFlush(sysOrder);
+            return;
+        }
+
+        sysOrder.setCurrentCity(current);
+        sysOrder.setTimeOfArrival(new Date());
+        sysOrderJpa.saveAndFlush(sysOrder);
+        return;
+    }
+
+    /**
+     * todo: 用户签收订单
+     * @see LoginErrorException 如果用户未登陆，则抛出异常，执行签收失败
+     * @param sysOrder 需要处理的订单
+     */
+    @Transactional
+    public void SysUserSign(SysOrder sysOrder , HttpServletRequest request){
+        SysUser sysUser = (SysUser) request
+                .getSession().getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
+        if (sysUser == null)
+            throw new LoginErrorException();
+
+        sysOrder.setTimeOfArrival(new Date());
+        sysOrder.setOrderStatus(SysOrderEnum.ORDER_SIGN);
+        sysOrderJpa.saveAndFlush(sysOrder);
+    }
+
+
+    /**
+     *
      * 设置订单的最短路劲经过的城市
      */
     private void setOrderWay(SysOrder order) {
