@@ -28,3 +28,15 @@ url:/public/updatePassword
 {
   password:用户密码
 }
+* 条件管理员获取订单列表接口
+method: POST
+url:/Administrator/orderList
+{
+    page:分页
+    size:页面显示数量
+    order:排序字段
+    sort:排序方式
+    field:条件查询字段
+    content:添加查询的内容
+    fullMatch:是否是完全匹配
+}

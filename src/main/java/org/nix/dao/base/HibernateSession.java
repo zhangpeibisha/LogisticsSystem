@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 public class HibernateSession {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
 
     public Session getSession(){
 

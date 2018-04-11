@@ -3,6 +3,7 @@ package org.nix.entity;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import org.hibernate.validator.constraints.Length;
+import org.nix.common.constant.SysManger;
 import org.nix.entity.basic.BasicEntity;
 
 import javax.persistence.*;
@@ -83,5 +84,12 @@ public class SysUser extends BasicEntity{
 
     public void setSysOrder(List<SysOrder> sysOrder) {
         this.sysOrder = sysOrder;
+    }
+
+    public boolean isFinanceAdmin() {
+        return SysManger.FINANCE_ACCOUNT.equals(getAccount());
+    }
+    public boolean isSysAdmin() {
+        return SysManger.SYS_MANGER_ACCOUNT.equals(getAccount());
     }
 }
