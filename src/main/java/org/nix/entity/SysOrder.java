@@ -47,8 +47,7 @@ public class SysOrder extends BasicEntity {
     //订单评价，一个订单有多个评价，一个评价只有一个订单
     private List<OrderEvaluation> orderEvaluation;
 
-    @OneToMany(targetEntity = OrderEvaluation.class , fetch = FetchType.LAZY , cascade = CascadeType.ALL)
-    @JoinColumn(name = "sysOrder")
+    @OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.ALL , mappedBy = "sysOrder")
     @JSONField(serialize = false)
     public List<OrderEvaluation> getOrderEvaluation() {
         return orderEvaluation;
