@@ -52,6 +52,7 @@ public class OrderEvaluationServiceImpl {
         orderEvaluation.setCreateTime(new Date());
         orderEvaluation.setEvaluation(message);
         orderEvaluation.setSysUser(sysUser);
+        orderEvaluation.setSysOrder(sysOrder);
 
         sysOrder.getOrderEvaluation().add(orderEvaluation);
         sysOrderJpa.saveAndFlush(sysOrder);
@@ -78,7 +79,7 @@ public class OrderEvaluationServiceImpl {
         newEvaluation.setSysUser(sysUser);
         newEvaluation.setEvaluation(message);
         newEvaluation.setCreateTime(new Date());
-
+        newEvaluation.setSysOrder(orderEvaluation.getSysOrder());
 
         //更新评论信息
         orderEvaluation.getNextEvaluations().add(newEvaluation);
