@@ -133,4 +133,14 @@ public class SysOrderServiceImpl {
         order.setOrderWays(ways);
     }
 
+    /**
+     * todo: 查找订单的下一个城市
+     *
+     * @param sysOrder 需要处理的订单
+     * @return 订单将进入的下一个城市，如果为最终城市，那么返回Null
+     */
+    public City findNextCityBySysOrder(SysOrder sysOrder) {
+        return null;
+    }
+
 }
