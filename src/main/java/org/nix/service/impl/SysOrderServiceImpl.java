@@ -18,6 +18,7 @@ import org.nix.util.Graph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -188,9 +189,18 @@ public class SysOrderServiceImpl {
      * @return 订单将进入的下一个城市，如果为最终城市，那么返回Null
      */
     public City findNextCityBySysOrder(SysOrder sysOrder) {
+        List<OrderWays> cities = sysOrder.getOrderWays();
+        City currentCity = sysOrder.getCurrentCity();
+        Assert.notNull(cities,"订单的最短路径不能为空");
+        for (int i = 0;i < cities.size();i ++) {
+            if (cities.get(i).getCity().equals(currentCity)) {
+                if (i == cities.size() - 1) {
+                    return null;
+                } else {
+                    return cities.get(i + 1).getCity();
+                }
+            }
+        }
         return null;
     }
-
-
-
 }
