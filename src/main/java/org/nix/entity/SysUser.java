@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 import org.nix.entity.basic.BasicEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 /**
@@ -43,8 +44,10 @@ public class SysUser extends BasicEntity{
         return password;
     }
 
-    @Column(name = "balance")
+    @Column(name = "balance",
+            columnDefinition = "double not null check(balance>=0)")
     @JSONField(serialize = false)
+    @Min(value = 0)
     public double getBalance() {
         return balance;
     }

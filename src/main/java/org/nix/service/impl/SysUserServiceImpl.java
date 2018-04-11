@@ -1,5 +1,6 @@
 package org.nix.service.impl;
 
+import org.nix.Exception.PaymentException;
 import org.nix.Exception.SelectObjectException;
 import org.nix.annotation.CurrentUser;
 import org.nix.common.sysenum.SessionKeyEnum;
@@ -75,5 +76,30 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer> {
         sysUserDao.updateSysUser(sysUser);
     }
 
+    /**
+     * 用户支付服务、收入服务
+     * @see  org.nix.Exception.PaymentException 支付时余额不足将抛出
+     * @see SelectObjectException 如果用户未查找到将抛出
+     * @param paymentAccount 支付账号
+     * @param collectAccount 收账账号
+     * @param money 金额
+     */
+    @Transactional
+    public void paymentService(String paymentAccount , String collectAccount , double money){
+
+        SysUser payment = sysUserJpa.findSysUserByAccount(paymentAccount);
+        SysUser collect = sysUserJpa.findSysUserByAccount(collectAccount);
+        if (payment == null || collect == null)
+            throw new SelectObjectException();
+
+        double balance = payment.getBalance() - money;
+        if (balance<0)
+            throw new PaymentException();
+
+        payment.setBalance(balance);
+        collect.setBalance(collect.getBalance() + money);
+        sysUserJpa.saveAndFlush(payment);
+        sysUserJpa.saveAndFlush(collect);
+    }
 
 }

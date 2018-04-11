@@ -22,13 +22,4 @@ public interface SysUserJpa extends JpaRepository<SysUser,Integer> {
     value = "SELECT * FROM sys_user WHERE account = ?1")
     SysUser findSysUserByAccount(String account);
 
-    /**
-     * 更新财务管理员的账号里的余额
-     * @param financeAccount 财务管理员的账号
-     * @param money 更新的金额
-     */
-    @Query(nativeQuery = true,
-    value = "")
-    void updateFinanceBlance(String financeAccount , double money);
-
 }
