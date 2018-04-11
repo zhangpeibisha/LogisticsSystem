@@ -44,8 +44,19 @@ public class SysOrder extends BasicEntity {
      * */
     private List<OrderWays> orderWays;
 
+    //订单评价，一个订单有多个评价，一个评价只有一个订单
+    private List<OrderEvaluation> orderEvaluation;
+
+    @OneToMany(targetEntity = OrderEvaluation.class , fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    @JoinColumn(name = "sysOrder")
+    @JSONField(serialize = false)
+    public List<OrderEvaluation> getOrderEvaluation() {
+        return orderEvaluation;
+    }
+
     @OneToMany(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
+    @JSONField(serialize = false)
     public List<OrderWays> getOrderWays() {
         return orderWays;
     }
@@ -155,5 +166,9 @@ public class SysOrder extends BasicEntity {
 
     public void setCargoPrice(double cargoPrice) {
         this.cargoPrice = cargoPrice;
+    }
+
+    public void setOrderEvaluation(List<OrderEvaluation> orderEvaluation) {
+        this.orderEvaluation = orderEvaluation;
     }
 }

@@ -203,4 +203,23 @@ public class SysOrderServiceImpl {
         }
         return null;
     }
+
+    /**
+     * todo: 获取订单的运送路径
+     * @param sysOrder 查看订单
+     * @return 订单的路径
+     */
+    public List<OrderWays> findOrderWaysByOrder(SysOrder sysOrder){
+        return sysOrder.getOrderWays();
+    }
+
+    /**
+     * todo: 获取订单的当前城市
+     * @param sysOrder 查看订单
+     * @return 订单的当前路径
+     */
+    public City findOrderCurrentCityByOrder(SysOrder sysOrder){
+        return sysOrder.getCurrentCity();
+    }
+
 }
