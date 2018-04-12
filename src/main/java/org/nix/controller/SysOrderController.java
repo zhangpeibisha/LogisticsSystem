@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  * todo: 订单模块接口
  */
 @RestController
+@RequestMapping(value = "/order")
 public class SysOrderController {
 
     @Autowired

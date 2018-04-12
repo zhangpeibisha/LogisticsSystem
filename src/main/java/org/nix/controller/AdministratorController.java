@@ -33,6 +33,7 @@ public class AdministratorController {
                                   @RequestParam(value = "content",defaultValue = "") String content,
                                   @RequestParam(value = "fullMatch",defaultValue = "true") Boolean fullMatch,
                                   HttpServletRequest request) {
+
         SysUser sysUser = (SysUser) request
                 .getSession()
                 .getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
