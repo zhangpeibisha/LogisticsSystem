@@ -1,5 +1,7 @@
 package org.nix.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -24,7 +26,10 @@ public class CityDisPrimaryKey implements Serializable {
     }
 
     public City getSrcCity() {
-        return srcCity;
+        City city = new City();
+        city.setCityName(srcCity.getCityName());
+        city.setId(srcCity.getId());
+        return city;
     }
 
     public void setSrcCity(City srcCity) {
@@ -32,7 +37,10 @@ public class CityDisPrimaryKey implements Serializable {
     }
 
     public City getDstCity() {
-        return dstCity;
+        City city = new City();
+        city.setCityName(dstCity.getCityName());
+        city.setId(dstCity.getId());
+        return city;
     }
 
     public void setDstCity(City dstCity) {

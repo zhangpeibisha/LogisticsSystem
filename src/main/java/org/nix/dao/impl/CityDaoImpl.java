@@ -1,11 +1,9 @@
 package org.nix.dao.impl;
+
 import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.transform.Transformers;
 import org.nix.dao.base.HibernateSession;
 import org.nix.entity.City;
-import org.nix.entity.SysOrder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -13,10 +11,10 @@ import java.util.List;
 
 /**
  * @author Kiss
- * @date 2018/04/11 18:09
+ * @date 2018/04/12 17:51
  */
 @Repository
-public class SysOrderDaoImpl extends HibernateSession {
+public class CityDaoImpl extends HibernateSession {
     /**
      * 分页查找订单列表（模糊查找）
      * @param offset
@@ -25,8 +23,8 @@ public class SysOrderDaoImpl extends HibernateSession {
      * @param sort
      * @return
      * */
-    public List<SysOrder> list(Integer offset, Integer limit, String order, String sort,String conditions) {
-        String hql = "select * from sys_order";
+    public List<City> list(Integer offset, Integer limit, String order, String sort, String conditions) {
+        String hql = "select * from city";
         if (conditions != null && !conditions.isEmpty()) {
             hql += " where " + conditions;
         }
@@ -36,7 +34,7 @@ public class SysOrderDaoImpl extends HibernateSession {
         if (order != null && !order.isEmpty()) {
             hql += " order by " + order + " " + (sort.isEmpty() ? " asc" : sort);
         }
-        Query query = entityManager.createNativeQuery(hql,SysOrder.class);
+        Query query = entityManager.createNativeQuery(hql,City.class);
         return query.getResultList();
     }
 }

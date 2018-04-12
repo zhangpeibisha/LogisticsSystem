@@ -1,16 +1,19 @@
 package org.nix.service.impl;
 
 import org.nix.Exception.SelectObjectException;
+import org.nix.dao.impl.CityDaoImpl;
 import org.nix.dao.repositories.CityDisJpa;
 import org.nix.entity.City;
 import org.nix.dao.repositories.CityJpa;
 import org.nix.entity.CityDis;
 import org.nix.service.CityService;
 import org.nix.service.base.BaseServiceImpl;
+import org.nix.util.DataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.thymeleaf.util.DateUtils;
 
 import java.util.List;
 
@@ -21,6 +24,8 @@ public class CityServiceImpl extends BaseServiceImpl<City,Integer> implements Ci
     private CityJpa cityJpa;
     @Autowired
     private CityDisJpa cityDisJpa;
+    @Autowired
+    private CityDaoImpl cityDao;
     /**
      * 初始化
      */
@@ -39,14 +44,22 @@ public class CityServiceImpl extends BaseServiceImpl<City,Integer> implements Ci
      * @return
      */
     @Override
+    @Transactional
     public Integer manageNeighborCity(Integer srcCityId, Integer dstCityId, Double distance, String stats) {
-        CityDis cityDis = new CityDis(cityJpa.findOne(srcCityId),cityJpa.findOne(dstCityId),distance);
+        CityDis cityDis = new CityDis(cityJpa.findOne(srcCityId), cityJpa.findOne(dstCityId), distance);
         manageStatus manageStatus = CityService.manageStatus.valueOf(stats);
         switch (manageStatus) {
-            case create:cityDisJpa.saveAndFlush(cityDis);break;
-            case update:cityDisJpa.saveAndFlush(cityDis);break;
-            case delete:cityDisJpa.delete(cityDis);break;
-            default:break;
+            case create:
+                cityDisJpa.saveAndFlush(cityDis);
+                break;
+            case update:
+                cityDisJpa.saveAndFlush(cityDis);
+                break;
+            case delete:
+                cityDisJpa.delete(cityDis);
+                break;
+            default:
+                break;
         }
         return 1;
     }
@@ -79,6 +92,23 @@ public class CityServiceImpl extends BaseServiceImpl<City,Integer> implements Ci
     }
 
     /**
+     * 分页查找订单列表（模糊查找）
+     *
+     * @param page
+     * @param size
+     * @param order
+     * @param sort
+     * @param field
+     * @param content
+     * @param fullMatch
+     * @return
+     */
+    @Override
+    public List<City> list(Integer page, Integer size, String order, String sort, String field, String content, Boolean fullMatch) {
+        return cityDao.list(DataUtil.offset(page,size),size,order,sort,DataUtil.getConditions(field,content,fullMatch));
+    }
+
+    /**
      * 模糊搜索城市
      *
      * @param name
@@ -86,5 +116,7 @@ public class CityServiceImpl extends BaseServiceImpl<City,Integer> implements Ci
     @Override
     public List<City> search(String name) {
         return cityJpa.search("%" + name.replaceAll(" ","%") + "%");
+
+
     }
 }

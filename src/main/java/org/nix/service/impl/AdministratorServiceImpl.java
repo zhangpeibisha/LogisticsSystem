@@ -4,12 +4,10 @@ import org.nix.dao.impl.SysOrderDaoImpl;
 import org.nix.dao.repositories.SysOrderJpa;
 import org.nix.entity.SysOrder;
 import org.nix.entity.SysUser;
+import org.nix.util.DataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.annotation.PreDestroy;
 import java.util.List;
 
 /**
@@ -26,13 +24,7 @@ public class AdministratorServiceImpl {
      * 获取订单列表
      * */
     public List<SysOrder> list(Integer page, Integer size, String order, String sort, String field, String content,Boolean fullMatch) {
-        String conditions;
-        if (fullMatch) {
-            conditions = field + " = '" + content + "'";
-        } else {
-            conditions = field + " = '%" + content + "%'";
-        }
-        return sysOrderDao.list((page - 1) * size,size,order,sort,conditions);
+        return sysOrderDao.list(DataUtil.offset(page,size),size,order,sort,DataUtil.getConditions(field,content,fullMatch));
     }
 
     /**

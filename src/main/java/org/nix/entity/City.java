@@ -1,6 +1,7 @@
 
 package org.nix.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -142,7 +143,8 @@ public class City implements Comparable<City>,Serializable {
     @Override
     public String toString() {
         return "City{" +
-                "cityName='" + cityName + '\'' +
+                "id=" + id +
+                ", cityName='" + cityName + '\'' +
                 ", path=" + path +
                 '}';
     }

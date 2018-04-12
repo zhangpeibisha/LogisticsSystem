@@ -1,6 +1,7 @@
 package org.nix.service;
 
 import org.nix.entity.City;
+import org.nix.entity.SysOrder;
 import org.nix.service.base.BaseService;
 import org.springframework.stereotype.Service;
 
@@ -36,4 +37,16 @@ public interface CityService extends BaseService<City,Integer> {
      * 模糊搜索城市
      * */
     List<City> search(String name);
+    /**
+     * 分页查找订单列表（模糊查找）
+     * @param page
+     * @param size
+     * @param order
+     * @param sort
+     * @param field
+     * @param content
+     * @param fullMatch
+     * @return
+     * */
+    List<City> list(Integer page, Integer size, String order, String sort, String field, String content, Boolean fullMatch);
 }
