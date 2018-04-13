@@ -45,38 +45,15 @@ public class SysOrderController {
      * todo: 用户下订单接口
      * 如果没有备注需要返回一个空字符串
      *
-     * @param price       订单价格
-     * @param startCity   订单起始城市
-     * @param endCity     订单目的地城市
-     * @param currentCity 订单当前城市
-     * @param node        订单备注
-     * @param cargoName   运送货物的名字
-     * @param cargoPrice  运送货物的价值
-     * @param request     用户请求对象
+     * @param sysOrder 用户下单信息
+     * @param request  用户请求对象
      * @return 处理结果
      */
     @RequestMapping(value = "/publishOrder", method = RequestMethod.POST)
     @LoginRequired
-    public ReturnObject publishOrder(@RequestParam("price") double price,
-                                     @RequestParam("startCity") String startCity,
-                                     @RequestParam("endCity") String endCity,
-                                     @RequestParam("currentCity") String currentCity,
-                                     @RequestParam("node") String node,
-                                     @RequestParam("cargoName") String cargoName,
-                                     @RequestParam("cargoPrice") double cargoPrice,
+    public ReturnObject publishOrder(@ModelAttribute SysOrder sysOrder,
                                      HttpServletRequest request) {
 
-        City start = cityService.findCityByCityName(startCity);
-        City end = cityService.findCityByCityName(endCity);
-        City current = cityService.findCityByCityName(currentCity);
-        SysOrder sysOrder = new SysOrder();
-        sysOrder.setCost(price);
-        sysOrder.setCurrentCity(current);
-        sysOrder.setEndCity(end);
-        sysOrder.setStartCity(start);
-        sysOrder.setNode(node);
-        sysOrder.setCargoName(cargoName);
-        sysOrder.setCargoPrice(cargoPrice);
         sysOrderService.createOrder(sysOrder, request);
 
         return ReturnUtil.success(null, null);
@@ -198,7 +175,7 @@ public class SysOrderController {
      * @param request       请求对象
      * @return 操作反馈
      */
-    @PostMapping(value = "/orderEvaluation")
+    @PostMapping(value = "/evaluationReply")
     public ReturnObject evaluationReply(@RequestParam("evaluation_id") int evaluation_id,
                                         @RequestParam("message") String message,
                                         HttpServletRequest request) {
