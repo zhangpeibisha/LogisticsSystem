@@ -1,6 +1,8 @@
 package org.nix.service.impl;
 
+import org.apache.log4j.Logger;
 import org.nix.dao.repositories.SysResourcesJpa;
+import org.nix.entity.SysResources;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,10 +14,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Create by zhangpe0312@qq.com on 2018/4/13.
@@ -24,6 +23,8 @@ import java.util.Set;
  */
 @Service
 public class ResourcesServiceImpl {
+
+    private Logger logger = Logger.getLogger(ResourcesServiceImpl.class);
 
     @Autowired
     private SysResourcesJpa sysResourcesJpa;
@@ -49,6 +50,7 @@ public class ResourcesServiceImpl {
 
     /**
      * todo: 将路径经过处理后导入数据库
+     * todo: 以第一个字串未接口描述，进行归类
      * URI格式
      * {
      * "data": {
@@ -82,16 +84,36 @@ public class ResourcesServiceImpl {
      */
     @Transactional
     public void listURIToDB(Set<String> uris) {
+        List<SysResources> sysResourcess = new ArrayList<>();
+        String des;
+        String method;
+        for (String temp : uris) {
+            int first = temp.indexOf("/");
+            int two = temp.indexOf('/', first + 1);
 
-        String dis;
-        String methon;
+            if (first == -1 || two == -1){
+                des = temp;
+                method = temp;
+            }else {
+                des = temp.substring(first, two);
+                method = temp.substring(two);
+            }
 
-        Iterator iterator = uris.iterator();
+            SysResources sysResources = new SysResources();
+            sysResources.setDescription(des);
+            sysResources.setResourcesName(method);
+            sysResources.setUrl(temp);
+            sysResources.setCreateTime(new Date());
 
-        while (iterator.hasNext()){
-
+            sysResourcess.add(sysResources);
         }
+
+        sysResourcesJpa.save(sysResourcess);
+        logger.info("导入系统URI进入数据库");
+
     }
+
+
 
 
 }

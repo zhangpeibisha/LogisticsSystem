@@ -87,5 +87,18 @@ public class AdministratorController {
         return ReturnUtil.success(new ResultURIlistDto(resourcesService.listGetURI(request)));
     }
 
+    /**
+     * todo: 将接口信息导入到数据库中
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/listURIToDB")
+    @LoginRequired
+    public ReturnObject listURIToDB(HttpServletRequest request){
+
+        resourcesService.listURIToDB(resourcesService.listGetURI(request));
+
+        return ReturnUtil.success(null);
+    }
 
 }
