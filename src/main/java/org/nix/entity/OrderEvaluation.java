@@ -41,7 +41,6 @@ public class OrderEvaluation extends BasicEntity {
 
     @OneToMany()
     @JoinColumn(name = "nextEvaluations")
-    @JSONField(serialize = false)
     public List<OrderEvaluation> getNextEvaluations() {
         return nextEvaluations;
     }

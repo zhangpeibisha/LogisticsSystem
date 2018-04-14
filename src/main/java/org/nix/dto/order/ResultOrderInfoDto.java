@@ -1,7 +1,10 @@
 package org.nix.dto.order;
 
 import org.nix.dto.base.BaseResultDto;
+import org.nix.entity.OrderEvaluation;
 import org.nix.entity.SysOrder;
+
+import java.util.List;
 
 /**
  * Create by zhangpe0312@qq.com on 2018/4/12.
@@ -10,6 +13,7 @@ import org.nix.entity.SysOrder;
 public class ResultOrderInfoDto implements BaseResultDto{
 
     private SysOrder sysOrder;
+    private List<OrderEvaluation> orderEvaluations;
 
     public ResultOrderInfoDto(SysOrder sysOrder) {
         this.sysOrder = sysOrder;
@@ -23,7 +27,7 @@ public class ResultOrderInfoDto implements BaseResultDto{
 
     @Override
     public void handleInfo() {
-
+        orderEvaluations = sysOrder.getOrderEvaluation();
     }
 
     public SysOrder getSysOrder() {

@@ -2,8 +2,7 @@ package org.nix.common.handler;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.hibernate.exception.ConstraintViolationException;
-import org.nix.Exception.SelectObjectException;
-import org.nix.Exception.WebException;
+import org.nix.Exception.*;
 import org.nix.common.ReturnObject;
 import org.nix.common.sysenum.ErrorCodeEnum;
 import org.nix.util.ReturnUtil;
@@ -93,5 +92,30 @@ public class ControllerExceptionHandler {
         e.printStackTrace();
         return ReturnUtil.fail(ErrorCodeEnum.ERROR_DB_CONSTRAINT_VIOLATION.getErrorCode(),
                 ErrorCodeEnum.ERROR_DB_CONSTRAINT_VIOLATION.getMessage(), null);
+    }
+
+
+    @ResponseBody
+    @ExceptionHandler(value = LoginErrorException.class)
+    public ReturnObject loginErrorException(LoginErrorException e){
+        e.printStackTrace();
+        return ReturnUtil.fail(ErrorCodeEnum.ERROR_SYS_LOGIN.getErrorCode(),
+                ErrorCodeEnum.ERROR_SYS_LOGIN.getMessage(), null);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = OrderProcessFlowException.class)
+    public ReturnObject orderProcessFlowException(OrderProcessFlowException e){
+        e.printStackTrace();
+        return ReturnUtil.fail(ErrorCodeEnum.ERROR_SYS_ORDER_HANDLE_FLOW.getErrorCode(),
+                ErrorCodeEnum.ERROR_SYS_ORDER_HANDLE_FLOW.getMessage(), null);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = PaymentException.class)
+    public ReturnObject paymentException(PaymentException e){
+        e.printStackTrace();
+        return ReturnUtil.fail(ErrorCodeEnum.ERROR_SYS_PAYMENT.getErrorCode(),
+                ErrorCodeEnum.ERROR_SYS_PAYMENT.getMessage(), null);
     }
 }
