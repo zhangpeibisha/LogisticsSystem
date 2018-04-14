@@ -22,10 +22,10 @@ public interface CityService extends BaseService<City,Integer> {
      * @param srcCityId
      * @param dstCityId
      * @param distance
-     * @param stats 管理状态
+     * @param status 管理状态
      * @return
      * */
-    Integer manageNeighborCity(Integer srcCityId,Integer dstCityId,Double distance,String stats);
+    Integer manageNeighborCity(Integer srcCityId,Integer dstCityId,Double distance,String status);
 
     /**
      * 删除城市信息

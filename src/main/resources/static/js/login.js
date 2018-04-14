@@ -16,16 +16,16 @@ function checkInput() {
 
 function checkLogin(){
     if(checkInput()) {
-        $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
+        // $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
         $.ajax({
             type: 'post',
-            //url: "/member/login.do",
+            url: "/public/login",
             dataType: 'json',
             data: $('#loginForm').serialize(),
             success: function (data) {
-                if (data.member != null) {
-                    sessionStorage.setItem("member",JSON.stringify(data.member));
-                    location.href = "../html/loginSuccess.html";
+                if (data.status == 1) {
+                    sessionStorage.setItem("member",JSON.stringify(data.data));
+                    location.href = "./html/adminIndex.html";
                 }else{
                     alert('用户名或者密码错误！');
                 }

@@ -43,7 +43,7 @@ public class PublicController {
         sysUser.setPassword(password);
         sysUserService.login(sysUser,request);
 
-        return ReturnUtil.success(null , null);
+        return ReturnUtil.success(null , sysUser);
     }
 
     /**

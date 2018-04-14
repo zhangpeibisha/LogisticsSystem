@@ -106,6 +106,28 @@ function queryParams(params){
     }
 }
 function del(data) {
+    if(confirm('确认删除?') == true){
+        $.ajax({
+            method:'POST',
+            url: '/city/neighbor?status=delete&srcCityId=' + cityId + "&dstCityId=" + data.primaryKey.dstCity.id,
+            success : function(o) {
+                if (o.status == 1) {
+                    //删除一列数据成功在table中移除那行
+                    $('#table').bootstrapTable('remove', {field: 'primaryKey.dstCity.cityName', values: [data.primaryKey.dstCity.cityName]});
+                    alert("删除成功");
+                }else if(o.code == 'SUCCESS'){
+                    alert("删除失败");
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 401) {
+                    alert("权限不足！！！")
+                }
+            }
+        });
+    }
+}
+function edit(data) {
 
 }
 function tableHeight(){

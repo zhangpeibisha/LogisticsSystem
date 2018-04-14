@@ -44,8 +44,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer> {
     public void login(@CurrentUser SysUser sysUser, HttpServletRequest request) throws SelectObjectException {
         SysUser findUser = sysUserJpa
                 .findSysUserByAccount(sysUser.getAccount());
-        if (findUser == null || !findUser.getPassword().equals(sysUser.getPassword()))
+        if (findUser == null || !findUser.getPassword().equals(sysUser.getPassword())) {
             throw new SelectObjectException();
+        }
 
         sysUser.setPassword(null);
         request.getSession().setAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey(), sysUser);

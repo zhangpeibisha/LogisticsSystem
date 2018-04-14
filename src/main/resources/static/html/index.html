@@ -18,11 +18,11 @@
     <div class="message">品牌名称-管理登录</div>
     <div id="darkbannerwrap"></div>
     
-    <form method="post" action="" id="loginForm">
+    <form id="loginForm">
 		<input name="action" value="login" type="hidden">
 		<div class="form-group">
 	        <div class="col-sm-8">
-	            <input id="account" name="username" placeholder="用户名" required="" type="text">
+	            <input id="account" name="account" placeholder="用户名" required="" type="text">
 	        </div>
 	    </div>
         <hr class="hr15">
@@ -34,7 +34,7 @@
     	<hr class="hr15">
 	    <div class="form-group">
 	        <div class="col-sm-offset-2 col-sm-10">
-	            <input value="登录" style="width:100%;" type="submit" onclick="checkLogin()">
+	            <input value="登录" style="width:100%;" type="button" onclick="checkLogin()">
 	        </div>
 	    </div>
         <hr class="hr20">

@@ -45,9 +45,9 @@ public class CityServiceImpl extends BaseServiceImpl<City,Integer> implements Ci
      */
     @Override
     @Transactional
-    public Integer manageNeighborCity(Integer srcCityId, Integer dstCityId, Double distance, String stats) {
+    public Integer manageNeighborCity(Integer srcCityId, Integer dstCityId, Double distance, String status) {
         CityDis cityDis = new CityDis(cityJpa.findOne(srcCityId), cityJpa.findOne(dstCityId), distance);
-        manageStatus manageStatus = CityService.manageStatus.valueOf(stats);
+        manageStatus manageStatus = CityService.manageStatus.valueOf(status);
         switch (manageStatus) {
             case create:
                 cityDisJpa.saveAndFlush(cityDis);
