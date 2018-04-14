@@ -3,6 +3,8 @@ package org.nix.util;
 
 import org.nix.common.ReturnObject;
 
+import java.util.Map;
+
 /**
  * @author 11723
  */
@@ -24,10 +26,14 @@ public final class ReturnUtil {
      * @param o 返回内容
      * */
     public static ReturnObject<Object> success(String msg, Object o) {
+        return success(msg,o,null);
+    }
+    public static ReturnObject<Object> success(String msg, Object o, Map map) {
         ReturnObject<Object> object = new ReturnObject<>();
         object.setStatus(SUCCESS_CODE);
         object.setMsg(msg == null ? SUCCESS_MSG : msg);
         object.setData(o);
+        object.setMap(map);
         return object;
     }
     /**
@@ -44,10 +50,14 @@ public final class ReturnUtil {
      * @param o 失败返回内容
      * */
     public static ReturnObject<Object> fail(Integer code, String msg, Object o) {
+        return fail(code,msg,o,null);
+    }
+    public static ReturnObject<Object> fail(Integer code, String msg, Object o,Map map) {
         ReturnObject<Object> object = new ReturnObject<>();
         object.setStatus(code == null ? FAIL_CODE : code);
         object.setMsg(msg == null ? FAIL_MSG : msg);
         object.setData(o);
+        object.setMap(map);
         return object;
     }
 }

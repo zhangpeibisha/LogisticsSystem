@@ -49,4 +49,6 @@ public interface CityService extends BaseService<City,Integer> {
      * @return
      * */
     List<City> list(Integer page, Integer size, String order, String sort, String field, String content, Boolean fullMatch);
+
+    int count();
 }

@@ -40,7 +40,7 @@ public class CityServiceImpl extends BaseServiceImpl<City,Integer> implements Ci
      * @param srcCityId
      * @param dstCityId
      * @param distance
-     * @param stats     管理状态
+     * @param status     管理状态
      * @return
      */
     @Override
@@ -116,7 +116,10 @@ public class CityServiceImpl extends BaseServiceImpl<City,Integer> implements Ci
     @Override
     public List<City> search(String name) {
         return cityJpa.search("%" + name.replaceAll(" ","%") + "%");
+    }
 
-
+    @Override
+    public int count() {
+        return (int) cityJpa.count();
     }
 }

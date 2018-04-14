@@ -22,7 +22,7 @@ function showTable() {
         queryParams:queryParams,//请求服务器时所传的参数
         sidePagination:'server',//指定服务器端分页
         pageSize:20,//单页记录数
-        pageList:[20,30],//分页步进值
+        pageList:[5,10,20,30],//分页步进值
         showRefresh:true,//刷新按钮
         showColumns:true,
         undefinedText:"-",
@@ -30,6 +30,12 @@ function showTable() {
         toolbarAlign:'right',//工具栏对齐方式
         buttonsAlign:'right',//按钮对齐方式
         toolbar:'#toolbar',//指定工作栏
+        responseHandler:function (result){
+            return {
+                total : result.map.total, //总页数,前面的key必须为"total"
+                data : result.data //行数据，前面的key要与之前设置的dataField的值一致.
+            };
+        },
         onLoadSuccess:function (backData) {
             $('#table').bootstrapTable('removeAll');
             $('#table').bootstrapTable('append', backData.data);
@@ -40,13 +46,7 @@ function showTable() {
             checkbox : true,
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '1%'// 宽度
-        }, {
-            field : 'line',// 返回值名称
-            align : 'center',// 水平居中显示
-            valign : 'middle',// 垂直居中显示
-            width : '1',// 宽度
-            visible : false
+            width : '1'// 宽度
         },{
             title: '序号',//标题  可不加
             align : 'center',// 水平居中显示
@@ -58,6 +58,12 @@ function showTable() {
         }, {
             field : 'cityName',// 返回值名称
             title : '城市名',// 列名
+            align : 'center',// 水平居中显示
+            valign : 'middle',// 垂直居中显示
+            width : '1'// 宽度
+        }, {
+            field : 'createTime',// 返回值名称
+            title : '添加时间',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '1'// 宽度

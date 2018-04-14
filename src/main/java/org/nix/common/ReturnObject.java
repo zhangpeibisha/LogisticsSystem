@@ -1,5 +1,7 @@
 package org.nix.common;
 
+import java.util.Map;
+
 /**
  * 接口同意返回对象
  *
@@ -17,6 +19,11 @@ public class ReturnObject<T extends Object> {
      * 返回内容
      */
     private T data;
+
+    /**
+     * 额外内容
+     * */
+    private Map<String,Object> map;
 
     public Integer getStatus() {
         return status;
@@ -42,12 +49,21 @@ public class ReturnObject<T extends Object> {
         this.data = data;
     }
 
+    public Map<String, Object> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<String, Object> map) {
+        this.map = map;
+    }
+
     @Override
     public String toString() {
         return "ReturnObject{" +
                 "status=" + status +
                 ", msg='" + msg + '\'' +
                 ", data=" + data +
+                ", map=" + map +
                 '}';
     }
 }

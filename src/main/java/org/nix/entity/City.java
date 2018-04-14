@@ -1,12 +1,14 @@
 
 package org.nix.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +34,9 @@ public class City implements Comparable<City>,Serializable {
     @OneToMany(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
     @JoinColumn(name = "src_city_id")
     private List<CityDis> dstList;
+
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
     
     /**
      * 最短路径长度
@@ -110,6 +115,14 @@ public class City implements Comparable<City>,Serializable {
         }
         way.append(getCityName());
         return way.toString();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public void setWay(City way) {

@@ -28,11 +28,11 @@ public class CityDaoImpl extends HibernateSession {
         if (conditions != null && !conditions.isEmpty()) {
             hql += " where " + conditions;
         }
-        if (offset != null && offset != 0) {
-            hql += " limit " + offset + "," + limit;
-        }
         if (order != null && !order.isEmpty()) {
             hql += " order by " + order + " " + (sort.isEmpty() ? " asc" : sort);
+        }
+        if (offset != null && offset != -1) {
+            hql += " limit " + offset + "," + limit;
         }
         Query query = entityManager.createNativeQuery(hql,City.class);
         return query.getResultList();
