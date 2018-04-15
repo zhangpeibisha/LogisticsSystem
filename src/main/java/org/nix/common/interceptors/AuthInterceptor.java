@@ -7,6 +7,7 @@ import org.nix.annotation.LoginRequired;
 import org.nix.common.sysenum.SessionKeyEnum;
 import org.nix.common.sysenum.SysRoleEnum;
 import org.nix.dao.repositories.SysUserJpa;
+import org.nix.entity.SysRole;
 import org.nix.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
@@ -48,8 +49,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             sysUser = userJpa.findOne(sysUser.getId());
 
             // 如果验证通过则返回true
-            if (loginRequired.value().getValue().equals(SysRoleEnum.ROLE_PUBLIC.getValue()) ||
-                    loginRequired.value().getValue().equals(sysUser.getSysRole().getRoleName())){
+            if (haveRole(loginRequired.value(),sysUser.getSysRole())){
                 return true;
             }
 
@@ -67,5 +67,14 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
 
+    }
+
+    private boolean haveRole(SysRoleEnum[] sysRoleEnum , SysRole sysRole){
+
+        for (int i = 0; i <sysRoleEnum.length ; i++) {
+            if (sysRoleEnum[i].getValue() == sysRole.getRoleName())
+                return true;
+        }
+        return false;
     }
 }

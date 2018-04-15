@@ -15,5 +15,5 @@ import java.lang.annotation.Target;
 public @interface LoginRequired {
 
     // 用于识别角色类型 默认全部角色都可以使用
-    SysRoleEnum value() default SysRoleEnum.ROLE_PUBLIC;
+    SysRoleEnum[] value() default SysRoleEnum.ROLE_PUBLIC;
 }
