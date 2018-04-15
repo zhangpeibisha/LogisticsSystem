@@ -1,5 +1,7 @@
 package org.nix.common;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.util.Map;
 
 /**

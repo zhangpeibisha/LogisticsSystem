@@ -15,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.thymeleaf.util.DateUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -121,5 +123,14 @@ public class CityServiceImpl extends BaseServiceImpl<City,Integer> implements Ci
     @Override
     public int count() {
         return (int) cityJpa.count();
+    }
+
+    @Override
+    public Map<String, Object> cityDetails(Integer id) {
+        Map<String,Object> map = new HashMap<>();
+        City city = cityJpa.findOne(id);
+        map.put("city",city);
+        map.put("dstCityList",city.getDstList());
+        return map;
     }
 }

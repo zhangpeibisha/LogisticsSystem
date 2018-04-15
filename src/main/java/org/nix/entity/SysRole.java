@@ -1,5 +1,4 @@
 package org.nix.entity;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import org.hibernate.validator.constraints.Length;
 import org.nix.entity.basic.BasicEntity;

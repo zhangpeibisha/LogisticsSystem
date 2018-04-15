@@ -29,7 +29,7 @@ public class CityDisPrimaryKey implements Serializable {
         City city = new City();
         city.setCityName(srcCity.getCityName());
         city.setId(srcCity.getId());
-        return null;
+        return srcCity;
     }
 
     public void setSrcCity(City srcCity) {
@@ -40,7 +40,7 @@ public class CityDisPrimaryKey implements Serializable {
         City city = new City();
         city.setCityName(dstCity.getCityName());
         city.setId(dstCity.getId());
-        return null;
+        return dstCity;
     }
 
     public void setDstCity(City dstCity) {

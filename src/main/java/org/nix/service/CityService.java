@@ -6,12 +6,15 @@ import org.nix.service.base.BaseService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 11723
  */
 @Service
 public interface CityService extends BaseService<City,Integer> {
+    Map<String, Object> cityDetails(Integer id);
+
     enum manageStatus{
         create,
         update,

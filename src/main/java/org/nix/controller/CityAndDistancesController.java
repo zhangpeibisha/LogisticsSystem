@@ -75,7 +75,7 @@ public class CityAndDistancesController {
      * */
     @GetMapping("/details/{id}")
     public ReturnObject getCity(@PathVariable("id") Integer id) {
-        return ReturnUtil.success(cityService.findById(id));
+        return ReturnUtil.success(cityService.cityDetails(id));
     }
 
     @PostMapping("/list")
@@ -87,13 +87,6 @@ public class CityAndDistancesController {
                                   @RequestParam(value = "content", defaultValue = "") String content,
                                   @RequestParam(value = "fullMatch", defaultValue = "true") Boolean fullMatch,
                                   HttpServletRequest request) {
-
-//        SysUser sysUser = (SysUser) request
-//                .getSession()
-//                .getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
-//        if (!sysUser.isSysAdmin()) {
-//            return ReturnUtil.fail(null, "权限不足", null);
-//        }
         Map map = new HashMap();
         map.put("total",cityService.count());
         return ReturnUtil.success("",cityService.list(page, size, order, sort, field, content, fullMatch),map);

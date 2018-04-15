@@ -1,6 +1,7 @@
 
 package org.nix.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
@@ -43,7 +44,7 @@ public class City implements Comparable<City>,Serializable {
      */
     @Transient
     private double path;
-    
+
     /**
      * 节点是否已经出列(是否已经处理完毕)
      */
@@ -135,8 +136,9 @@ public class City implements Comparable<City>,Serializable {
         }
     }
 
+    @JSONField(serialize = false)
     public List<CityDis> getDstList() {
-        return null;
+        return dstList;
     }
 
     public void setDstList(List<CityDis> disList) {
