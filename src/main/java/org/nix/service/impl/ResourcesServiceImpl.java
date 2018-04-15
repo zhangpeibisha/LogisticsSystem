@@ -88,10 +88,10 @@ public class ResourcesServiceImpl {
         String des;
         String method;
         for (String temp : uris) {
-            int first = temp.indexOf("/");
+            int first = temp.indexOf("/")+1;
             int two = temp.indexOf('/', first + 1);
 
-            if (first == -1 || two == -1){
+            if (first == -1 && two == -1){
                 des = temp;
                 method = temp;
             }else {

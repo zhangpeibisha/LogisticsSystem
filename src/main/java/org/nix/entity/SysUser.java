@@ -39,8 +39,8 @@ public class SysUser extends BasicEntity{
         return account;
     }
 
-    @Column(name = "password",nullable = false , length = 18)
-    @Length(max = 18,min = 6)
+    @Column(name = "password",nullable = false , length = 64)
+    @Length(min = 32 , max = 64)
     @JSONField(serialize = false)
     public String getPassword() {
         return password;

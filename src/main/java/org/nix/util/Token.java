@@ -4,8 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -16,7 +15,7 @@ import java.util.Date;
  * Create by zhangpe0312@qq.com on 2018/4/4.
  */
 public class Token {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = Logger.getLogger(this.getClass());
     /**
      * 签名秘钥
      */
@@ -73,7 +72,6 @@ public class Token {
 
         // Builds the JWT and serializes it to a compact, URL-safe string
         return builder.compact();
-
     }
 
     // Sample method to validate and read the JWT

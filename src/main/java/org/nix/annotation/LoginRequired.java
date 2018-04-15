@@ -1,5 +1,7 @@
 package org.nix.annotation;
 
+import org.nix.common.sysenum.SysRoleEnum;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,4 +13,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})// 可用在方法名上
 @Retention(RetentionPolicy.RUNTIME)// 运行时有效
 public @interface LoginRequired {
+
+    // 用于识别角色类型 默认全部角色都可以使用
+    SysRoleEnum value() default SysRoleEnum.ROLE_PUBLIC;
 }

@@ -1,5 +1,6 @@
 package org.nix.service.impl;
 
+import org.nix.Exception.LoginErrorException;
 import org.nix.Exception.PaymentException;
 import org.nix.Exception.SelectObjectException;
 import org.nix.annotation.CurrentUser;
@@ -72,7 +73,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer> {
     public void updatePassword(String password , HttpServletRequest request) {
         SysUser sysUser = (SysUser) request.getSession().getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
         if (sysUser == null)
-            throw new NullPointerException("session中没有key:"+SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
+            throw new LoginErrorException();
         sysUser.setPassword(password);
         sysUserDao.updateSysUser(sysUser);
     }
