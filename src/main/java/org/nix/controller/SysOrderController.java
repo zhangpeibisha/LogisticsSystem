@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Create by zhangpe0312@qq.com on 2018/4/9.
@@ -142,7 +144,9 @@ public class SysOrderController {
 //        if (!sysUser.isSysAdmin()) {
 //            return ReturnUtil.fail(null,"权限不足",null);
 //        }
-        return ReturnUtil.success(cityService.list(page, size, order, sort, field, content, fullMatch));
+        Map map = new HashMap();
+        map.put("total",sysOrderService.count());
+        return ReturnUtil.success(null,sysOrderService.list(page, size, order, sort, field, content, fullMatch),map);
     }
 
     /**

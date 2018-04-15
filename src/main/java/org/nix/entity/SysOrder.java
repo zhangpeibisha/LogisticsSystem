@@ -57,7 +57,7 @@ public class SysOrder extends BasicEntity {
     @JoinColumn(name = "order_id")
     @JSONField(serialize = false)
     public List<OrderWays> getOrderWays() {
-        return orderWays;
+        return null;
     }
 
     public void setOrderWays(List<OrderWays> orderWays) {

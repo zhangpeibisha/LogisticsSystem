@@ -136,7 +136,7 @@ public class City implements Comparable<City>,Serializable {
     }
 
     public List<CityDis> getDstList() {
-        return dstList;
+        return null;
     }
 
     public void setDstList(List<CityDis> disList) {

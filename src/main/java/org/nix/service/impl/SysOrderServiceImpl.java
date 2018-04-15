@@ -7,6 +7,7 @@ import org.nix.Exception.PaymentException;
 import org.nix.common.constant.SysManger;
 import org.nix.common.sysenum.SessionKeyEnum;
 import org.nix.common.sysenum.SysOrderEnum;
+import org.nix.dao.impl.SysOrderDaoImpl;
 import org.nix.dao.repositories.CityJpa;
 import org.nix.dao.repositories.SysOrderJpa;
 import org.nix.dao.repositories.SysUserJpa;
@@ -14,6 +15,7 @@ import org.nix.entity.City;
 import org.nix.entity.OrderWays;
 import org.nix.entity.SysOrder;
 import org.nix.entity.SysUser;
+import org.nix.util.DataUtil;
 import org.nix.util.Graph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,8 @@ public class SysOrderServiceImpl {
 
     @Autowired
     private SysOrderJpa sysOrderJpa;
+    @Autowired
+    private SysOrderDaoImpl sysOrderDao;
     @Autowired
     private CityJpa cityJpa;
     @Autowired
@@ -220,6 +224,14 @@ public class SysOrderServiceImpl {
      */
     public City findOrderCurrentCityByOrder(SysOrder sysOrder){
         return sysOrder.getCurrentCity();
+    }
+
+    public List<SysOrder> list(Integer page, Integer size, String order, String sort, String field, String content, Boolean fullMatch) {
+        return sysOrderDao.list(DataUtil.offset(page,size),size,order,sort,DataUtil.getConditions(field,content,fullMatch));
+    }
+
+    public long count() {
+        return sysOrderJpa.count();
     }
 
 }
