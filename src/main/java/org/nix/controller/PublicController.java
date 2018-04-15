@@ -3,6 +3,7 @@ package org.nix.controller;
 import org.nix.annotation.CurrentUser;
 import org.nix.annotation.LoginRequired;
 import org.nix.common.ReturnObject;
+import org.nix.common.sysenum.SysRoleEnum;
 import org.nix.entity.SysUser;
 import org.nix.service.impl.SysUserServiceImpl;
 import org.nix.util.ReturnUtil;
@@ -53,7 +54,7 @@ public class PublicController {
      * @return 处理结果
      */
     @RequestMapping(value = "/updatePassword")
-    @LoginRequired
+    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     public ReturnObject updateUser(@RequestParam("password")String password,
                                    HttpServletRequest request){
 

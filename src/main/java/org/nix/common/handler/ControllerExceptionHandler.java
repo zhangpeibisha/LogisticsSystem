@@ -118,4 +118,12 @@ public class ControllerExceptionHandler {
         return ReturnUtil.fail(ErrorCodeEnum.ERROR_SYS_PAYMENT.getErrorCode(),
                 ErrorCodeEnum.ERROR_SYS_PAYMENT.getMessage(), null);
     }
+
+    @ResponseBody
+    @ExceptionHandler(value = AuthInterceptorException.class)
+    public ReturnObject authInterceptorException(AuthInterceptorException e){
+        e.printStackTrace();
+        return ReturnUtil.fail(ErrorCodeEnum.ERROR_SYS_AUTHINTERCEPTOR.getErrorCode(),
+                ErrorCodeEnum.ERROR_SYS_AUTHINTERCEPTOR.getMessage(), null);
+    }
 }
