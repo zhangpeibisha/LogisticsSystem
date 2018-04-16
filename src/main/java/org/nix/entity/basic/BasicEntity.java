@@ -35,7 +35,6 @@ public class BasicEntity {
 
     @Column(name = "createTime", length = 19, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    @JSONField(serialize = false)
     public Date getCreateTime() {
         return createTime;
     }
