@@ -6,37 +6,15 @@
 * 成功返回若无数据要求，一般返回状态码 1 ，信息为： SUCCESS
 * 如果有返回信息需求，请明确指出字段格式
 
-* 登陆接口
-method: POST
-url:/public/login
-{
-  account:用户账号
-  password:用户密码
-}
+###公共接口API
 
-*注册接口
-method: POST
-url:/generalUser/register
+* 接口名：登陆
+* 使用介绍：用于用户进入系统的入口，验证为系统用户才能使用该系统功能
+* 使用权限：财务管理、系统管理、用户
+* uri:/public/login
+* 参数
 {
-  account:用户账号
-  password:用户密码
-}
-
-* 修改密码
-method: POST
-url:/public/updatePassword
-{
-  password:用户密码
-}
-* 条件管理员获取订单列表接口
-method: POST
-url:/Administrator/orderList
-{
-    page:分页
-    size:页面显示数量
-    order:排序字段
-    sort:排序方式
-    field:条件查询字段
-    content:添加查询的内容
-    fullMatch:是否是完全匹配
+   account:用户账号
+   password:用户加密密码
+  
 }

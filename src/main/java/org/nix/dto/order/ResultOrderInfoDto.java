@@ -37,4 +37,12 @@ public class ResultOrderInfoDto implements BaseResultDto{
     public void setSysOrder(SysOrder sysOrder) {
         this.sysOrder = sysOrder;
     }
+
+    public List<OrderEvaluation> getOrderEvaluations() {
+        return orderEvaluations;
+    }
+
+    public void setOrderEvaluations(List<OrderEvaluation> orderEvaluations) {
+        this.orderEvaluations = orderEvaluations;
+    }
 }

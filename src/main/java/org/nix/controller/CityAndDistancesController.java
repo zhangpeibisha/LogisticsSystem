@@ -2,6 +2,7 @@ package org.nix.controller;
 import org.nix.annotation.LoginRequired;
 import org.nix.common.ReturnObject;
 import org.nix.common.sysenum.SessionKeyEnum;
+import org.nix.common.sysenum.SysRoleEnum;
 import org.nix.entity.City;
 import org.nix.entity.SysUser;
 import org.nix.service.CityService;
@@ -27,7 +28,7 @@ public class CityAndDistancesController {
      * @param cityName
      * @return
      * */
-    @LoginRequired
+    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     @PostMapping("/create")
     public ReturnObject createCity(@RequestParam("name") String cityName) {
         City city = new City(cityName);
@@ -41,7 +42,7 @@ public class CityAndDistancesController {
     /**
      * 给一个city添加相邻的city，或者修改距离
      * */
-    @LoginRequired
+    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     @PostMapping("/neighbor")
     public ReturnObject addNeighborCity(@RequestParam("srcCityId") Integer srcCityId,
                                         @RequestParam("dstCityId") Integer dstCityId,
@@ -56,7 +57,7 @@ public class CityAndDistancesController {
     /**
      * 删除一个城市信息
      * */
-    @RequestMapping("/delete")
+    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     public ReturnObject delete(@RequestParam("ids")Integer[] ids) {
         cityService.deleteCities(ids);
         return ReturnUtil.success(null);
@@ -66,6 +67,7 @@ public class CityAndDistancesController {
      * 根据输入城市名部分查询数据库已经存在的城市
      * */
     @RequestMapping("/search")
+    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     public ReturnObject searchCity(@RequestParam("name") String name) {
         return null;
     }
@@ -74,11 +76,13 @@ public class CityAndDistancesController {
      * 获取某个城市的详情
      * */
     @GetMapping("/details/{id}")
+    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     public ReturnObject getCity(@PathVariable("id") Integer id) {
         return ReturnUtil.success(cityService.cityDetails(id));
     }
 
     @PostMapping("/list")
+    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     public ReturnObject orderList(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                   @RequestParam(value = "size", defaultValue = "20") Integer size,
                                   @RequestParam(value = "order", defaultValue = "id") String order,

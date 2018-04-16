@@ -54,7 +54,7 @@ public class PublicController {
      * @return 处理结果
      */
     @RequestMapping(value = "/updatePassword")
-    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
+    @LoginRequired({SysRoleEnum.ROLE_PUBLIC})
     public ReturnObject updateUser(@RequestParam("password")String password,
                                    HttpServletRequest request){
 

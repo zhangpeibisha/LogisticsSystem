@@ -3,6 +3,7 @@ package org.nix.controller;
 import org.nix.Exception.SelectObjectException;
 import org.nix.annotation.LoginRequired;
 import org.nix.common.ReturnObject;
+import org.nix.common.sysenum.SysRoleEnum;
 import org.nix.dao.repositories.OrderEvaluationJpa;
 import org.nix.dao.repositories.SysOrderJpa;
 import org.nix.dto.order.ResultOrderInfoDto;
@@ -45,14 +46,16 @@ public class SysOrderController {
 
     /**
      * todo: 用户下订单接口
-     * 如果没有备注需要返回一个空字符串
      *
+     * 使用角色： 用户
+     *
+     * 如果没有备注需要返回一个空字符串
      * @param sysOrder 用户下单信息
      * @param request  用户请求对象
      * @return 处理结果
      */
     @RequestMapping(value = "/publishOrder", method = RequestMethod.POST)
-    @LoginRequired
+    @LoginRequired(SysRoleEnum.ROLE_GENERAL)
     public ReturnObject publishOrder(@ModelAttribute SysOrder sysOrder,
                                      HttpServletRequest request) {
 
@@ -64,14 +67,14 @@ public class SysOrderController {
 
     /**
      * todo: 用户支付接口
-     *
+     * 使用角色： 用户
      * @param order_id 订单id
      * @param request  用户请求
      * @return 操作结果
      * @see SelectObjectException() 如果订单未找到将抛出
      */
     @RequestMapping(value = "/paymentOrder", method = RequestMethod.POST)
-    @LoginRequired
+    @LoginRequired(SysRoleEnum.ROLE_GENERAL)
     public ReturnObject paymentOrder(@RequestParam("order_id") int order_id, HttpServletRequest request) {
         SysOrder sysOrder = sysOrderJpa.findOne(order_id);
         if (sysOrder == null) {
@@ -83,12 +86,12 @@ public class SysOrderController {
 
     /**
      * todo: 查看指定订单的详细信息
-     *
+     * 使用角色: 管理员能够查看全部的，用户只能查看自己的
      * @param order_id 需要处理订单的id
      * @return 操作回馈
      */
     @RequestMapping(value = "/viewOrderInfo", method = RequestMethod.POST)
-    @LoginRequired
+    @LoginRequired({SysRoleEnum.ROLE_GENERAL , SysRoleEnum.ROLE_ADMINISTRATOR})
     public ReturnObject viewOrderInfo(@RequestParam("order_id") int order_id) {
         SysOrder sysOrder = sysOrderJpa.findOne(order_id);
         if (sysOrder == null) {
@@ -99,13 +102,13 @@ public class SysOrderController {
 
     /**
      * todo: 订单签收操作
-     *
+     * 使用角色：管理员
      * @param order_id 需要处理订单的id
      * @param request  用户请求
      * @return 操作回馈
      */
     @RequestMapping(value = "/signOrder", method = RequestMethod.POST)
-    @LoginRequired
+    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     public ReturnObject signOrder(@RequestParam("order_id") int order_id, HttpServletRequest request) {
         SysOrder sysOrder = sysOrderJpa.findOne(order_id);
         if (sysOrder == null) {
@@ -117,7 +120,7 @@ public class SysOrderController {
 
     /**
      * todo: 根据指定条件分页查询订单列表
-     *
+     * 使用角色：管理员能够查看全部订单 用户只能查看自己的订单
      * @param page      当前页
      * @param size      每页多少行数据
      * @param order     顶顶那id
@@ -129,6 +132,7 @@ public class SysOrderController {
      * @return 返回请求信息
      */
     @PostMapping("/orderListConditionalPaging")
+    @LoginRequired(value = {SysRoleEnum.ROLE_GENERAL,SysRoleEnum.ROLE_ADMINISTRATOR})
     public ReturnObject orderListConditionalPaging(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "size", defaultValue = "20") Integer size,
@@ -151,12 +155,13 @@ public class SysOrderController {
 
     /**
      * todo: 给与订单评价
-     *
+     * 使用角色：用户
      * @param order_id 订单id
      * @param message  评价信息
      * @return 操作反馈
      */
     @PostMapping(value = "/orderEvaluation")
+    @LoginRequired(value = SysRoleEnum.ROLE_GENERAL)
     public ReturnObject orderEvaluation(@RequestParam("order_id") int order_id,
                                         @RequestParam("message") String message,
                                         HttpServletRequest request) {
@@ -173,13 +178,14 @@ public class SysOrderController {
 
     /**
      * todo: 对订单评价进行回复
-     *
+     * 使用角色： 管理员和用户
      * @param evaluation_id 被评价信息id
      * @param message       回复信息
      * @param request       请求对象
      * @return 操作反馈
      */
     @PostMapping(value = "/evaluationReply")
+    @LoginRequired(value = {SysRoleEnum.ROLE_ADMINISTRATOR,SysRoleEnum.ROLE_GENERAL})
     public ReturnObject evaluationReply(@RequestParam("evaluation_id") int evaluation_id,
                                         @RequestParam("message") String message,
                                         HttpServletRequest request) {

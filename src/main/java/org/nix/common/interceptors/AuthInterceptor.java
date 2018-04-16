@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Create by zhangpe0312@qq.com on 2018/4/15.
- *
+ * <p>
  * todo: 进行权限控制，通过LoginRequired标签检测用户是否有这个角色权限去访问这个接口
  */
 
@@ -34,11 +34,11 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
 
-        if (o.getClass().isAssignableFrom(HandlerMethod.class)){
+        if (o.getClass().isAssignableFrom(HandlerMethod.class)) {
 
-            LoginRequired loginRequired = ((HandlerMethod)o).getMethodAnnotation(LoginRequired.class);
+            LoginRequired loginRequired = ((HandlerMethod) o).getMethodAnnotation(LoginRequired.class);
 
-            if(loginRequired == null)
+            if (loginRequired == null)
                 return true;
 
             HttpSession session = httpServletRequest.getSession();
@@ -49,7 +49,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             sysUser = userJpa.findOne(sysUser.getId());
 
             // 如果验证通过则返回true
-            if (haveRole(loginRequired.value(),sysUser.getSysRole())){
+            if (haveRole(loginRequired.value(), sysUser.getSysRole())) {
                 return true;
             }
 
@@ -69,10 +69,18 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     }
 
-    private boolean haveRole(SysRoleEnum[] sysRoleEnum , SysRole sysRole){
+    /**
+     * todo; 判断用户是否能够使用这个权限，如果不能使用则返回true
+     *
+     * @param sysRoleEnum 这个接口的权限集合
+     * @param sysRole     用户拥有的角色信息
+     * @return 如果验证成功则返回true 失败返回false
+     */
+    private boolean haveRole(SysRoleEnum[] sysRoleEnum, SysRole sysRole) {
 
-        for (int i = 0; i <sysRoleEnum.length ; i++) {
-            if (sysRoleEnum[i].getValue() == sysRole.getRoleName())
+        for (SysRoleEnum aSysRoleEnum : sysRoleEnum) {
+            if (aSysRoleEnum.getValue().equals(SysRoleEnum.ROLE_PUBLIC.getValue()) ||
+                    aSysRoleEnum.getValue().equals(sysRole.getRoleName()))
                 return true;
         }
         return false;

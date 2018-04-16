@@ -3,6 +3,7 @@ package org.nix.controller;
 import org.nix.annotation.LoginRequired;
 import org.nix.common.ReturnObject;
 import org.nix.common.sysenum.SessionKeyEnum;
+import org.nix.common.sysenum.SysRoleEnum;
 import org.nix.dto.order.ResultOrderInfoDto;
 import org.nix.dto.resources.ResultURIlistDto;
 import org.nix.entity.SysOrder;
@@ -43,6 +44,7 @@ public class AdministratorController {
      * 查看订单列表
      */
     @PostMapping("/orderList")
+    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     public ReturnObject orderList(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                   @RequestParam(value = "size", defaultValue = "20") Integer size,
                                   @RequestParam(value = "order", defaultValue = "id") String order,
@@ -65,7 +67,7 @@ public class AdministratorController {
      * 订单受理
      */
     @PostMapping(value = "/orderHandler")
-    @LoginRequired
+    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     public ReturnObject orderHandler(@ModelAttribute SysOrder order, HttpServletRequest request) {
         if (administratorService.orderHandler(order, (SysUser) request
                 .getSession()
@@ -81,19 +83,19 @@ public class AdministratorController {
      * @return URI数据
      */
     @PostMapping(value = "/listViewURI")
-    @LoginRequired
+    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     public ReturnObject listViewURI(HttpServletRequest request) {
 
         return ReturnUtil.success(new ResultURIlistDto(resourcesService.listGetURI(request)));
     }
 
     /**
-     * todo: 将接口信息导入到数据库中
+     * todo: 将接口信息导入到数据库中 --- 不适用
      * @param request
      * @return
      */
     @PostMapping(value = "/listURIToDB")
-    @LoginRequired
+    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     public ReturnObject listURIToDB(HttpServletRequest request){
 
         resourcesService.listURIToDB(resourcesService.listGetURI(request));
