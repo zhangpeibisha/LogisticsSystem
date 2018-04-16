@@ -31,7 +31,7 @@ import java.util.Set;
  * TODO: 管理员接口
  */
 @RestController
-@RequestMapping(value = "/Administrator")
+@RequestMapping(value = "/administrator")
 public class AdministratorController {
     @Autowired
     private AdministratorServiceImpl administratorService;
@@ -76,6 +76,9 @@ public class AdministratorController {
         }
         return ReturnUtil.fail("受理失败");
     }
+
+
+    // 下面两个接口在本系统中不用，权限控制换作注解方式进行
 
     /**
      * todo: 获取到系统全部的RUI数据

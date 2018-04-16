@@ -21,6 +21,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/city")
 public class CityAndDistancesController {
+
     @Autowired
     private CityService cityService;
     /**
@@ -58,6 +59,7 @@ public class CityAndDistancesController {
      * 删除一个城市信息
      * */
     @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
+    @RequestMapping(value = "/delete" , method = RequestMethod.POST)
     public ReturnObject delete(@RequestParam("ids")Integer[] ids) {
         cityService.deleteCities(ids);
         return ReturnUtil.success(null);
@@ -66,7 +68,7 @@ public class CityAndDistancesController {
     /**
      * 根据输入城市名部分查询数据库已经存在的城市
      * */
-    @RequestMapping("/search")
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
     @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     public ReturnObject searchCity(@RequestParam("name") String name) {
         return null;
@@ -81,9 +83,9 @@ public class CityAndDistancesController {
         return ReturnUtil.success(cityService.cityDetails(id));
     }
 
-    @PostMapping("/list")
+    @PostMapping("/cityList")
     @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
-    public ReturnObject orderList(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    public ReturnObject cityList(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                   @RequestParam(value = "size", defaultValue = "20") Integer size,
                                   @RequestParam(value = "order", defaultValue = "id") String order,
                                   @RequestParam(value = "sort", defaultValue = "ASC") String sort,
