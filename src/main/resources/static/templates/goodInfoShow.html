@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎登录</title>
+    <link rel="stylesheet" href="css/mainCss.css"/>
+    <link rel="stylesheet" href="../resources/bootstrap.min.css" />
+    <link rel="stylesheet" href="../resources/bootstrap-table.css" />
+    <script type="text/javascript" src="../resources/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../resources/bootstrap.js"></script>
+    <script type="text/javascript" src="../resources/bootstrap-table.js"></script>
+    <script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
+</head>
+<body>
+<div class="log-window"></div>
+<div class="topModule">
+    <div class="loginTitle">物流信息管理系统</div>
+    </div>
+</div>
+<hr/>
+<form id="operationGoodmodule" class="form-horizontal addgood">
+    <div class="infoOperate" id="operationGoodOperate" style="z-index:2;">
+        <div class="form-group" style="display: none">
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="accountId" >
+            </div>
+        </div>
+        <div class="form-group" style="display: none">
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="account" >
+            </div>
+        </div>
+        <div class="form-group" style="display:none;">
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="accountpassword" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="money" class="col-sm-3 control-label">金额</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control"  id="money" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="status" class="col-sm-3 control-label">订单状态</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control"  id="status" style="border: none">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="nowPlace" class="col-sm-3 control-label">当前地点</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control"  id="nowPlace" style="border: none">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="arriveedTime" class="col-sm-3 control-label" style="padding: 0px 14px 0 65px;">到达当前地点的时间</label>
+            <div class="col-sm-7">
+                <input type="date" class="form-control"  id="arriveedTime" style="border: none">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="startplace" class="col-sm-3 control-label">起点</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control"  id="startplace" style="border: none">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="endplace" class="col-sm-3 control-label">终点</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control"  id="endplace" style="border: none">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="descripe" class="col-sm-3 control-label">备注</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control"  id="descripe" style="border: none">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="createTime" class="col-sm-3 control-label">创建时间</label>
+            <div class="col-sm-7">
+                <input type="date" class="form-control"  id="createTime" style="border: none">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-3">
+                <input type="button" class="btn btn-primary" id="enable" value="确认">
+            </div>
+            <div class="col-sm-4">
+                <input type="button" class="btn btn-default" id="cancel" value="返回" name="">
+            </div>
+        </div>
+
+    </div>
+</form>
+<script type="text/javascript" src="../js/OrderManage.js"></script>
+<script type="text/javascript" src="../js/goodInfoShow.js"></script>
+</body>
+</html>
