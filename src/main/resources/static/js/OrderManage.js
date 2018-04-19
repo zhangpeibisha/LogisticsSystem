@@ -33,6 +33,8 @@ $('#addbtn').click(function (){
 function getOrdersList() {
     $('#table').bootstrapTable({
         method: 'POST',
+        contentType: "application/x-www-form-urlencoded",//必须要有！！！！
+        // contentType : 'application/json',// 发送到服务器的数据编码类型
         striped : true,// 隔行变色效果
         pagination : true,// 在表格底部显示分页条
         pageNumber : 1,// 首页页码
@@ -41,26 +43,17 @@ function getOrdersList() {
         cache : false,// 禁用 AJAX 数据缓存
         sortName : 'id',// 定义排序列
         sortOrder : 'asc',// 定义排序方式 getRceiptlistWithPaging
-        //url : '/Administrator/orderList',// 服务器数据的加载地址
+        // url : '/order/orderListConditionalPaging',// 服务器数据的加载地址
         sidePagination : 'client',// 设置在哪里进行分页
-        /*showRefresh: true, */ //显示刷新按钮
-        contentType : 'application/json',// 发送到服务器的数据编码类型
+        showRefresh: true,  //显示刷新按钮
         dataType : 'json',// 服务器返回的数据类型
-        queryParams: function queryParams(params) {
-            param.page = (params.offset/params.limit) + 1;
-            param.size=params.limit;
-            param.sort = params.sort; // 排序列名
-            param.order = params.order; // 排位命令（desc，asc）
-            param.field = '';
-            param.content = $('#search').val();
-            param.fullMatch = true;
-            return param;
-        },  // 请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
+        queryParamsType:'limit',//查询参数组织方式
+        queryParams:queryParams,//请求服务器时所传的参数
         selectItemName : '',// radio or checkbox 的字段名
-        onLoadSuccess:function (backData) {
-            $('#table').bootstrapTable('removeAll');
-            $('#table').bootstrapTable('append', backData.list);
-        },
+        // onLoadSuccess:function (backData) {
+        //     $('#table').bootstrapTable('removeAll');
+        //     $('#table').bootstrapTable('append', backData.data);
+        // },
         data:[{id:'1',account:'123',password:'123456',node:'0000',money:'1000',orderStatus:'未发货',currentCity:'重庆',TimeOfArrival:'2016-12-20',startCity:'重庆',endCity:'河北',createTime:'2016-12-20'}
             ,{id:'2',account:'234',password:'123456',node:'1111',money:'2000',orderStatus:'已发货',currentCity:'浙江',TimeOfArrival:'2018-03-20',startCity:'台湾',endCity:'新疆',createTime:'2018-03-18'}],
         columns : [ {
@@ -153,14 +146,36 @@ function getOrdersList() {
             width : '5',// 宽度
             formatter: function (value, row, index) {
                 return "<input class='btn btn-info' type='button' onclick='show("+JSON.stringify(row)+")' value='详情'>"
+                +  "<input class='btn btn-info' type='button' onclick='handler("+JSON.stringify(row)+")' value='受理'>"
             }
         }]
         // 列配置项,详情请查看 列参数 表格
         /* 事件 */
     });
 }
-
-
+function handler(date) {
+    $.ajax({
+        type: 'POST',
+        url: "/administrator/orderHandler",
+        dataType: 'json',
+        //组装order实体参数
+        data: {
+            field: fiel,
+            content: info
+        },
+        success: function (data) {
+        }
+    })
+}
+function queryParams(params) {
+    return {
+        page : 1,
+        size:999999,
+        field : 'order_status',
+        content : 'ORDER_PAID_NO_SHIPPED',
+        fullMatch : true
+    };
+}
 
 /*展示方法*/
 function show(data) {

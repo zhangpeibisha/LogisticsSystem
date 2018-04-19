@@ -34,27 +34,27 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
 
-        if (o.getClass().isAssignableFrom(HandlerMethod.class)) {
-
-            LoginRequired loginRequired = ((HandlerMethod) o).getMethodAnnotation(LoginRequired.class);
-
-            if (loginRequired == null)
-                return true;
-
-            HttpSession session = httpServletRequest.getSession();
-            SysUser sysUser = (SysUser) session.getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
-            if (sysUser == null)
-                throw new LoginErrorException();
-
-            sysUser = userJpa.findOne(sysUser.getId());
-
-            // 如果验证通过则返回true
-            if (haveRole(loginRequired.value(), sysUser.getSysRole())) {
-                return true;
-            }
-
-            throw new AuthInterceptorException();
-        }
+//        if (o.getClass().isAssignableFrom(HandlerMethod.class)) {
+//
+//            LoginRequired loginRequired = ((HandlerMethod) o).getMethodAnnotation(LoginRequired.class);
+//
+//            if (loginRequired == null)
+//                return true;
+//
+//            HttpSession session = httpServletRequest.getSession();
+//            SysUser sysUser = (SysUser) session.getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
+//            if (sysUser == null)
+//                throw new LoginErrorException();
+//
+//            sysUser = userJpa.findOne(sysUser.getId());
+//
+//            // 如果验证通过则返回true
+//            if (haveRole(loginRequired.value(), sysUser.getSysRole())) {
+//                return true;
+//            }
+//
+//            throw new AuthInterceptorException();
+//        }
 
         return true;
     }
