@@ -83,8 +83,8 @@ public class CityAndDistancesController {
         return ReturnUtil.success(cityService.cityDetails(id));
     }
 
-    @PostMapping("/cityList")
-    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
+    @PostMapping("/list")
+//    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     public ReturnObject cityList(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                   @RequestParam(value = "size", defaultValue = "20") Integer size,
                                   @RequestParam(value = "order", defaultValue = "id") String order,
