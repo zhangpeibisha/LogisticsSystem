@@ -16,5 +16,5 @@ $(document).ready(function(){
     $("#enable").attr('disabled','disabled');
 });
 $("#cancel").click(function(){
-    window.location.href='../templates/OrderManage.html';
+    window.history.go(-1);
 });
