@@ -74,7 +74,7 @@ function getOrdersList() {
             title : '订单号',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '1',// 宽度
+            width : '1'// 宽度
         }, {
             field : 'account',// 返回值名称
             title : '用户名',// 列名

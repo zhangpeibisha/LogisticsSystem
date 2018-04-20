@@ -12,22 +12,26 @@ function getOrdersList() {
         //url : '/Administrator/orderList',// 服务器数据的加载地址
         sidePagination : 'client',// 设置在哪里进行分页
         /*showRefresh: true, */ //显示刷新按钮
-        contentType : 'application/json',// 发送到服务器的数据编码类型
+        contentType : 'application/x-www-form-urlencoded',// 发送到服务器的数据编码类型
         dataType : 'json',// 服务器返回的数据类型
         queryParams: function queryParams(params) {
             param.page = (params.offset/params.limit) + 1;
             param.size=params.limit;
             param.sort = params.sort; // 排序列名
             param.order = params.order; // 排位命令（desc，asc）
-            param.field = '';
-            param.content = $('#search').val();
+            param.field = 'order_status';
+            param.content = 'ORDER_PAID_NO_SHIPPED';
             param.fullMatch = true;
             return param;
         },  // 请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
+            console.log(backdata);
+            var newData = backData.filter(x=>{
+                 return x.orderStatus != '001';
+            });
             $('#table').bootstrapTable('removeAll');
-            $('#table').bootstrapTable('append', backData.list);
+            $('#table').bootstrapTable('append', newData.list);
         },
         data:[{id:'1',account:'123',password:'123456',node:'0000',money:'1000',orderStatus:'未发货',currentCity:'重庆',TimeOfArrival:'2016-12-20',startCity:'重庆',endCity:'河北',createTime:'2016-12-20'}
             ,{id:'2',account:'234',password:'123456',node:'1111',money:'2000',orderStatus:'已发货',currentCity:'浙江',TimeOfArrival:'2018-03-20',startCity:'台湾',endCity:'新疆',createTime:'2018-03-18'}],
@@ -82,13 +86,13 @@ function getOrdersList() {
             title : '订单状态',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15',// 宽度
+            width : '15'// 宽度
         }, {
             field : 'currentCity',// 返回值名称
             title : '当前地点',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15',// 宽度
+            width : '15'// 宽度
         }, {
             field : 'TimeOfArrival',// 返回值名称
             title : '到达当前地点时的时间',// 列名
@@ -162,7 +166,7 @@ $('#searchbtn').click(function () {
 
     $.ajax({
         type: 'POST',
-        url: "/member/list.do",
+        url: "",
         dataType: 'json',
         data: {
             field: fiel,
