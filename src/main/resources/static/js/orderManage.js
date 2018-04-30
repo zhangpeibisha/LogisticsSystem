@@ -165,7 +165,7 @@ function getOrdersList() {
 /*展示方法*/
 function show(data) {
     sessionStorage.setItem("goodData",JSON.stringify(data));
-    window.location.href="../templates/goodInfoShow.html";
+    window.location.href="../templates/showGoodInfo.html";
 }
 
 $('#searchbtn').click(function () {

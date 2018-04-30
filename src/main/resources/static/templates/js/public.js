@@ -1,16 +1,3 @@
-// head.html 的弹出框 JS
-// $(".goOut").click(function(){
-//    $(".closeOut").show();
-//  });
-//  $(".p1").click(function(){
-//    $(".closeOut").hide();
-//  });
-//  $(".no").click(function(){
-//    $(".closeOut").hide();
-//  });
- // head.html 的弹出框 JS  end
-
-
 // left.html 的切换节点  JS
 $(function(){
 	// 点击展开事件，切换图片
@@ -57,5 +44,15 @@ $(function(){
 
 		
 	});
+    var member = JSON.parse(sessionStorage.getItem('member'));
+    if(member.grade == 0){
+        $('#orderMassage').css('display','none');
+        $('#orderAccept').css('display','none');
+        $('#gather').css('display','none');
+        $('#cityManage').css('display','none');
+        $('#memberManage').css('display','none');
+    }else{
+        $('#orderAdd').css('display','none');
+    }
 })
 // left.html 的切换节点  JS end

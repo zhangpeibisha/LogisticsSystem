@@ -1,3 +1,4 @@
+//后台只返回未受理订单
 function getOrdersList() {
     $('#table').bootstrapTable({
         method: 'POST',
@@ -27,9 +28,6 @@ function getOrdersList() {
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
             console.log(backdata);
-            var newData = backData.filter(x=>{
-                 return x.orderStatus != '001';
-            });
             $('#table').bootstrapTable('removeAll');
             $('#table').bootstrapTable('append', newData.list);
         },
@@ -125,7 +123,7 @@ function getOrdersList() {
             width : '5',// 宽度
             formatter: function (value, row, index) {
                 return "<input class='btn btn-info' type='button' onclick='show("+JSON.stringify(row)+")' value='详情'>"+
-                    "<input class='btn btn-info' type='button' onclick='accept("+JSON.stringify(row)+")' value='受理'>"
+                    "<input class='btn btn-info' id='accept' type='button' value='受理'>"
             }
         }]
         // 列配置项,详情请查看 列参数 表格
@@ -133,33 +131,36 @@ function getOrdersList() {
     });
 }
 
-function accept(data){
-    $.ajax({
-        type: 'POST',
-        url: "/administrator/orderHandler",
-        dataType: 'json',
-        data:data,
-        success: function (data) {
-            if (data == 'SUCCESS') {
-                location.href = "../templates/OrderManage.html";
-            }else{
-                alert('用户名或者密码错误！');
-                location.href='https://www.baidu.com/';
-            }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            if (XMLHttpRequest.status == 401) {
-                alert("操作失败！！！")
-            }
-        }
-    });
-}
+$('#accept').click(function(){
+    alert();
+});
 /*展示方法*/
 function show(data) {
     sessionStorage.setItem("goodData",JSON.stringify(data));
-    window.location.href="../templates/goodInfoShow.html";
+    window.location.href="../templates/showGoodInfo.html";
 }
-
+function accept(data){
+    alert('受理成功!');
+    // $.ajax({
+    //     type: 'POST',
+    //     url: "/administrator/orderHandler",
+    //     dataType: 'json',
+    //     data:data,
+    //     success: function (data) {
+    //         if (data == 'SUCCESS') {
+    //             location.href = "../templates/OrderManage.html";
+    //         }else{
+    //             alert('用户名或者密码错误！');
+    //             location.href='https://www.baidu.com/';
+    //         }
+    //     },
+    //     error: function(XMLHttpRequest, textStatus, errorThrown) {
+    //         if (XMLHttpRequest.status == 401) {
+    //             alert("操作失败！！！")
+    //         }
+    //     }
+    // });
+}
 $('#searchbtn').click(function () {
     var info = $('#search').val();
     var fiel = $("#filed").val();

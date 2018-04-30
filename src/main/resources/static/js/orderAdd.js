@@ -1,17 +1,10 @@
 $(document).ready(function(){
     $('#money').val('');
-    $('#status').val('');
-    $('#nowPlace').val('');
-    $('#arriveedTime').val('');
     $('#startplace').val('');
     $('#endplace').val('');
     $('#descripe').val('');
-    $('#createTime').val('');
 
     $("#operationGoodmodule").css('display','block');
-});
-$("#cancel").click(function(){
-    window.location.href='../templates/OrderManage.html';
 });
 $('#enable').click(function(){
     if(addInputCheck()){
@@ -23,17 +16,17 @@ $('#enable').click(function(){
         }
         $.ajax({
             type: 'POST',
-            url: "/administrator/orderHandler",
+            url: "/administrator/orderAdd",
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
                 if (o.code === 'SUCCESS') {
-                    alert('受理成功!');
+                    alert('添加成功!');
 
                     //添加成功后再table增加一行数据
                     // $('#table').bootstrapTable('prepend', o.member);
                 }else if(o.code === 'FAIL'){
-                    alert('受理失败！');
+                    alert('添加失败！');
                     dismiss();
                 }
             },
@@ -45,3 +38,21 @@ $('#enable').click(function(){
         });
     }
 });
+function addInputCheck(){
+    if($('#money').val() == null || $('#money').val() == ''){
+        alert('请输入金额！');
+        return false;
+    }
+    if($('#startplace').val() == null || $('#startplace').val() == ''){
+        alert('请输入起点！');
+        return false;
+    }
+    if($('#endplace').val() == null || $('#endplace').val() == ''){
+        alert('请输入终点！');
+        return false;
+    }
+    if($('#descripe').val() == null || $('#descripe').val() == ''){
+        alert('请输入描述！');
+        return false;
+    }
+}
