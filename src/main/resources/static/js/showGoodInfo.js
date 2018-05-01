@@ -26,13 +26,38 @@ function getPath(){
           s.innerHTML=htmldata;
       },
       error:function(){
-          alert('操作失败！');
-          window.history.back();
+          // alert('操作失败！');
+          // window.history.back();
+          var htmldata = '<div class="track-rcol"><div class="track-list"><span>物流信息</span><ul>';
+          htmldata = htmldata + '<li class="first">' +
+              '<i class="node-icon"></i>' +
+              '<span class="time">'+ data[data.length-1].time + '</span>'+
+              '<span class="txt">'+ data[data.length-1].massage + '</span></li>'
+          for(var i = data.length-2; i >=0; i--){
+              htmldata = htmldata + '<li>' +
+                  '<i class="node-icon"></i>' +
+                  '<span class="time">'+ data[i].time + '</span>'+
+                  '<span class="txt">'+ data[i].massage + '</span></li>'
+          }
+          htmldata = htmldata + '</ul> </div> </div>';
+          var s = document.getElementById('goodPath');
+          s.innerHTML=htmldata;
       }
   })
 };
+$('#evalution').click(function(){
+    var orderData = JSON.parse(sessionStorage.getItem("goodData"));
+    sessionStorage.setItem('evalutionId',orderData.id);
+    window.location.href='../templates/evalution.html';
+});
 function setValue(){
     var sData = JSON.parse(sessionStorage.getItem("goodData"));
+    var member = JSON.parse(sessionStorage.getItem("member"));
+    if(member.grade == 0){
+        $("#evalution").css('display','inline-block');
+    }else{
+        $("#evalution").css('display','none');
+    }
     $("#money,#status,#nowPlace,#arriveedTime,#startplace,#endplace,#descripe,#createTime").attr("disabled","true");
     $("#orderId").val(sData.id);
     $("#account").val(sData.account);

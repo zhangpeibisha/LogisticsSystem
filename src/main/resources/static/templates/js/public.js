@@ -23,8 +23,7 @@ $(function(){
 		$(".menu_chioce").slideUp();
 		$(this).parent().find('dd').slideToggle();
 		$(this).parent().find('dd').addClass("menu_chioce");
-
-		
+        showGradeOperation();
 	});
 	$(".cks").click(function(){
 		// 先处理掉所有存在的节点,再判断是否存在
@@ -41,9 +40,12 @@ $(function(){
 			$(this).removeClass('menu_chioce2');
 			$(this).parent().find('.icon5').hide();
 		}
-
-		
+        showGradeOperation();
 	});
+
+})
+// left.html 的切换节点  JS end
+function showGradeOperation(){
     var member = JSON.parse(sessionStorage.getItem('member'));
     if(member.grade == 0){
         $('#orderMassage').css('display','none');
@@ -54,5 +56,4 @@ $(function(){
     }else{
         $('#orderAdd').css('display','none');
     }
-})
-// left.html 的切换节点  JS end
+}

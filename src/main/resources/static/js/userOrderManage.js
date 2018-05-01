@@ -1,5 +1,38 @@
-//后台只返回未受理订单
+
+var param = {};
+
+//修改密码
+function checkPasswordInput() {
+    if($('#password').val() == null || $('#password').val() == ''){
+        alert('请输入密码！');
+        return false;
+    }
+
+    if($('#password').val().length < 2){
+        alert('密码必须超过6位！');
+        return false;
+    }
+
+    if($('#ensurepassword').val() == null || $('#ensurepassword').val() == ''){
+        alert('请确认密码！');
+        return false;
+    }
+
+    if($('#password').val() != $('#ensurepassword').val()){
+        alert('两次密码输入不一致！');
+        return false;
+    }
+    return true;
+}
+$("#cancel").click(function(){
+    window.history.back();
+});
+$('#addbtn').click(function (){
+    window.location.href='../templates/orderAdd.html';
+});
+//请求的数据是该用户的订单信息，账户名是参数
 function getOrdersList() {
+    var member = JSON.parse(sessionStorage.getItem('member'));
     $('#table').bootstrapTable({
         method: 'POST',
         striped : true,// 隔行变色效果
@@ -10,7 +43,7 @@ function getOrdersList() {
         cache : false,// 禁用 AJAX 数据缓存
         sortName : 'id',// 定义排序列
         sortOrder : 'asc',// 定义排序方式 getRceiptlistWithPaging
-        //url : '/Administrator/orderList',// 服务器数据的加载地址
+        //url : '/Administrator/orderList' + member.account,
         sidePagination : 'client',// 设置在哪里进行分页
         /*showRefresh: true, */ //显示刷新按钮
         contentType : 'application/x-www-form-urlencoded',// 发送到服务器的数据编码类型
@@ -27,12 +60,11 @@ function getOrdersList() {
         },  // 请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
-            console.log(backdata);
             $('#table').bootstrapTable('removeAll');
-            $('#table').bootstrapTable('append', newData.list);
+            $('#table').bootstrapTable('append', backData.list);
         },
-        data:[{id:'1',account:'123',password:'123456',node:'0000',money:'1000',orderStatus:'未发货',currentCity:'重庆',TimeOfArrival:'2016-12-20',startCity:'重庆',endCity:'河北',createTime:'2016-12-20'}
-            ,{id:'2',account:'234',password:'123456',node:'1111',money:'2000',orderStatus:'已发货',currentCity:'浙江',TimeOfArrival:'2018-03-20',startCity:'台湾',endCity:'新疆',createTime:'2018-03-18'}],
+        data:[{id:'1',account:'123',password:'123456',node:'0000',money:'1000',orderStatus:'002',currentCity:'重庆',TimeOfArrival:'2016-12-20',startCity:'重庆',endCity:'河北',createTime:'2016-12-20'}
+            ,{id:'2',account:'234',password:'123456',node:'1111',money:'2000',orderStatus:'004',currentCity:'浙江',TimeOfArrival:'2018-03-20',startCity:'台湾',endCity:'新疆',createTime:'2018-03-18'}],
         columns : [ {
             checkbox : true,
             align : 'center',// 水平居中显示
@@ -51,7 +83,7 @@ function getOrdersList() {
             title : '订单号',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '1',// 宽度
+            width : '1'// 宽度
         }, {
             field : 'account',// 返回值名称
             title : '用户名',// 列名
@@ -84,13 +116,13 @@ function getOrdersList() {
             title : '订单状态',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15'// 宽度
+            width : '15',// 宽度
         }, {
             field : 'currentCity',// 返回值名称
             title : '当前地点',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15'// 宽度
+            width : '15',// 宽度
         }, {
             field : 'TimeOfArrival',// 返回值名称
             title : '到达当前地点时的时间',// 列名
@@ -122,8 +154,7 @@ function getOrdersList() {
             valign :'middle',// 垂直居中显示
             width : '5',// 宽度
             formatter: function (value, row, index) {
-                return "<input class='btn btn-info' type='button' onclick='show("+JSON.stringify(row)+")' value='详情'>"+
-                    "<input class='btn btn-info' id='accept' type='button' value='受理'>"
+                return "<input class='btn btn-info' type='button' onclick='show("+JSON.stringify(row)+")' value='详情'>"
             }
         }]
         // 列配置项,详情请查看 列参数 表格
@@ -131,43 +162,19 @@ function getOrdersList() {
     });
 }
 
-$('#accept').click(function(){
-    alert();
-});
 /*展示方法*/
 function show(data) {
     sessionStorage.setItem("goodData",JSON.stringify(data));
     window.location.href="../templates/showGoodInfo.html";
 }
-function accept(data){
-    alert('受理成功!');
-    // $.ajax({
-    //     type: 'POST',
-    //     url: "/administrator/orderHandler",
-    //     dataType: 'json',
-    //     data:data,
-    //     success: function (data) {
-    //         if (data == 'SUCCESS') {
-    //             location.href = "../templates/leaderOrderManage.html";
-    //         }else{
-    //             alert('用户名或者密码错误！');
-    //             location.href='https://www.baidu.com/';
-    //         }
-    //     },
-    //     error: function(XMLHttpRequest, textStatus, errorThrown) {
-    //         if (XMLHttpRequest.status == 401) {
-    //             alert("操作失败！！！")
-    //         }
-    //     }
-    // });
-}
+
 $('#searchbtn').click(function () {
     var info = $('#search').val();
     var fiel = $("#filed").val();
 
     $.ajax({
         type: 'POST',
-        url: "",
+        url: "/member/list.do",
         dataType: 'json',
         data: {
             field: fiel,
