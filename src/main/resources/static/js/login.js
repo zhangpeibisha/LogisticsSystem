@@ -1,3 +1,5 @@
+//general:普通用户
+//adminstrator:管理员
 function checkData() {
     if($('#judgeOperation').val() == 0){
         if($('#account').val() == null || $('#account').val() == ''){
@@ -44,20 +46,26 @@ function checkData() {
 function checkLogin(){
     if(checkData()) {
         $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
+        var member = {
+            account:$('#account').val(),
+            password:$(" input[ name='password' ] ").val(),
+            grade:$(" input[ name='grade' ]:checked").val(),
+        };
         $.ajax({
             type: 'post',
             url: "/public/login",
             dataType: 'json',
-            data: $('#loginForm').serialize(),
+            data: member,
             success: function (data) {
                 if (data.status == 1) {
-                    sessionStorage.setItem("member",JSON.stringify(data.data));
+                    sessionStorage.setItem("member",JSON.stringify(member));
                     location.href = "./index.html";
                 }else{
                     alert('用户名或者密码错误！');
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert('登录失败!');
                 if (XMLHttpRequest.status == 401) {
                     alert("权限不足！！！")
                 }
@@ -72,15 +80,20 @@ function register(){
 }
 function enableregister(){
     if(checkData()) {
-        $(" input[ name='password' ] ").val(hex_md5($("#registerPassword").val()));
+        var member = {
+            account:$('#account').val(),
+            password:$(" input[ name='password' ] ").val(),
+            grade:$(" input[ name='grade' ]:checked ").val()
+        };
+        console.log(member);
         $.ajax({
             type: 'POST',
             url: "/generalUser/register",
             dataType: 'json',
-            data:$('#registerForm').serialize(),
+            data:member,
             success: function (data) {
                 if (data == 'SUCCESS') {
-                    sessionStorage.setItem("member",JSON.stringify(data.member));
+                    sessionStorage.setItem("member",JSON.stringify(member));
                     location.href = "../html/index.html";
                 }else{
                     alert('用户名或者密码错误！');

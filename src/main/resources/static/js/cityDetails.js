@@ -1,19 +1,20 @@
-var cityId = getQueryVariable("id");
-function getQueryVariable(variable)
-{
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
-    for (var i=0;i<vars.length;i++) {
-        var pair = vars[i].split("=");
-        if(pair[0] == variable){return pair[1];}
-    }
-    return(false);
-}
-$(window).resize(function() {
-    $('#table').bootstrapTable('resetView', {
-        height: tableHeight()
-    })
-})
+$("#cancel").click(function(){
+    window.history.go(-1);
+});
+$("#ensure").click(function(){
+    $.ajax({
+        url:'',
+        data:'',
+        type:'POST',
+        dataType:'JSON',
+        success:function(){
+
+        },
+        error:function(){
+
+        }
+    });
+});
 function showTable() {
     $('#table').bootstrapTable({
         method: 'get',
@@ -100,16 +101,13 @@ function showTable() {
         ]
     })
 }
-//请求服务数据时所传参数
-function queryParams(params){
-    return{
-    }
-}
 function del(data) {
     if(confirm('确认删除?') == true){
+        var cityDatas = JSON.parse(sessionStorage.getItem('cityData'));
         $.ajax({
             method:'POST',
-            url: '/city/neighbor?status=delete&srcCityId=' + cityId + "&dstCityId=" + data.primaryKey.dstCity.id,
+            url: '/city/neighbor',
+            data:{cityId:cityDatas.id},
             success : function(o) {
                 if (o.status == 1) {
                     //删除一列数据成功在table中移除那行
@@ -127,12 +125,4 @@ function del(data) {
         });
     }
 }
-function edit(data) {
-
-}
-function tableHeight(){
-    //可以根据自己页面情况进行调整
-    return $(window).height() - 50;
-}
-
 showTable();

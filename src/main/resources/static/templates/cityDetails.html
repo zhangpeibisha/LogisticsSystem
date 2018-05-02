@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" href="css/mainCss.css"/>
+<link rel="stylesheet" href="../resources/bootstrap.min.css" />
+<link rel="stylesheet" href="../resources/bootstrap-table.css" />
+<script type="text/javascript" src="../resources/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../resources/bootstrap.js"></script>
+<script type="text/javascript" src="../resources/bootstrap-table.js"></script>
+<script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
+<style type="text/css">
+    table.gridtable {
+        font-family: verdana,arial,sans-serif;
+        font-size:11px;
+        color:#333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+    }
+    table.gridtable th {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #dedede;
+        width: 10%;
+        height: 30px;
+    }
+    table.gridtable td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #ffffff;
+        width: 40%;
+    }
+    .tableDissData{
+        display: none;
+    }
+    p{
+        margin: 0 !important;
+    }
+</style>
+<body>
+<div class="topModule">
+    <div class="loginTitle">订单详情</div>
+</div>
+</div>
+<hr/>
+<div>
+
+    <!-- Table goes in the document BODY -->
+    <table class="gridtable" style="margin-left: 15px;">
+        <tr class="tableDissData">
+            <th>ID</th>
+            <td id="cityId"></td>
+        </tr>
+        <tr>
+            <th>城市名</th><td><input id="cityName"></input></td>
+        </tr>
+        <tr>
+            <th>下一地点</th><td><input id="nextCity"></input></td>
+        </tr>
+        <tr>
+            <th>到达下个城市代价</th><td><input id="costPrice"></input></td>
+        </tr>
+        <tr>
+            <th>添加时间</th><td><input type="date" id="createTime"></input></td>
+        </tr>
+    </table>
+    <div style="margin-left: 15px;margin-top: 15px;">
+        <button class="btn btn-default" style="padding-bottom: 3px;padding-top: 3px;margin-right: 20px;" id="ensure">确定</button>
+        <button class="btn btn-default" style="padding-bottom: 3px;padding-top: 3px;" id="cancel">返回</button>
+    </div>
+</div>
+<script type="text/javascript">
+    var cityDatas = JSON.parse(sessionStorage.getItem('cityData'));
+    console.log(cityDatas.cityName);
+    if(cityDatas.operation == 0){
+        $('#cityName,#nextCity,#costPrice,#createTime').attr("disabled","disabled");
+    }else if(cityDatas.operation == 1){
+        $('#cityName,#nextCity,#costPrice,#createTime').removeAttr('disabled');
+    }
+    $('#cityId').html(cityDatas.id);
+    $('#cityName').val(cityDatas.cityName);
+    $('#nextCity').val(cityDatas.nextCity);
+    $('#costPrice').val(cityDatas.costPrice);
+    $('#createTime').val(cityDatas.createTime);
+</script>
+<script type="text/javascript" src="../js/cityDetails.js"></script>
+</body>
+</html>
