@@ -1,27 +1,5 @@
-//后台只返回未受理订单
-function confirm(data){
-    $.ajax({
-        type: 'POST',
-        url: "/administrator/orderHandler",
-        dataType: 'json',
-        data:data,
-        success: function (data) {
-            if (data == 'SUCCESS') {
-                alert('受理成功!');
-                location.href = "../templates/leaderOrderManage.html";
-            }else{
-                alert('用户名或者密码错误！');
-                location.href='https://www.baidu.com/';
-            }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert('受理失败!');
-            if (XMLHttpRequest.status == 401) {
-                alert("操作失败！！！")
-            }
-        }
-    });
-}
+
+var param = {};
 function getOrdersList() {
     $('#table').bootstrapTable({
         method: 'POST',
@@ -50,12 +28,11 @@ function getOrdersList() {
         },  // 请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
-            console.log(backdata);
             $('#table').bootstrapTable('removeAll');
-            $('#table').bootstrapTable('append', newData.list);
+            $('#table').bootstrapTable('append', backData.list);
         },
-        data:[{id:'1',account:'123',password:'123456',node:'0000',money:'1000',orderStatus:'未发货',currentCity:'重庆',TimeOfArrival:'2016-12-20',startCity:'重庆',endCity:'河北',createTime:'2016-12-20'}
-            ,{id:'2',account:'234',password:'123456',node:'1111',money:'2000',orderStatus:'已发货',currentCity:'浙江',TimeOfArrival:'2018-03-20',startCity:'台湾',endCity:'新疆',createTime:'2018-03-18'}],
+        data:[{id:'1',account:'123',password:'123456',node:'0000',money:'1000',orderStatus:'002',currentCity:'重庆',TimeOfArrival:'2016-12-20',startCity:'重庆',endCity:'河北',createTime:'2016-12-20'}
+           ,{id:'2',account:'234',password:'123456',node:'1111',money:'2000',orderStatus:'004',currentCity:'浙江',TimeOfArrival:'2018-03-20',startCity:'台湾',endCity:'新疆',createTime:'2018-03-18'}],
         columns : [ {
             checkbox : true,
             align : 'center',// 水平居中显示
@@ -74,7 +51,7 @@ function getOrdersList() {
             title : '订单号',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '1',// 宽度
+            width : '1'// 宽度
         }, {
             field : 'account',// 返回值名称
             title : '用户名',// 列名
@@ -107,13 +84,13 @@ function getOrdersList() {
             title : '订单状态',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15'// 宽度
+            width : '15',// 宽度
         }, {
             field : 'currentCity',// 返回值名称
             title : '当前地点',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15'// 宽度
+            width : '15',// 宽度
         }, {
             field : 'TimeOfArrival',// 返回值名称
             title : '到达当前地点时的时间',// 列名
@@ -145,14 +122,16 @@ function getOrdersList() {
             valign :'middle',// 垂直居中显示
             width : '5',// 宽度
             formatter: function (value, row, index) {
-                return "<input class='btn btn-info' type='button' onclick='show("+JSON.stringify(row)+")' value='详情'>"+
-                    "<input class='btn btn-info' id='accept' type='button' onclick='confirm("+JSON.stringify(row)+")' value='受理'>"
+                return "<input class='btn btn-info' type='button' onclick='show("+JSON.stringify(row)+")' value='详情'>"
             }
         }]
         // 列配置项,详情请查看 列参数 表格
         /* 事件 */
     });
 }
+
+
+
 /*展示方法*/
 function show(data) {
     sessionStorage.setItem("goodData",JSON.stringify(data));
@@ -165,7 +144,7 @@ $('#searchbtn').click(function () {
 
     $.ajax({
         type: 'POST',
-        url: "",
+        url: "/member/list.do",
         dataType: 'json',
         data: {
             field: fiel,

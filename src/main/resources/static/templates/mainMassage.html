@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/mainCss.css"/>
+	<link rel="stylesheet" href="../resources/bootstrap.min.css" />
+	<link rel="stylesheet" href="../resources/bootstrap-table.css" />
+	<script type="text/javascript" src="../resources/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="../resources/bootstrap.js"></script>
+	<script type="text/javascript" src="../resources/bootstrap-table.js"></script>
+	<script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
+	<style type="text/css">
+	table.gridtable {
+		font-family: verdana,arial,sans-serif;
+		font-size:11px;
+		color:#333333;
+		border-width: 1px;
+		border-color: #666666;
+		border-collapse: collapse;
+	}
+	table.gridtable th {
+		border-width: 1px;
+		padding: 8px;
+		border-style: solid;
+		border-color: #666666;
+		background-color: #dedede;
+		width: 10%;
+		height: 30px;
+	}
+	table.gridtable td {
+		border-width: 1px;
+		padding: 8px;
+		border-style: solid;
+		border-color: #666666;
+		background-color: #ffffff;
+		width: 40%;
+	}
+	</style>
+</head>
+<body>
+<div class="topModule">
+	<div class="loginTitle">订单管理中心首页</div>
+	</div>
+</div>
+<hr/>
+<div>
+
+<!-- Table goes in the document BODY -->
+<table class="gridtable" style="margin-left: 15px;">
+	<tr>
+		<th>交易成功的订单数</th><td id="successOrder"></td>
+		<th>等待发货订单数</th><td id="waitDeliver"></td>
+	</tr>
+	<tr>
+		<th>等待收货的订单数</th><td id="waitTake"></td>
+		<th>等待退货订单数</th><td id="waitReturn"></td>
+	</tr>
+	<tr>
+		<th>上架商品数</th><td id="shelfCargo"></td>
+		<th>下架商品数</th><td id="lowerCargo"></td>
+	</tr>
+	<tr>
+		<th>商品库存报警数</th><td id="storeWorning"></td>
+		<th>缺货商品数</th><td id="shortCargo"></td>
+	</tr>
+	<tr>
+		<th>会员总数</th><td id="memberNum"></td>
+		<th>未读消息数</th><td id="messageNum"></td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">
+	//后台直接返回统计后各个数据的值
+	window.onload = function(){
+        var backData = {successOrder:'500',waitDeliver:'3',waitTake:'2',waitReturn:'0',shelfCargo:'20',lowerCargo:'0',storeWorning:'5',shortCargo:'2',memberNum:'500',messageNum:'0'};
+	    $.ajax({
+	        url:'',
+			dataType:'json',
+			type:'POST',
+			success:function(backData){
+	            alert('0');
+				$('#successOrder').text(backData.successOrder);
+                $('#waitDeliver').text(backData.waitDeliver);
+                $('#waitTake').text(backData.waitTake);
+                $('#waitReturn').text(backData.waitReturn);
+                $('#shelfCargo').text(backData.shelfCargo);
+                $('#lowerCargo').text(backData.lowerCargo);
+                $('#storeWorning').text(backData.storeWorning);
+                $('#shortCargo').text(backData.shortCargo);
+                $('#memberNum').text(backData.memberNum);
+                $('#messageNum').text(backData.messageNum);
+			},
+			error:function(){
+                $('#successOrder').text(backData.successOrder);
+                $('#waitDeliver').text(backData.waitDeliver);
+                $('#waitTake').text(backData.waitTake);
+                $('#waitReturn').text(backData.waitReturn);
+                $('#shelfCargo').text(backData.shelfCargo);
+                $('#lowerCargo').text(backData.lowerCargo);
+                $('#storeWorning').text(backData.storeWorning);
+                $('#shortCargo').text(backData.shortCargo);
+                $('#memberNum').text(backData.memberNum);
+                $('#messageNum').text(backData.messageNum);
+			}
+		});
+	}
+</script>
+</body>
+</html>

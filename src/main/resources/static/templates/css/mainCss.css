@@ -2,6 +2,55 @@
     margin: 0;
     padding: 0;
 }
+ul,li{list-style:none;}
+.ylcon{
+    width:100%;
+    min-width:320px;
+}
+.tit{
+    height:26px;
+    line-height:26px;
+    padding:0px 15px;
+    position:relative;
+    font-size:15px;
+    color:#aaa;
+    border-bottom:1px solid rgba(0, 0, 0, 0.15);}
+
+.story{
+    border-bottom:1px dashed #cecece;
+    padding:0 15px 3px;
+    position:relative;
+}
+.story_t{
+    font-size:1.2em;
+    color:rgba(0,0,0,1);
+    padding-top:5px;
+    padding-bottom:2px;}
+.story_m{
+    color:rgba(110,110,110,1);
+    line-height:21px;
+    word-break:break-all;
+    word-wrap:break-word;
+    overflow:hidden;
+    font-size:1.2em;
+    padding:2px 0;}
+.story_time{
+    color:rgba(154,154,154,1);
+    padding:2px 0;
+}
+.story_hf{
+    background:rgb(245,245,245);
+    font-size:1.2em;
+    border:1px solid rgba(204,204,204,0.2);
+    border-radius:2px;
+    color:rgba(110,110,110,1);
+    padding:4px;
+    margin-bottom:5px;}
+.opbtn{
+    position:absolute;
+    top: 0;
+    right: 0;
+}
 hr{
     margin-top:2px !important;
 }
@@ -42,7 +91,7 @@ hr{
     padding-top: 20px;
     height: 200px;
     width: 400px;
-    background-color: #5bc0de;
+    background-color: rgb(222,222,222);
     border-radius: 6px;
     z-index: 2;
 }
@@ -56,4 +105,54 @@ hr{
     background-color: #5bc0de;
     border-radius: 6px;
     z-index: 2;
+}
+.track-rcol{
+    width: 60%;
+}
+.track-list{
+    margin: 15px;
+    padding-left: 5px;
+    position: relative;
+}
+.track-list li{
+    position: relative;
+    padding: 9px 0 0 25px;
+    line-height: 18px;
+    border-left: 1px solid #d9d9d9;
+    color: #999;
+}
+.track-list li.first{
+    color: red;
+    padding-top: 0;
+    border-left-color: #fff;
+}
+.track-list li .node-icon{
+    position: absolute;
+    left: -6px; top: 50%;
+    width: 11px;
+    height: 11px;
+    background: url(http://demo.daimabiji.com/3531/img/order-icons.png)  -21px -72px no-repeat;
+}
+.track-list li.first .node-icon{
+    background-position:0 -72px;
+}
+.track-list li .time{
+    margin-right: 20px;
+    position: relative;
+    top: 4px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.track-list li .txt{
+    max-width: 600px;
+    position: relative;
+    top: 4px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.track-list li.first .time{
+    margin-right: 20px;
+}
+.track-list li.first .txt{
+    max-width: 600px;
 }

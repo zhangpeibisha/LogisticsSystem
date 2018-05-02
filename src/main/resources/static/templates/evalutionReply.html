@@ -13,22 +13,24 @@
 </div>
 <hr/>
 
-<span id="evalu_id" style="display: none;"></span>
+<span id="evali_id" style="display: none;"></span>
+<p id='lastReply' style="width: 30%;margin-left: 15px;word-break:break-word;" >aaa</p>
 <div>
     <div><textarea id='massage' style="width: 30%;height: 200px;margin-left: 15px;min-width: 400px;"></textarea></div>
-    <div style="width: 30%;margin-top: 15px;"><button type="button" style="margin-left: 15px;" class="btn btn-primary" id="reply">评价</button></div>
+    <div style="width: 30%;margin-top: 15px;"><button type="button" style="float: right;" class="btn btn-primary" id="reply">回复</button></div>
 </div>
 <script type="text/javascript" src="../resources/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="../resources/bootstrap.js"></script>
 <script type="text/javascript" src="../resources/bootstrap-table.js"></script>
 <script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
 <script type="text/javascript">
-    var evalution = JSON.parse(sessionStorage.getItem("evalutionId"));
-    $("#evalu_id").html(evalution);
+    var replyData = JSON.parse(sessionStorage.getItem("replyData"));
+    $("#evali_id").html(replyData.evaluation_id);
+    $("#lastReply").val(replyData.lastReply);
     $.ajax({
         url: "/order/evaluationReply",
         dataType: 'json',
-        data:{massage:$("#massage").val(),evalu_id:$("#evalu_id").html()},
+        data:{massage:$("#massage").val(),evalu_id:$("#evali_id").html()},
         success: function (data) {
             if (data == 'SUCCESS') {
                 alert('回复成功！');
