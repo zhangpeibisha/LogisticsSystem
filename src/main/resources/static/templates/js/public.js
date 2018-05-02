@@ -60,13 +60,21 @@ function showGradeOperation(){
 //修改密码
 function change(){
     if(checkPasswordInput()){
+        $(" input[ name='oldpassword' ] ").val(hex_md5($("#oldpassword").val()));
+        $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
         $.ajax({
             type:'POST',
             dataType:'JSON',
-            //url:'/public/updatePassword',
-            data:$('#editUserInfo').serialize(),
+            url:'/public/updatePassword',
+            data:{oldPassword:$(" input[ name='oldpassword' ] ").val(),password:$(" input[ name='password' ] ").val()},
             success:function(data){
-                alert('修改成功!');
+                console.log(data);
+                if(data.status == 301) {
+                    alert('旧密码错误!');
+                }
+                if(data.status == 1) {
+                    alert('修改成功!');
+                }
             },
             error:function(data){
                 alert('修改失败!');
@@ -75,8 +83,19 @@ function change(){
     }
 }
 function checkPasswordInput() {
+
+    if($('#oldpassword').val() == null || $('#oldpassword').val() == ''){
+        alert('请输入旧密码！');
+        return false;
+    }
+
+    if($('#oldpassword').val().length < 2){
+        alert('密码必须超过6位！');
+        return false;
+    }
+
     if($('#password').val() == null || $('#password').val() == ''){
-        alert('请输入密码！');
+        alert('请输入新密码！');
         return false;
     }
 

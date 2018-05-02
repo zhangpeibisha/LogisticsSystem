@@ -15,8 +15,25 @@
 			<img class="headLogo" src="img/topPic.jpg" width="70px" height="70px;"/>
 		</div>
 		<div class="headR">
-			<span style="color:#FFF">欢迎：admin</span> <a href="head2.html" rel="external">【退出】</a>
+			<span style="color:#FFF" id="userName"></span> <a onclick="quit()">【退出】</a>
 		</div>
 	</div>
+<script type="text/javascript">
+    var member = JSON.parse(sessionStorage.getItem("member"));
+    console.log(member.account);
+	$('#userName').html('欢迎:' + member.account);
+	function quit(){
+	    $.ajax({
+			url:'/public/exitSystem',
+			type:'POST',
+			success:function(){
+				alert('欢迎下次登录!');
+			},
+			error:function(){
+				alert('退出失败!');
+			}
+		});
+	}
+</script>
 </body>
 </html>

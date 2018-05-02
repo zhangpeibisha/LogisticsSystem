@@ -48,7 +48,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer> {
         if (findUser == null || !findUser.getPassword().equals(sysUser.getPassword())) {
             throw new SelectObjectException();
         }
-
         findUser.setPassword(null);
         request.getSession().setAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey(), findUser);
     }
@@ -70,10 +69,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer> {
      * @param password 用户更新后的密码
      */
     @Transactional
-    public void updatePassword(String password , HttpServletRequest request) {
+    public void updatePassword(String password , HttpServletRequest request,String oldPassword) {
         SysUser sysUser = (SysUser) request.getSession().getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
         if (sysUser == null)
             throw new LoginErrorException();
+        sysUser = sysUserJpa.findSysUserByAccount(sysUser.getAccount());
+        if (!sysUser.getPassword().equals(oldPassword))
+          throw new LoginErrorException();
         sysUser.setPassword(password);
         sysUserDao.updateSysUser(sysUser);
     }

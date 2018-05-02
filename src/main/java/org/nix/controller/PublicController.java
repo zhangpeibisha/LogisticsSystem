@@ -68,9 +68,10 @@ public class PublicController {
     @RequestMapping(value = "/updatePassword")
     @LoginRequired({SysRoleEnum.ROLE_PUBLIC})
     public ReturnObject updateUser(@RequestParam("password")String password,
+                                   @RequestParam("oldPassword")String oldPassword,
                                    HttpServletRequest request){
 
-        sysUserService.updatePassword(password,request);
+        sysUserService.updatePassword(password,request,oldPassword);
         return ReturnUtil.success(null,null);
     }
 

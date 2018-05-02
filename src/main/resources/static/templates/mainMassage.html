@@ -11,6 +11,9 @@
 	<script type="text/javascript" src="../resources/bootstrap-table.js"></script>
 	<script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
 	<style type="text/css">
+	table{
+		width: 600px;
+	}
 	table.gridtable {
 		font-family: verdana,arial,sans-serif;
 		font-size:11px;
@@ -50,58 +53,41 @@
 <table class="gridtable" style="margin-left: 15px;">
 	<tr>
 		<th>交易成功的订单数</th><td id="successOrder"></td>
+	</tr>
+	<tr>
 		<th>等待发货订单数</th><td id="waitDeliver"></td>
 	</tr>
 	<tr>
 		<th>等待收货的订单数</th><td id="waitTake"></td>
-		<th>等待退货订单数</th><td id="waitReturn"></td>
 	</tr>
-	<tr>
-		<th>上架商品数</th><td id="shelfCargo"></td>
-		<th>下架商品数</th><td id="lowerCargo"></td>
-	</tr>
-	<tr>
-		<th>商品库存报警数</th><td id="storeWorning"></td>
-		<th>缺货商品数</th><td id="shortCargo"></td>
-	</tr>
-	<tr>
+	<tr id="member">
 		<th>会员总数</th><td id="memberNum"></td>
-		<th>未读消息数</th><td id="messageNum"></td>
 	</tr>
 </table>
 </div>
 <script type="text/javascript">
 	//后台直接返回统计后各个数据的值
+    var member = JSON.parse(sessionStorage.getItem("member"));
+    if(member.grade == 'general'){
+        $('#member').css('display','none');
+	}else{
+        $('#member').css('display','block');
+	}
 	window.onload = function(){
-        var backData = {successOrder:'500',waitDeliver:'3',waitTake:'2',waitReturn:'0',shelfCargo:'20',lowerCargo:'0',storeWorning:'5',shortCargo:'2',memberNum:'500',messageNum:'0'};
+        //var backData = {successOrder:'500',waitDeliver:'3',waitTake:'2',waitReturn:'0',shelfCargo:'20',lowerCargo:'0',storeWorning:'5',shortCargo:'2',memberNum:'500',messageNum:'0'};
 	    $.ajax({
-	        url:'',
+	        url:'/order/orderStatistics',
 			dataType:'json',
 			type:'POST',
 			success:function(backData){
-	            alert('0');
-				$('#successOrder').text(backData.successOrder);
-                $('#waitDeliver').text(backData.waitDeliver);
-                $('#waitTake').text(backData.waitTake);
-                $('#waitReturn').text(backData.waitReturn);
-                $('#shelfCargo').text(backData.shelfCargo);
-                $('#lowerCargo').text(backData.lowerCargo);
-                $('#storeWorning').text(backData.storeWorning);
-                $('#shortCargo').text(backData.shortCargo);
-                $('#memberNum').text(backData.memberNum);
-                $('#messageNum').text(backData.messageNum);
+	            console.log(backData);
+				$('#successOrder').text(backData.data.successOrderNumber);
+                $('#waitDeliver').text(backData.data.waitDeliverNumber);
+                $('#waitTake').text(backData.data.waitTakeNumber);
+                $('#memberNum').text(backData.data.memberNumber);
 			},
 			error:function(){
-                $('#successOrder').text(backData.successOrder);
-                $('#waitDeliver').text(backData.waitDeliver);
-                $('#waitTake').text(backData.waitTake);
-                $('#waitReturn').text(backData.waitReturn);
-                $('#shelfCargo').text(backData.shelfCargo);
-                $('#lowerCargo').text(backData.lowerCargo);
-                $('#storeWorning').text(backData.storeWorning);
-                $('#shortCargo').text(backData.shortCargo);
-                $('#memberNum').text(backData.memberNum);
-                $('#messageNum').text(backData.messageNum);
+	            alert('请求出错！');
 			}
 		});
 	}

@@ -22,10 +22,11 @@ function addOrder(){
             console.log(order);
             $.ajax({
                 type: 'POST',
-                //url: "/administrator/orderAdd",
+                url: "/order/publishOrder",
                 dataType: 'json',
                 data: order,
                 success: function (o) {
+                    console.log(o);
                     if (o.code === 'SUCCESS') {
                         alert('添加成功!');
 

@@ -11,10 +11,9 @@ function getOrdersList() {
         cache : false,// 禁用 AJAX 数据缓存
         sortName : 'id',// 定义排序列
         sortOrder : 'asc',// 定义排序方式 getRceiptlistWithPaging
-        //url : '/Administrator/orderList',// 服务器数据的加载地址
+        url : '/order/orderListConditionalPaging',// 服务器数据的加载地址
         sidePagination : 'client',// 设置在哪里进行分页
         /*showRefresh: true, */ //显示刷新按钮
-        contentType : 'application/x-www-form-urlencoded',// 发送到服务器的数据编码类型
         dataType : 'json',// 服务器返回的数据类型
         queryParams: function queryParams(params) {
             param.page = (params.offset/params.limit) + 1;
@@ -28,11 +27,12 @@ function getOrdersList() {
         },  // 请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
-            $('#table').bootstrapTable('removeAll');
-            $('#table').bootstrapTable('append', backData.list);
+            console.log(backData);
+            // $('#table').bootstrapTable('removeAll');
+            // $('#table').bootstrapTable('append', backData.list);
         },
-        data:[{id:'1',account:'123',password:'123456',node:'0000',money:'1000',orderStatus:'002',currentCity:'重庆',TimeOfArrival:'2016-12-20',startCity:'重庆',endCity:'河北',createTime:'2016-12-20'}
-           ,{id:'2',account:'234',password:'123456',node:'1111',money:'2000',orderStatus:'004',currentCity:'浙江',TimeOfArrival:'2018-03-20',startCity:'台湾',endCity:'新疆',createTime:'2018-03-18'}],
+        //data:[{id:'1',account:'123',password:'123456',node:'0000',money:'1000',orderStatus:'002',currentCity:'重庆',TimeOfArrival:'2016-12-20',startCity:'重庆',endCity:'河北',createTime:'2016-12-20'}
+        //   ,{id:'2',account:'234',password:'123456',node:'1111',money:'2000',orderStatus:'004',currentCity:'浙江',TimeOfArrival:'2018-03-20',startCity:'台湾',endCity:'新疆',createTime:'2018-03-18'}],
         columns : [ {
             checkbox : true,
             align : 'center',// 水平居中显示
