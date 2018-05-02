@@ -47,7 +47,7 @@ $(function(){
 // left.html 的切换节点  JS end
 function showGradeOperation(){
     var member = JSON.parse(sessionStorage.getItem('member'));
-    if(member.grade == 0){
+    if(member.grade == 'general'){
         $('#orderMassage').css('display','none');
         $('#orderAccept').css('display','none');
         $('#gather').css('display','none');

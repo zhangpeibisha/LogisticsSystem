@@ -46,13 +46,14 @@ function checkData() {
 function checkLogin(){
     if(checkData()) {
         $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
+        console.log($(" input[ name='password' ] ").val());
         var member = {
             account:$('#account').val(),
             password:$(" input[ name='password' ] ").val(),
             grade:$(" input[ name='grade' ]:checked").val(),
         };
         $.ajax({
-            type: 'post',
+            type: 'POST',
             url: "/public/login",
             dataType: 'json',
             data: member,
