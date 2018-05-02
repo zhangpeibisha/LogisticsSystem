@@ -22,4 +22,11 @@ public interface SysUserJpa extends JpaRepository<SysUser,Integer> {
     value = "SELECT * FROM sys_user WHERE account = ?1")
     SysUser findSysUserByAccount(String account);
 
+    @Query(nativeQuery = true,
+    value = "SELECT count(*) FROM sys_user \n" +
+            "WHERE sys_user.sys_role = (\n" +
+            "          SELECT sys_role.id FROM sys_role WHERE sys_role.role_name = 'general'\n" +
+            ")")
+    int CountAllGeneralUser();
+
 }

@@ -49,6 +49,7 @@ public class ControllerExceptionHandler {
      * @return
      */
     @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = SelectObjectException.class)
     public ReturnObject selectObjectExceptionHandle(SelectObjectException e) {
         e.printStackTrace();
@@ -77,6 +78,7 @@ public class ControllerExceptionHandler {
      * @return
      */
     @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = ConstraintViolationException.class)
     public ReturnObject constraintViolationExceptionHandle(ConstraintViolationException e) {
         e.printStackTrace();
@@ -90,6 +92,7 @@ public class ControllerExceptionHandler {
      * @return
      */
     @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = MySQLIntegrityConstraintViolationException.class)
     public ReturnObject mySQLIntegrityConstraintViolationExceptionHandle(MySQLIntegrityConstraintViolationException e){
         e.printStackTrace();
