@@ -1,35 +1,5 @@
 
 var param = {};
-
-//修改密码
-function checkPasswordInput() {
-    if($('#password').val() == null || $('#password').val() == ''){
-        alert('请输入密码！');
-        return false;
-    }
-
-    if($('#password').val().length < 2){
-        alert('密码必须超过6位！');
-        return false;
-    }
-
-    if($('#ensurepassword').val() == null || $('#ensurepassword').val() == ''){
-        alert('请确认密码！');
-        return false;
-    }
-
-    if($('#password').val() != $('#ensurepassword').val()){
-        alert('两次密码输入不一致！');
-        return false;
-    }
-    return true;
-}
-$("#cancel").click(function(){
-    window.history.back();
-});
-$('#addbtn').click(function (){
-    window.location.href='../templates/orderAdd.html';
-});
 function getOrdersList() {
     $('#table').bootstrapTable({
         method: 'POST',

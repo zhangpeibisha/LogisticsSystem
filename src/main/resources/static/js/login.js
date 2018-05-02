@@ -91,7 +91,7 @@ function enableregister(){
             type: 'POST',
             url: "/generalUser/register",
             dataType: 'json',
-            data:$('#registerForm').serialize(),
+            data:member,
             success: function (data) {
                 if (data == 'SUCCESS') {
                     sessionStorage.setItem("member",JSON.stringify(member));

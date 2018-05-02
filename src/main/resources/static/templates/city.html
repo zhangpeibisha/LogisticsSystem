@@ -2,29 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link type="text/css" rel="stylesheet" href="../resources/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="../resources/bootstrap-table.css">
+    <title>欢迎登录</title>
+    <link rel="stylesheet" href="css/mainCss.css"/>
+    <link rel="stylesheet" href="../resources/bootstrap.min.css" />
+    <link rel="stylesheet" href="../resources/bootstrap-table.css" />
+    <script type="text/javascript" src="../resources/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../resources/bootstrap.js"></script>
+    <script type="text/javascript" src="../resources/bootstrap-table.js"></script>
+    <script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
 </head>
 <body>
-<table id="table"></table>
-<div id="toolbar" class="btn-group pull-right" style="margin-right: 20px;display: none">
-    <button id="btn_edit" type="button" class="btn btn-default" style="display: none; border-radius: 0">
-        <span class="glyphicon glyphicon-pencil" aria-hidden="true" ></span>修改
-    </button>
-    <button id="btn_delete" type="button" class="btn btn-default" style="display: none;">
-        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
-    </button>
-    <button id="column _delete" type="button" class="btn btn-default">
-        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除列
-    </button>
-    <button id="result" type="button" class="btn btn-default">
-        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>结果
-    </button>
+<div class="log-window"></div>
+<div class="topModule">
+    <div class="loginTitle">城市管理</div>
 </div>
-</body>
-<script type="text/javascript" src="../resources/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="../resources/bootstrap.min.js"></script>
-<script type="text/javascript" src="../resources/bootstrap-table.js"></script>
-<script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
+</div>
+<hr/>
+<div class="tableModule">
+    <form id="center" class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-3">
+                <input type="text" class="form-control" style="margin-left: 15px;" id="search" name="content" placeholder="请输入关键字查询"/>
+            </div>
+            <div class="col-sm-1">
+                <button type="button" class="btn btn-primary form-control" id="searchbtn">查询</button>
+            </div>
+        </div>
+    </form>
+    <div style="width: 100%;" class="container">
+        <div class="tableStyle">
+            <table id="table" class="table table-hover"></table>
+        </div>
+    </div>
+</div>
 <script type="text/javascript" src="../js/city.js"></script>
+</body>
 </html>

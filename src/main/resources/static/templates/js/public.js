@@ -42,7 +42,7 @@ $(function(){
 		}
         showGradeOperation();
 	});
-
+    showGradeOperation();
 })
 // left.html 的切换节点  JS end
 function showGradeOperation(){
@@ -51,9 +51,51 @@ function showGradeOperation(){
         $('#orderMassage').css('display','none');
         $('#orderAccept').css('display','none');
         $('#gather').css('display','none');
-        $('#cityManage').css('display','none');
         $('#memberManage').css('display','none');
     }else{
         $('#orderAdd').css('display','none');
+        $('#cityManage').css('display','block');
     }
 }
+//修改密码
+function change(){
+    if(checkPasswordInput()){
+        $.ajax({
+            type:'POST',
+            dataType:'JSON',
+            //url:'/public/updatePassword',
+            data:$('#editUserInfo').serialize(),
+            success:function(data){
+                alert('修改成功!');
+            },
+            error:function(data){
+                alert('修改失败!');
+            }
+        });
+    }
+}
+function checkPasswordInput() {
+    if($('#password').val() == null || $('#password').val() == ''){
+        alert('请输入密码！');
+        return false;
+    }
+
+    if($('#password').val().length < 2){
+        alert('密码必须超过6位！');
+        return false;
+    }
+
+    if($('#ensurepassword').val() == null || $('#ensurepassword').val() == ''){
+        alert('请确认密码！');
+        return false;
+    }
+
+    if($('#password').val() != $('#ensurepassword').val()){
+        alert('两次密码输入不一致！');
+        return false;
+    }
+    return true;
+}
+$("#cancel").click(function(){
+    window.history.back();
+});
