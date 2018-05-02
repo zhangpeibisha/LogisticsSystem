@@ -219,6 +219,7 @@ public class SysOrderController {
     public ReturnObject orderStatistics(HttpServletRequest request) {
 
         SysUser findUser = (SysUser) request.getSession().getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
+        findUser = sysUserJpa.findSysUserByAccount(findUser.getAccount());
         if (findUser.getSysRole().getRoleName().equals(SysRoleEnum.ROLE_GENERAL.getValue()))
             return ReturnUtil.success("返回订单统计信息", new ResultOrderStatistics(findUser.getSysOrder()));
         if (findUser.getSysRole().getRoleName().equals(SysRoleEnum.ROLE_ADMINISTRATOR.getValue()))
