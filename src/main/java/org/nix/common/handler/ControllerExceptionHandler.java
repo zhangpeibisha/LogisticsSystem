@@ -6,10 +6,12 @@ import org.nix.Exception.*;
 import org.nix.common.ReturnObject;
 import org.nix.common.sysenum.ErrorCodeEnum;
 import org.nix.util.ReturnUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -60,6 +62,7 @@ public class ControllerExceptionHandler {
      * @return
      */
     @ResponseBody
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     public ReturnObject HttpRequestMethodNotSupportedExceptionHandle(HttpRequestMethodNotSupportedException e) {
         e.printStackTrace();
@@ -119,7 +122,13 @@ public class ControllerExceptionHandler {
                 ErrorCodeEnum.ERROR_SYS_PAYMENT.getMessage(), null);
     }
 
+    /**
+     * 权限不足，被禁止使用
+     * @param e
+     * @return
+     */
     @ResponseBody
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(value = AuthInterceptorException.class)
     public ReturnObject authInterceptorException(AuthInterceptorException e){
         e.printStackTrace();

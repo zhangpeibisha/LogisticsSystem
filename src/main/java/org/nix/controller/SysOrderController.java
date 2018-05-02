@@ -108,7 +108,7 @@ public class SysOrderController {
      * @return 操作回馈
      */
     @RequestMapping(value = "/signOrder", method = RequestMethod.POST)
-    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
+    @LoginRequired(SysRoleEnum.ROLE_GENERAL)
     public ReturnObject signOrder(@RequestParam("order_id") int order_id, HttpServletRequest request) {
         SysOrder sysOrder = sysOrderJpa.findOne(order_id);
         if (sysOrder == null) {
