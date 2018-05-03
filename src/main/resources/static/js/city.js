@@ -1,4 +1,4 @@
-
+var param = {}
 function showTable() {
     var member = JSON.parse(sessionStorage.getItem('member'));
     $('#table').bootstrapTable({
@@ -11,27 +11,29 @@ function showTable() {
         cache : false,// 禁用 AJAX 数据缓存
         sortName : 'id',// 定义排序列
         sortOrder : 'asc',// 定义排序方式 getRceiptlistWithPaging
-        //url : '/Administrator/orderList' + member.account,
-        sidePagination : 'client',// 设置在哪里进行分页
+        url : '/city/list',
+        sidePagination : 'server',// 设置在哪里进行分页
         /*showRefresh: true, */ //显示刷新按钮
         contentType : 'application/x-www-form-urlencoded',// 发送到服务器的数据编码类型
         dataType : 'json',// 服务器返回的数据类型
         queryParams: function queryParams(params) {
             param.page = (params.offset/params.limit) + 1;
             param.size=params.limit;
-            param.sort = params.sort; // 排序列名
-            param.order = params.order; // 排位命令（desc，asc）
-            param.field = 'order_status';
-            param.content = 'ORDER_PAID_NO_SHIPPED';
-            param.fullMatch = true;
+            param.sort = params.order; // 排序列名
+            param.order = params.sort; // 排位命令（desc，asc）
             return param;
         },  // 请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
             $('#table').bootstrapTable('removeAll');
-            $('#table').bootstrapTable('append', backData.list);
+            $('#table').bootstrapTable('append', backData.data);
         },
-        data:[{id:'1',cityName:'太原',nextCity:'重庆',costPrice:'100',createTime:'2016-10-12'}],
+        responseHandler:function(result) {
+            return {
+                total : result.map.total, //总页数,前面的key必须为"total"
+                data : result.data //行数据，前面的key要与之前设置的dataField的值一致.
+            };
+        },
         columns : [ {
             title:'全选',
             field:'select',
@@ -57,18 +59,6 @@ function showTable() {
         }, {
             field : 'cityName',// 返回值名称
             title : '城市名',// 列名
-            align : 'center',// 水平居中显示
-            valign : 'middle',// 垂直居中显示
-            width : '5'// 宽度
-        }, {
-            field : 'nextCity',// 返回值名称
-            title : '下一地点',// 列名
-            align : 'center',// 水平居中显示
-            valign : 'middle',// 垂直居中显示
-            width : '5'// 宽度
-        }, {
-            field : 'costPrice',// 返回值名称
-            title : '到达下个城市代价',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '5'// 宽度

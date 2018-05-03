@@ -4,6 +4,7 @@ import org.nix.common.ReturnObject;
 import org.nix.common.sysenum.SessionKeyEnum;
 import org.nix.common.sysenum.SysRoleEnum;
 import org.nix.entity.City;
+import org.nix.entity.CityDis;
 import org.nix.entity.SysUser;
 import org.nix.service.CityService;
 import org.nix.util.ReturnUtil;
@@ -12,7 +13,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,7 +34,9 @@ public class CityAndDistancesController {
      * */
     @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     @PostMapping("/create")
-    public ReturnObject createCity(@RequestParam("name") String cityName) {
+    public ReturnObject createCity(@RequestParam("name") String cityName,
+                                   @RequestParam(value = "dstCityIds",required = false) Integer[] dstCityIds,
+                                   @RequestParam(value = "distances",required = false) Double[] distances) {
         City city = new City(cityName);
         city = cityService.save(city);
         if (city == null) {
