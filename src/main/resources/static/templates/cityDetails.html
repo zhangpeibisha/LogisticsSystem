@@ -81,8 +81,10 @@
     console.log(cityDatas.cityName);
     if(cityDatas.operation == 0){
         $('#cityName,#nextCity,#costPrice,#createTime').attr("disabled","disabled");
+        $('#ensure').attr('disabled','true');
     }else if(cityDatas.operation == 1){
         $('#cityName,#nextCity,#costPrice,#createTime').removeAttr('disabled');
+        $('#ensure').removeAttr('disabled');
     }
     $('#cityId').html(cityDatas.id);
     $('#cityName').val(cityDatas.cityName);

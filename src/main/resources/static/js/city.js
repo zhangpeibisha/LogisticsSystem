@@ -109,11 +109,53 @@ function editCity(data){
     sessionStorage.setItem('cityData',JSON.stringify(cityData))
     window.location.href="../templates/cityDetails.html";
 }
+
+function addCity(){
+    window.location.href='../templates/cityAdd.html';
+}
+function add(){
+    if(checkInput()){
+        enableAdd();
+    }
+}
+function enableAdd(){
+    var cityMassage = {
+        cityName:$('#cityName').val(),
+        nextCity:$('#nextCity').val(),
+        cost:$('#cost').val()
+    };
+    $.ajax({
+        data:cityMassage,
+        url:'',
+        type:'POST',
+        success:function(){
+            alert("添加成功!");
+        },
+        error:function(){
+            alert("添加失败！");
+        }
+    });
+}
+function checkInput(){
+    if($('#cityName').val() == null || $('#cityName').val() == ''){
+        alert('请输入城市名！');
+        return false;
+    }
+    if($('#nextCity').val() == null || $('#nextCity').val() == ''){
+        alert('请输入下一地点名！');
+        return false;
+    }
+    if($('#cost').val() == null || $('#cost').val() == ''){
+        alert('请输入到达下一地点需要的开销！');
+        return false;
+    }
+}
+
 function delCity(data){
     if(confirm('确认删除?') == true){
         $.ajax({
             method:'POST',
-            url: '/city/delete?',
+            url: '/city/delete',
             data:data.id,
             success : function(o) {
                 if (o.code == 'FAIL') {

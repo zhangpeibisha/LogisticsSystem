@@ -69,9 +69,9 @@
 	//后台直接返回统计后各个数据的值
     var member = JSON.parse(sessionStorage.getItem("member"));
     if(member.grade == 'general'){
-        $('#member').css('display','none');
+        $('#member').hide();
 	}else{
-        $('#member').css('display','block');
+        $('#member').show();
 	}
 	window.onload = function(){
         //var backData = {successOrder:'500',waitDeliver:'3',waitTake:'2',waitReturn:'0',shelfCargo:'20',lowerCargo:'0',storeWorning:'5',shortCargo:'2',memberNum:'500',messageNum:'0'};
