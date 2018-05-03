@@ -16,7 +16,7 @@ public final class DataUtil {
         if (fullMatch) {
             conditions = field + " = '" + content + "'";
         } else {
-            conditions = field + " = '%" + content + "%'";
+            conditions = field + " like '%" + content + "%'";
         }
         return conditions;
     }

@@ -1,5 +1,6 @@
 var param = {}
-function showTable(search) {
+var search = false;
+function showTable() {
     var member = JSON.parse(sessionStorage.getItem('member'));
     $('#table').bootstrapTable({
         method: 'POST',
@@ -169,4 +170,8 @@ function delCity(data){
         });
     }
 }
-showTable(false);
+function searchList() {
+    $("#table").bootstrapTable('refresh');
+    search = true;
+}
+showTable();
