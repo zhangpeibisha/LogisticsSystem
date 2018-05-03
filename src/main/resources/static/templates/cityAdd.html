@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/mainCss.css"/>
+    <link rel="stylesheet" href="../resources/bootstrap.min.css" />
+    <link rel="stylesheet" href="../resources/bootstrap-table.css" />
+    <script type="text/javascript" src="../resources/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../resources/bootstrap.js"></script>
+    <script type="text/javascript" src="../resources/bootstrap-table.js"></script>
+    <script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
+    <style type="text/css">
+        table.gridtable {
+            font-family: verdana,arial,sans-serif;
+            font-size:11px;
+            color:#333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+        }
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+            width: 10%;
+            height: 30px;
+        }
+        table.gridtable td {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+            width: 40%;
+        }
+        .tableDissData{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="topModule">
+    <div class="loginTitle">城市添加</div>
+</div>
+</div>
+<hr/>
+<div>
+    <table class="gridtable" style="margin-left: 15px;width: 600px;">
+        <tr>
+            <th>城市名</th><td><input type="text" id="cityName" ></td>
+        </tr>
+        <tr>
+            <th>下一地点</th><td><input type="text" id="nextCity" ></td>
+        </tr>
+        <tr>
+            <th>到达下一地点的开销</th><td><input type="text" id="cost" ></td>
+        </tr>
+    </table>
+    <button style="margin-left: 15px;margin-top: 15px;" class="btn btn-default" onclick="add()">确认</button>
+</div>
+<script type="text/javascript" src="../js/city.js"></script>
+</body>
+</html>
