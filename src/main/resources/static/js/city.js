@@ -1,5 +1,5 @@
 var param = {}
-function showTable() {
+function showTable(search) {
     var member = JSON.parse(sessionStorage.getItem('member'));
     $('#table').bootstrapTable({
         method: 'POST',
@@ -21,6 +21,9 @@ function showTable() {
             param.size=params.limit;
             param.sort = params.order; // 排序列名
             param.order = params.sort; // 排位命令（desc，asc）
+            param.field = search ? "city_name" : "";
+            param.content = search ? $("#search").val() : "";
+            param.fullMatch = false;
             return param;
         },  // 请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
         selectItemName : '',// radio or checkbox 的字段名
@@ -166,4 +169,4 @@ function delCity(data){
         });
     }
 }
-showTable();
+showTable(false);

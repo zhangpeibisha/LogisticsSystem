@@ -15,7 +15,7 @@ import java.util.Map;
 public interface CityService extends BaseService<City,Integer> {
     Map<String, Object> cityDetails(Integer id);
 
-    enum manageStatus{
+    public enum manageStatus{
         create,
         update,
         delete

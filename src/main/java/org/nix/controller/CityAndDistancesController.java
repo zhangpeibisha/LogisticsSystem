@@ -39,6 +39,12 @@ public class CityAndDistancesController {
                                    @RequestParam(value = "distances",required = false) Double[] distances) {
         City city = new City(cityName);
         city = cityService.save(city);
+        if (dstCityIds != null) {
+            for (int i = 0;i < dstCityIds.length;i ++) {
+                cityService.manageNeighborCity(city.getId(),dstCityIds[i],distances[i],"create");
+            }
+        }
+
         if (city == null) {
             return ReturnUtil.fail("新增失败");
         }
