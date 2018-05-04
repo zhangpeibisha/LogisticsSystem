@@ -119,7 +119,7 @@ function add(){
 }
 function City(){
     var city = new Object;
-    city.cityName = '';
+    city.cityId = '';
     city.cost = '';
     return city;
 }
@@ -129,10 +129,10 @@ function getNextCitysMassage(){
     $("#addCity").find("tr").each(function() {
         var tdArr = $(this).children();
         if (tdArr.length > 2) {
-            var cityName = tdArr.eq(1).find("select option:selected").val();
+            var cityId = tdArr.eq(1).find("select option:selected").val();
             var cost = tdArr.eq(3).find("input").val();
             var newcity = City();
-            newcity.cityName = cityName;
+            newcity.cityId = cityId;
             newcity.cost = cost;
             citysMassage.push(newcity);
         }
@@ -150,20 +150,16 @@ function enableAdd(){
         data:cityMassage,
         url:'/city/create/',
         type:'POST',
-        success:function(){
-            alert("添加成功!");
+        success:function(o){
+            console.log(o);
+            if(o == 1)
+                alert("添加成功!");
         },
         error:function(){
             alert("添加失败！");
         }
     });
 }
-
-/**********************************************/
-
-
-
-
 
 function checkInput(){
     if($('#cityName').val() == null || $('#cityName').val() == ''){
