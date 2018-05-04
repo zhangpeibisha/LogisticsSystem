@@ -58,17 +58,8 @@
             <th>ID</th>
             <td id="cityId"></td>
         </tr>
-        <tr>
+        <tr id="city">
             <th>城市名</th><td><input id="cityName"></input></td>
-        </tr>
-        <tr>
-            <th>下一地点</th><td><input id="nextCity"></input></td>
-        </tr>
-        <tr>
-            <th>到达下个城市代价</th><td><input id="costPrice"></input></td>
-        </tr>
-        <tr>
-            <th>添加时间</th><td><input type="date" id="createTime"></input></td>
         </tr>
     </table>
     <div style="margin-left: 15px;margin-top: 15px;">
@@ -78,7 +69,7 @@
 </div>
 <script type="text/javascript">
     var cityDatas = JSON.parse(sessionStorage.getItem('cityData'));
-    console.log(cityDatas.cityName);
+    console.log(cityDatas.id);
     if(cityDatas.operation == 0){
         $('#cityName,#nextCity,#costPrice,#createTime').attr("disabled","disabled");
         $('#ensure').attr('disabled','true');
@@ -86,6 +77,20 @@
         $('#cityName,#nextCity,#costPrice,#createTime').removeAttr('disabled');
         $('#ensure').removeAttr('disabled');
     }
+    $.ajax({
+        url:'city/details/',
+        data:cityDatas.id,
+        type:'POST',
+        dataType:'JSON',
+        success:function(data){
+            if(data.length > 0){
+
+            }
+        },
+        error:function(){
+
+        }
+    })
     $('#cityId').html(cityDatas.id);
     $('#cityName').val(cityDatas.cityName);
     $('#nextCity').val(cityDatas.nextCity);
