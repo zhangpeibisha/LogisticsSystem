@@ -80,8 +80,7 @@ function showTable() {
             width : '5',// 宽度
             formatter: function (value, row, index) {
                 return "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='showCity("+JSON.stringify(row)+")' value='详情'>" +
-                    "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='editCity("+JSON.stringify(row)+")' value='编辑'>" +
-                    ("<input class='btn btn-danger' type='button' onclick='delCity("+JSON.stringify(row)+")' value='删除'>");
+                    "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='editCity("+JSON.stringify(row)+")' value='编辑'>";
             }
         }
         ]
@@ -104,6 +103,12 @@ function editCity(data){
     window.location.href="../templates/cityDetails.html";
 }
 
+/**************************************/
+/*添加一行下一地*/
+function addNextCity(obj){
+    var trParent = $(obj).parent().parent();
+    trParent.after(trParent.clone());
+}
 function addCity(){
     window.location.href='../templates/cityAdd.html';
 }
@@ -112,15 +117,38 @@ function add(){
         enableAdd();
     }
 }
+function City(){
+    var city = new Object;
+    city.cityName = '';
+    city.cost = '';
+    return city;
+}
+/*将用户选择的城市id和开销封装*/
+function getNextCitysMassage(){
+    var citysMassage = [];
+    $("#addCity").find("tr").each(function() {
+        var tdArr = $(this).children();
+        if (tdArr.length > 2) {
+            var cityName = tdArr.eq(1).find("select option:selected").val();
+            var cost = tdArr.eq(3).find("input").val();
+            var newcity = City();
+            newcity.cityName = cityName;
+            newcity.cost = cost;
+            citysMassage.push(newcity);
+        }
+    });
+    console.log(citysMassage);
+    return citysMassage;
+}
+
 function enableAdd(){
     var cityMassage = {
         cityName:$('#cityName').val(),
-        nextCity:$('#nextCity').val(),
-        cost:$('#cost').val()
+        nextCityMassage:getNextCitysMassage()
     };
     $.ajax({
         data:cityMassage,
-        url:'',
+        url:'/city/create/',
         type:'POST',
         success:function(){
             alert("添加成功!");
@@ -130,45 +158,19 @@ function enableAdd(){
         }
     });
 }
+
+/**********************************************/
+
+
+
+
+
 function checkInput(){
     if($('#cityName').val() == null || $('#cityName').val() == ''){
         alert('请输入城市名！');
         return false;
     }
-    if($('#nextCity').val() == null || $('#nextCity').val() == ''){
-        alert('请输入下一地点名！');
-        return false;
-    }
-    if($('#cost').val() == null || $('#cost').val() == ''){
-        alert('请输入到达下一地点需要的开销！');
-        return false;
-    }
-}
-
-function delCity(data){
-    if(confirm('确认删除?') == true){
-        $.ajax({
-            method:'POST',
-            url: '/city/delete',
-            data:data.id,
-            success : function(o) {
-                if (o.code == 'FAIL') {
-                    alert("删除失败");
-                }else if(o.code == 'SUCCESS'){
-
-                    //删除一列数据成功在table中移除那行
-                    $('#table').bootstrapTable('remove', {field: 'id', values: [data.id]});
-                    alert("删除成功");
-                }
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert('删除失败！');
-                if (XMLHttpRequest.status == 401) {
-                    alert("权限不足！！！")
-                }
-            }
-        });
-    }
+    return true;
 }
 function searchList() {
     $("#table").bootstrapTable('refresh');

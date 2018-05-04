@@ -11,6 +11,9 @@
     <script type="text/javascript" src="../resources/bootstrap-table.js"></script>
     <script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
     <style type="text/css">
+        table{
+            border-collapse: collapse;
+        }
         table.gridtable {
             font-family: verdana,arial,sans-serif;
             font-size:11px;
@@ -25,8 +28,8 @@
             border-style: solid;
             border-color: #666666;
             background-color: #dedede;
-            width: 10%;
-            height: 30px;
+            width: 30%;
+            height: 52px;
         }
         table.gridtable td {
             border-width: 1px;
@@ -34,10 +37,12 @@
             border-style: solid;
             border-color: #666666;
             background-color: #ffffff;
-            width: 40%;
+            width: 35%;
         }
-        .tableDissData{
-            display: none;
+        table tbody {
+             display: block;
+             max-height: 400px;
+             overflow-y: auto;
         }
     </style>
 </head>
@@ -47,20 +52,48 @@
 </div>
 </div>
 <hr/>
-<div>
-    <table class="gridtable" style="margin-left: 15px;width: 600px;">
+<div style="overflow-y: auto;max-height: 600px;width: 800px;">
+    <table id="addCity" class="gridtable" style="max-width: 800px;margin-left: 15px;">
         <tr>
             <th>城市名</th><td><input type="text" id="cityName" ></td>
         </tr>
         <tr>
-            <th>下一地点</th><td><input type="text" id="nextCity" ></td>
-        </tr>
-        <tr>
-            <th>到达下一地点的开销</th><td><input type="text" id="cost" ></td>
-        </tr>
+        <th>下一地点</th><span></span><td><select style="width: 150px;"></select></td><th>到达下一地点的开销</th><td><input type="text" value="0"></td>
+        <td><button class="btn btn-default" onclick="addNextCity(this)">添加下一城市</button></td>
+    </tr>
     </table>
     <button style="margin-left: 15px;margin-top: 15px;" class="btn btn-default" onclick="add()">确认</button>
 </div>
+<script type="text/javascript">
+$(document).ready(function(){
+    $.ajax({
+        //url:'/city/list',
+        type: 'POST',
+        dataType : 'json',
+        success: function (data) {;
+            var datas= [{cityName: '1'}, {cityName: '2'},{cityName: '3'}, {cityName: '4'},{cityName: '5'}, {cityName: '6'}];
+            if (datas.length > 0) {
+                var option = '';
+                for (var i = 0; i < datas.length; i++) {
+                    option += '<option>' + datas[i].cityName + '</option>';
+                }
+                $("select").html(option);
+            }
+        },
+        error: function () {
+            var datas= [{cityName: '1'}, {cityName: '2'},{cityName: '3'}, {cityName: '4'},{cityName: '5'}, {cityName: '6'}];
+            if (datas.length > 0) {
+                var option = '';
+                for (var i = 0; i < datas.length; i++) {
+                    option += '<option>' + datas[i].cityName + '</option>';
+
+                }
+                $("select").html(option);
+            }
+        }
+    });
+});
+</script>
 <script type="text/javascript" src="../js/city.js"></script>
 </body>
 </html>

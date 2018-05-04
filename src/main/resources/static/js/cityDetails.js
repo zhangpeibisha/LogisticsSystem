@@ -3,7 +3,7 @@ $("#cancel").click(function(){
 });
 $("#ensure").click(function(){
     $.ajax({
-        url:'',
+        url:'city/details',
         data:'',
         type:'POST',
         dataType:'JSON',
