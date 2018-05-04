@@ -1,11 +1,9 @@
 $(document).ready(function(){
     $('#money').val('');
-    $('#startplace').val('');
-    $('#endplace').val('');
     $('#descripe').val('');
     $('#item').val('');
     $('#price').val('');
-
+    setCity();
     $("#operationGoodmodule").css('display','block');
 });
 function addOrder(){
@@ -46,6 +44,49 @@ function addOrder(){
             });
         }
     }
+}
+function setCity() {
+    $.ajax({
+        url:'/city/allList',
+        type: 'POST',
+        dataType : 'json',
+        success: function (data) {
+            if (data.length > 0) {
+                var option = '';
+                for (var i = 0; i < data.length; i++) {
+                    option += '<option>' + data[i].cityName + '</option>';
+                }
+                console.log(option);
+                $("#startplace").html(option);
+                $('#endplace').html(option);
+            }
+        },
+        error: function () {
+            var datas= [{cityName: '1'}, {cityName: '2'},{cityName: '3'}, {cityName: '4'},{cityName: '5'}, {cityName: '6'}];
+            if (datas.length > 0) {
+                var option = '';
+                for (var i = 0; i < datas.length; i++) {
+                    option += '<option onclick="selectCityClick()">' + datas[i].cityName + '</option>';
+                }
+                console.log(option);
+                $("#startplace").html(option);
+                $('#endplace').html(option);
+            }
+        }
+    });
+}
+
+$("#startplace").focus(function(){
+    $("#startplace").attr("size","5");
+})
+$("#endplace").focus(function(){
+    $("#endplace").attr("size","5");
+})
+function selectCityClick(){
+    $("#startplace").removeAttr("size");
+    $("#startplace").blur();
+    $("#endplace").removeAttr("size");
+    $("#endplace").blur();
 }
 function addInputCheck(){
     if($('#money').val() == null || $('#money').val() == ''){
