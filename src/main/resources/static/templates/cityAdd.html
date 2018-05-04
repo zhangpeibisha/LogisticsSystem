@@ -58,8 +58,19 @@
             <th>城市名</th><td><input type="text" id="cityName" ></td>
         </tr>
         <tr>
-        <th>下一地点</th><span></span><td><select style="width: 150px;"></select></td><th>到达下一地点的开销</th><td><input type="text" value="0"></td>
-        <td><button class="btn btn-default" onclick="addNextCity(this)">添加下一城市</button></td>
+        <th>下一地点</th>
+            <span></span>
+            <td>
+            <select style="width: 150px;">
+
+            </select>
+        </td>
+            <th>到达下一地点的开销</th>
+            <td>
+                <input type="text" value="0">
+            </td>
+        <td>
+            <button class="btn btn-default" onclick="addNextCity(this)">添加下一城市</button></td>
     </tr>
     </table>
     <button style="margin-left: 15px;margin-top: 15px;" class="btn btn-default" onclick="add()">确认</button>
@@ -67,15 +78,157 @@
 <script type="text/javascript">
 $(document).ready(function(){
     $.ajax({
-        //url:'/city/list',
+        url:'/city/list?size=99999',
         type: 'POST',
         dataType : 'json',
-        success: function (data) {;
-            var datas= [{cityName: '1'}, {cityName: '2'},{cityName: '3'}, {cityName: '4'},{cityName: '5'}, {cityName: '6'}];
+        success: function (data) {
+            // var datas= data.data;
+            var datas = [
+                {
+                    "cityName":"沈阳",
+                    "id":1,
+                    "marked":false,
+                    "path":1.7976931348623157E308,
+                    "wayString":"沈阳->沈阳",
+                    "ways":[
+                        {"$ref":".."}
+                    ]
+                },
+                {
+                    "cityName":"长春",
+                    "id":2,
+                    "marked":false,
+                    "path":1.7976931348623157E308,
+                    "wayString":"长春->长春",
+                    "ways":[
+                        {"$ref":".."}
+                    ]
+                },
+                {
+                    "cityName":"哈尔滨",
+                    "id":3,
+                    "marked":false,
+                    "path":1.7976931348623157E308,
+                    "wayString":"哈尔滨->哈尔滨",
+                    "ways":[
+                        {"$ref":".."}
+                    ]
+                },
+                {
+                    "cityName":"天津",
+                    "id":4,
+                    "marked":false,
+                    "path":1.7976931348623157E308,
+                    "wayString":"天津->天津",
+                    "ways":[
+                        {"$ref":".."}
+                    ]
+                },
+                {
+                    "cityName":"北京",
+                    "id":5,
+                    "marked":false,
+                    "path":1.7976931348623157E308,
+                    "wayString":"北京->北京",
+                    "ways":[
+                        {"$ref":".."}
+                    ]
+                },
+                {
+                    "cityName":"石家庄",
+                    "id":6,
+                    "marked":false,
+                    "path":1.7976931348623157E308,
+                    "wayString":"石家庄->石家庄",
+                    "ways":[
+                        {"$ref":".."}
+                    ]
+                },
+                {
+                    "cityName":"济南",
+                    "id":7,
+                    "marked":false,
+                    "path":1.7976931348623157E308,
+                    "wayString":"济南->济南",
+                    "ways":[
+                        {"$ref":".."}
+                    ]
+                },
+                {
+                    "cityName":"太原",
+                    "id":8,
+                    "marked":false,
+                    "path":1.7976931348623157E308,
+                    "wayString":"太原->太原",
+                    "ways":[
+                        {"$ref":".."}
+                    ]
+                },
+                {
+                    "cityName":"呼和浩特",
+                    "id":9,
+                    "marked":false,
+                    "path":1.7976931348623157E308,
+                    "wayString":"呼和浩特->呼和浩特",
+                    "ways":[
+                        {"$ref":".."}
+                    ]
+                },
+                {
+                    "cityName":"郑州",
+                    "id":10,
+                    "marked":false,
+                    "path":1.7976931348623157E308,
+                    "wayString":"郑州->郑州",
+                    "ways":[
+                        {"$ref":".."}
+                    ]
+                },
+                {
+                    "cityName":"西安",
+                    "id":11,
+                    "marked":false,
+                    "path":1.7976931348623157E308,
+                    "wayString":"西安->西安",
+                    "ways":[
+                        {"$ref":".."}
+                    ]
+                },
+                {
+                    "cityName":"银川",
+                    "id":12,
+                    "marked":false,
+                    "path":1.7976931348623157E308,
+                    "wayString":"银川->银川",
+                    "ways":[
+                        {"$ref":".."}
+                    ]
+                },
+                {
+                    "cityName":"西宁",
+                    "id":13,
+                    "marked":false,
+                    "path":1.7976931348623157E308,
+                    "wayString":"西宁->西宁",
+                    "ways":[
+                        {"$ref":".."}
+                    ]
+                },
+                {
+                    "cityName":"乌鲁木齐",
+                    "id":14,
+                    "marked":false,
+                    "path":1.7976931348623157E308,
+                    "wayString":"乌鲁木齐->乌鲁木齐",
+                    "ways":[
+                        {"$ref":".."}
+                    ]
+                }
+            ]
             if (datas.length > 0) {
                 var option = '';
                 for (var i = 0; i < datas.length; i++) {
-                    option += '<option>' + datas[i].cityName + '</option>';
+                    option += '<option value=' + datas[i].id + '>' + datas[i].cityName + '</option>';
                 }
                 $("select").html(option);
             }
