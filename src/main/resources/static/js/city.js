@@ -144,9 +144,6 @@ let row = c => {
                 <td>
                     <input type="text" value="0" name="distances">
                 </td>
-                <td>
-                    <input type="button" class="btn btn-default" onclick="addNextCity()" value="添加下一城市"/>
-                   </td>
             </tr>`);
 };
 function addCity(){
