@@ -137,7 +137,6 @@ function getNextCitysMassage(){
             citysMassage.push(newcity);
         }
     });
-    console.log(citysMassage);
     return citysMassage;
 }
 
@@ -146,6 +145,7 @@ function enableAdd(){
         cityName:$('#cityName').val(),
         nextCityMassage:getNextCitysMassage()
     };
+    console.log(cityMassage);
     $.ajax({
         data:cityMassage,
         url:'/city/create/',
