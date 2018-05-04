@@ -102,13 +102,53 @@ function editCity(data){
     sessionStorage.setItem('cityData',JSON.stringify(cityData))
     window.location.href="../templates/cityDetails.html";
 }
-
+var clone;
+$(document).ready(function(){
+    $.ajax({
+        url:'/city/list?size=99999',
+        type: 'POST',
+        dataType : 'json',
+        success: function (o) {
+            var data = o.data;
+            if (data.length > 0) {
+                var option = '';
+                for (var i = 0; i < data.length; i++) {
+                    option += '<option value=' + data[i].id + '>' + data[i].cityName + '</option>';
+                }
+                clone = option;
+                $("#addCity").append(row(clone));
+            }
+        },
+        error: function () {
+            alert('添加失败!');
+        }
+    });
+});
 /**************************************/
 /*添加一行下一地*/
-function addNextCity(obj){
-    var trParent = $(obj).parent().parent();
-    trParent.after(trParent.clone());
+function addNextCity(){
+    // $("#nextBtn").remote();
+    console.log(clone);
+    $("#addCity").append(row(clone));
 }
+let row = c => {
+    return $(`<tr>
+                <th>下一地点</th>
+                <span></span>
+                <td>
+                    <select style="width: 150px;" name="dstCityIds">
+                        ${c}
+                    </select>
+                </td>
+                <th>到达下一地点的开销</th>
+                <td>
+                    <input type="text" value="0" name="distances">
+                </td>
+                <td>
+                    <input type="button" class="btn btn-default" onclick="addNextCity()" value="添加下一城市"/>
+                   </td>
+            </tr>`);
+};
 function addCity(){
     window.location.href='../templates/cityAdd.html';
 }
@@ -142,13 +182,9 @@ function getNextCitysMassage(){
 }
 
 function enableAdd(){
-    var cityMassage = {
-        cityName:$('#cityName').val(),
-        nextCityMassage:getNextCitysMassage()
-    };
     $.ajax({
-        data:cityMassage,
-        url:'/city/create/',
+        data:$("#addFrom").serialize(),
+        url:'/city/create',
         type:'POST',
         success:function(o){
             console.log(o);
