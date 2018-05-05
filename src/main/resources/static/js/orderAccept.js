@@ -10,8 +10,7 @@ function confirm(data){
                 alert('受理成功!');
                 location.href = "../templates/leaderOrderManage.html";
             }else{
-                alert('用户名或者密码错误！');
-                location.href='https://www.baidu.com/';
+                alert('受理失败！');
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {

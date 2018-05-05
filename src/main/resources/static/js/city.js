@@ -174,7 +174,6 @@ function getNextCitysMassage(){
             citysMassage.push(newcity);
         }
     });
-    console.log(citysMassage);
     return citysMassage;
 }
 
@@ -185,7 +184,7 @@ function enableAdd(){
         type:'POST',
         success:function(o){
             console.log(o);
-            if(o == 1)
+            if(o.status == 1)
                 alert("添加成功!");
         },
         error:function(){

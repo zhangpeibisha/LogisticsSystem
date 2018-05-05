@@ -11,18 +11,17 @@ function addOrder(){
         if(confirm('是否付款？') == true){
             var order = {
                 money:$('#money').val(),
-                startplace:$('#startplace').val(),
-                endplace:$('#endplace').val(),
+                startplace:$('#startplace option:selected').val(),
+                endplace:$('#endplace option:selected').val(),
                 descripe:$('#descripe').val(),
                 item:$('#item').val(),
                 price:$('#price').val()
             };
-            console.log(order);
             $.ajax({
                 type: 'POST',
                 url: "/order/publishOrder",
                 dataType: 'json',
-                data: order,
+                data: {'order':order},
                 success: function (o) {
                     console.log(o);
                     if (o.code === 'SUCCESS') {
@@ -47,58 +46,43 @@ function addOrder(){
 }
 function setCity() {
     $.ajax({
-        url:'/city/allList',
+        url:'/city/list?size=99999',
         type: 'POST',
         dataType : 'json',
-        success: function (data) {
+        success: function (o) {
+            var data = o.data;
             if (data.length > 0) {
-                var option = '';
-                for (var i = 0; i < data.length; i++) {
-                    option += '<option>' + data[i].cityName + '</option>';
+                console.log(data);
+                if (data.length > 0) {
+                    var option = '';
+                    for (var i = 0; i < data.length; i++) {
+                        option += '<option value=' + data[i].id + '>' + data[i].cityName + '</option>';
+                    }
+                    $("select").html(option);
                 }
-                console.log(option);
-                $("#startplace").html(option);
-                $('#endplace').html(option);
             }
         },
         error: function () {
-            var datas= [{cityName: '1'}, {cityName: '2'},{cityName: '3'}, {cityName: '4'},{cityName: '5'}, {cityName: '6'}];
-            if (datas.length > 0) {
-                var option = '';
-                for (var i = 0; i < datas.length; i++) {
-                    option += '<option onclick="selectCityClick()">' + datas[i].cityName + '</option>';
-                }
-                console.log(option);
-                $("#startplace").html(option);
-                $('#endplace').html(option);
-            }
+           alert('受理失败!');
         }
     });
 }
 
-$("#startplace").focus(function(){
-    $("#startplace").attr("size","5");
-})
-$("#endplace").focus(function(){
-    $("#endplace").attr("size","5");
-})
-function selectCityClick(){
-    $("#startplace").removeAttr("size");
-    $("#startplace").blur();
-    $("#endplace").removeAttr("size");
-    $("#endplace").blur();
-}
+// $("#startplace").focus(function(){
+//     $("#startplace").attr("size","5");
+// })
+// $("#endplace").focus(function(){
+//     $("#endplace").attr("size","5");
+// })
+// function selectCityClick(){
+//     $("#startplace").removeAttr("size");
+//     $("#startplace").blur();
+//     $("#endplace").removeAttr("size");
+//     $("#endplace").blur();
+// }
 function addInputCheck(){
     if($('#money').val() == null || $('#money').val() == ''){
         alert('请输入金额！');
-        return false;
-    }
-    if($('#startplace').val() == null || $('#startplace').val() == ''){
-        alert('请输入起点！');
-        return false;
-    }
-    if($('#endplace').val() == null || $('#endplace').val() == ''){
-        alert('请输入终点！');
         return false;
     }
     if($('#descripe').val() == null || $('#descripe').val() == ''){
