@@ -79,6 +79,7 @@
 	        url:'/order/orderStatistics',
 			dataType:'json',
 			type:'POST',
+			data:{'id':member.id},
 			success:function(backData){
 	            console.log(backData);
 				$('#successOrder').text(backData.data.successOrderNumber);
