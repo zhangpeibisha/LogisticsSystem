@@ -48,16 +48,16 @@ $("#cancel").click(function(){
 });
 $("#ensure").click(function(){
     $.ajax({
-        data:$("#addFrom").serialize(),
+        data:$("#editFrom").serialize(),
         url:'/city/create',
         type:'POST',
         success:function(o){
             console.log(o);
             if(o.status == 1)
-                alert("添加成功!");
+                alert("编辑成功!");
         },
         error:function(){
-            alert("添加失败！");
+            alert("编辑失败！");
         }
     });
 });

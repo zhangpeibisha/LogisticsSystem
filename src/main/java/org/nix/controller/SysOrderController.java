@@ -4,7 +4,9 @@ import org.nix.Exception.SelectObjectException;
 import org.nix.annotation.LoginRequired;
 import org.nix.common.ReturnObject;
 import org.nix.common.sysenum.SessionKeyEnum;
+import org.nix.common.sysenum.SysOrderEnum;
 import org.nix.common.sysenum.SysRoleEnum;
+import org.nix.dao.impl.SysOrderDaoImpl;
 import org.nix.dao.repositories.OrderEvaluationJpa;
 import org.nix.dao.repositories.SysOrderJpa;
 import org.nix.dao.repositories.SysUserJpa;
@@ -51,6 +53,8 @@ public class SysOrderController {
     @Autowired
     private SysUserJpa sysUserJpa;
 
+    @Autowired
+    private SysOrderDaoImpl sysOrderDao;
     /**
      * todo: 用户下订单接口
      * <p>
@@ -65,8 +69,14 @@ public class SysOrderController {
     @RequestMapping(value = "/publishOrder", method = RequestMethod.POST)
     @LoginRequired(SysRoleEnum.ROLE_GENERAL)
     public ReturnObject publishOrder(@ModelAttribute SysOrder sysOrder,
+                                     @RequestParam("startplaceId") int startplace,
+                                     @RequestParam("endplaceId") int endplace,
                                      HttpServletRequest request) {
-
+        sysOrder.setOrderStatus(SysOrderEnum.ORDER_PENDING_PAYMENT);
+        City startCity = cityService.findById(startplace);
+        City endCity = cityService.findById(endplace);
+        sysOrder.setStartCity(startCity);
+        sysOrder.setEndCity(endCity);
         sysOrderService.createOrder(sysOrder, request);
 
         return ReturnUtil.success(null, null);
@@ -138,14 +148,14 @@ public class SysOrderController {
      * @param order     顶顶那id
      * @param sort      是否排序
      * @param field     数据库字段
-     * @param content   查询内容
+     * @param content   查询订单状态
      * @param fullMatch 是否完全匹配
      * @param request   用户请求
      * @return 返回请求信息
      */
     @PostMapping("/orderListConditionalPaging")
     @LoginRequired(value = {SysRoleEnum.ROLE_GENERAL, SysRoleEnum.ROLE_ADMINISTRATOR})
-    public ReturnObject orderListConditionalPaging(
+    public Map<String,Object> orderListConditionalPaging(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "size", defaultValue = "20") Integer size,
             @RequestParam(value = "order", defaultValue = "id") String order,
@@ -155,15 +165,31 @@ public class SysOrderController {
             @RequestParam(value = "fullMatch", defaultValue = "true") Boolean fullMatch,
             HttpServletRequest request) {
         System.out.println("查询字段 ："+ request.getQueryString());
-//        SysUser sysUser = (SysUser) request
-//                .getSession()
-//                .getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
-//        if (!sysUser.isSysAdmin()) {
-//            return ReturnUtil.fail(null,"权限不足",null);
-//        }
         Map map = new HashMap();
-        map.put("total", sysOrderService.count());
-        return ReturnUtil.success(null, sysOrderService.list(page, size, order, sort, field, content, fullMatch), map);
+        SysUser sysUser = (SysUser) request
+                .getSession()
+                .getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
+        if (!sysUser.isSysAdmin()) {
+//            return ReturnUtil.fail(null,"权限不足",null);
+            map.put("total", sysOrderService.count(sysUser.getId()));
+//            field = "sys_user";
+            Map<String,Object> result = new HashMap<>();
+            result.put("user_order_list",sysOrderService.list(page,size,order,sort,"sys_user = " + sysUser.getId()));
+            result.put("status",1);
+            result.put("msg","返回用户信息列表");
+            return result;
+//            return ReturnUtil.success("返回用户订单列表",result);
+        }else{
+            map.put("total", sysOrderService.count());
+            field = "";
+            content = "";
+            Map<String,Object> result = new HashMap<>();
+            result.put("user_order_list",sysOrderService.list(page, size, order, sort, field, content, fullMatch));
+            result.put("status",1);
+            result.put("msg","返回所有用户信息列表");
+            return result;
+//            return ReturnUtil.success(null, sysOrderService.list(page, size, order, sort, field, content, fullMatch), map);
+        }
     }
 
     /**

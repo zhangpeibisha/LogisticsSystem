@@ -74,12 +74,16 @@ public class SysOrderServiceImpl {
         sysOrder.setCreateTime(new Date());
         // 设置订单状态
         sysOrder.setOrderStatus(SysOrderEnum.ORDER_PENDING_PAYMENT);
-        // 设置订单用户
-        sysOrder.setSysUser(sysUser);
-        // 设置订单路径
-        setOrderWay(sysOrder);
 
         sysOrderJpa.save(sysOrder);
+
+        // 设置订单路径
+        setOrderWay(sysOrder);
+        sysOrder.setCurrentCity(sysOrder.getOrderWays().get(0).getCity());
+        System.out.println("id==" + sysOrder.getId());
+        // 设置订单用户
+        sysOrder.setSysUser(sysUser);
+        sysOrderJpa.saveAndFlush(sysOrder);
         logger.info(sysUser.getId() + "在" + new Date() + "下订单" + sysOrder.getId());
     }
 
@@ -180,6 +184,7 @@ public class SysOrderServiceImpl {
                 orderWays.setFinish(false);
                 orderWays.setExpectedDate(new Date());
                 orderWays.setArriveDate(null);
+                orderWays.setOrderId(order);
                 ways.add(orderWays);
             }
         }
@@ -230,8 +235,16 @@ public class SysOrderServiceImpl {
         return sysOrderDao.list(DataUtil.offset(page,size),size,order,sort,DataUtil.getConditions(field,content,fullMatch));
     }
 
+    public List<SysOrder> list(Integer page, Integer size, String order, String sort, String conditions) {
+        return sysOrderDao.list(DataUtil.offset(page,size),size,order,sort,conditions);
+    }
+
     public long count() {
         return sysOrderJpa.count();
+    }
+
+    public long count(int userId){
+        return sysOrderJpa.orderCount(userId);
     }
 
 }

@@ -170,4 +170,16 @@ public class SysOrder extends BasicEntity {
     public void setOrderEvaluation(List<OrderEvaluation> orderEvaluation) {
         this.orderEvaluation = orderEvaluation;
     }
+
+    @Override
+    public String toString() {
+        return "SysOrder{" +
+                "cost=" + cost +
+                ", orderStatus=" + orderStatus +
+                ", node='" + node + '\'' +
+                ", TimeOfArrival=" + TimeOfArrival +
+                ", cargoName='" + cargoName + '\'' +
+                ", cargoPrice=" + cargoPrice +
+                '}';
+    }
 }

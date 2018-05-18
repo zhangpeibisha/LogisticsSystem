@@ -43,19 +43,29 @@ function getOrdersList() {
         cache : false,// 禁用 AJAX 数据缓存
         sortName : 'id',// 定义排序列
         sortOrder : 'asc',// 定义排序方式 getRceiptlistWithPaging
-        // url : '/order/orderListConditionalPaging',// 服务器数据的加载地址
+        url : '/order/orderListConditionalPaging',// 服务器数据的加载地址
         sidePagination : 'client',// 设置在哪里进行分页
-        showRefresh: true,  //显示刷新按钮
+        /*showRefresh: true,*/  //显示刷新按钮
         dataType : 'json',// 服务器返回的数据类型
         queryParamsType:'limit',//查询参数组织方式
-        queryParams:queryParams,//请求服务器时所传的参数
+        queryParams: function queryParams(params) {
+            param.page = (params.offset/params.limit) + 1;
+            param.size=params.limit;
+            param.sort = params.order; // 排序列名
+            param.order = params.sort; // 排位命令（descasc）
+            param.field = 'sys_user'; //查询数据库字段
+            // param.content = 'ORDER_PAID_NO_SHIPPED'; //查询内容
+            param.fullMatch = true;
+            return param;
+        },
         selectItemName : '',// radio or checkbox 的字段名
-        // onLoadSuccess:function (backData) {
-        //     $('#table').bootstrapTable('removeAll');
-        //     $('#table').bootstrapTable('append', backData.data);
-        // },
-        data:[{id:'1',account:'123',password:'123456',node:'0000',money:'1000',orderStatus:'未发货',currentCity:'重庆',TimeOfArrival:'2016-12-20',startCity:'重庆',endCity:'河北',createTime:'2016-12-20'}
-            ,{id:'2',account:'234',password:'123456',node:'1111',money:'2000',orderStatus:'已发货',currentCity:'浙江',TimeOfArrival:'2018-03-20',startCity:'台湾',endCity:'新疆',createTime:'2018-03-18'}],
+        onLoadSuccess:function (backData) {
+            console.log(backData.user_order_list);
+            $('#table').bootstrapTable('removeAll');
+            $('#table').bootstrapTable('append', backData.user_order_list);
+        },
+        //data:[{id:'1',account:'123',password:'123456',node:'0000',money:'1000',orderStatus:'003',currentCity:'重庆',TimeOfArrival:'2016-12-20',startCity:'重庆',endCity:'河北',createTime:'2016-12-20'}
+        //    ,{id:'2',account:'234',password:'123456',node:'1111',money:'2000',orderStatus:'001',currentCity:'浙江',TimeOfArrival:'2018-03-20',startCity:'台湾',endCity:'新疆',createTime:'2018-03-18'}],
         columns : [ {
             checkbox : true,
             align : 'center',// 水平居中显示
@@ -76,20 +86,13 @@ function getOrdersList() {
             valign : 'middle',// 垂直居中显示
             width : '1'// 宽度
         }, {
-            field : 'account',// 返回值名称
+            field : 'sysUser.account',// 返回值名称
             title : '用户名',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '1',// 宽度
             visible:false
-        }, {
-            field : 'password',// 返回值名称
-            title : 'password',// 列名
-            align : 'center',// 水平居中显示
-            valign : 'middle',// 垂直居中显示
-            width : '1',// 宽度
-            visible : false
-        } ,{
+        },{
             field : 'node',// 返回值名称
             title : '备注',// 列名
             align : 'center',// 水平居中显示
@@ -97,7 +100,7 @@ function getOrdersList() {
             width : '5',// 宽度
             visible : false
         },{
-            field : 'money',// 返回值名称
+            field : 'cost',// 返回值名称
             title : '金额',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
@@ -108,8 +111,17 @@ function getOrdersList() {
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '15',// 宽度
+            formatter:function(value){
+                switch(value){
+                    case 'ORDER_PENDING_PAYMENT':return "未支付";break;
+                    case 'ORDER_PAID_NO_SHIPPED':return "未发货";break;
+                    case 'ORDER_BEING_SHIPPED':return "已发货";break;
+                    case 'ORDER_ARRIVALS':return "已到达";break;
+                    case 'ORDER_SIGN':return "已签收";break;
+                }
+            }
         }, {
-            field : 'currentCity',// 返回值名称
+            field : 'currentCity.cityName',// 返回值名称
             title : '当前地点',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
@@ -121,13 +133,13 @@ function getOrdersList() {
             valign : 'middle',// 垂直居中显示
             width : '5'// 宽度
         },{
-            field : 'startCity',// 返回值名称
+            field : 'startCity.cityName',// 返回值名称
             title : '起点',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '5'// 宽度
         },{
-            field : 'endCity',// 返回值名称
+            field : 'endCity.cityName',// 返回值名称
             title : '终点',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
@@ -139,33 +151,47 @@ function getOrdersList() {
             valign : 'middle',// 垂直居中显示
             width : '5'// 宽度
         },{
-            field : '',// 返回值名称
+            field : 'orderStatus',// 返回值名称
             title : '操作',// 列名
             align : 'center',// 水平居中显示
             valign :'middle',// 垂直居中显示
             width : '5',// 宽度
             formatter: function (value, row, index) {
-                return "<input class='btn btn-info' type='button' onclick='show("+JSON.stringify(row)+")' value='详情'>"
-                +  "<input class='btn btn-info' type='button' onclick='handler("+JSON.stringify(row)+")' value='受理'>"
+                if(value == 'ORDER_ARRIVALS'){
+                    return "<input class='btn btn-info' type='button' onclick='show("+JSON.stringify(row)+")' value='详情'>"
+                        +  "<input class='btn btn-info' type='button' onclick='sign("+JSON.stringify(row)+")' value='收货'>"
+                }else if(value == "ORDER_PENDING_PAYMENT"){
+                    return "<input class='btn btn-info' type='button' onclick='show("+JSON.stringify(row)+")' value='详情'>"
+                        +  "<input class='btn btn-info' type='button' onclick='pay("+JSON.stringify(row)+")' value='付款'>"
+                }else{
+                    return "<input class='btn btn-info' type='button' onclick='show("+JSON.stringify(row)+")' value='详情'>"
+                }
             }
         }]
         // 列配置项,详情请查看 列参数 表格
         /* 事件 */
     });
 }
-function handler(date) {
-    $.ajax({
-        type: 'POST',
-        url: "/administrator/orderHandler",
-        dataType: 'json',
-        //组装order实体参数
-        data: {
-            field: fiel,
-            content: info
-        },
-        success: function (data) {
-        }
-    })
+
+function pay(data){
+    if(confirm('是否付款？') == true){
+        $.ajax({
+            url:"/order/paymentOrder",
+            data:{order_id:data.id},
+            type:"POST",
+            success:function(backData){
+                if(backData.status == 1){
+                    alert("支付成功!");
+                }else{
+                    alert("支付失败!");
+                }
+            },
+            error:function(){
+                alert("支付失败!");
+            }
+        })
+    }
+    getOrdersList();
 }
 function queryParams(params) {
     return {

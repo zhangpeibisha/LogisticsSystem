@@ -60,7 +60,7 @@ function checkLogin(){
             success: function (data) {
                 if (data.status == 1) {
                     sessionStorage.setItem("member",JSON.stringify(member));
-                    location.href = "./index.html";
+                    location.href = "../templates/index.html";
                 }else{
                     alert('用户名或者密码错误！');
                 }

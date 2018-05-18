@@ -30,7 +30,7 @@
 				</dd>
 				<dd>
 					<img class="coin11" src="img/coin111.png" /><img class="coin22"
-						src="img/coin222.png" /><a class="cks" href="leaderOrderManage.html"
+						src="img/coin222.png" /><a id="orderShow" class="cks"
 						target="main">订单查看</a><img class="icon5" src="img/coin21.png" />
 				</dd>
 				<dd id="orderAdd">
@@ -94,4 +94,12 @@
 
 	</div>
 </body>
+<script type="text/javascript">
+    var member = JSON.parse(sessionStorage.getItem('member'));
+    if(member.grade == 'general'){
+        $("#orderShow").attr("href","userOrderManage.html");
+	}else{
+        $("#orderShow").attr("href","leaderOrderManage.html");
+	}
+</script>
 </html>

@@ -48,7 +48,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer> {
         if (findUser == null || !findUser.getPassword().equals(sysUser.getPassword())) {
             throw new SelectObjectException();
         }
-        findUser.setPassword(null);
         request.getSession().setAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey(), findUser);
     }
 

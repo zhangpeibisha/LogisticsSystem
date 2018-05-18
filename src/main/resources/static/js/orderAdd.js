@@ -9,19 +9,18 @@ $(document).ready(function(){
 function addOrder(){
     if(addInputCheck()){
         if(confirm('是否付款？') == true){
-            var order = {
-                money:$('#money').val(),
-                startplace:$('#startplace option:selected').val(),
-                endplace:$('#endplace option:selected').val(),
-                descripe:$('#descripe').val(),
-                item:$('#item').val(),
-                price:$('#price').val()
-            };
             $.ajax({
                 type: 'POST',
                 url: "/order/publishOrder",
                 dataType: 'json',
-                data: {'order':order},
+                data: {
+                    startplaceId:$('#startplace option:selected').val(),
+                    endplaceId:$('#endplace option:selected').val(),
+                    cost:$('#money').val(),
+                    node:$('#descripe').val(),
+                    cargoName:$('#item').val(),
+                    cargoPrice:$('#price').val()
+                  },
                 success: function (o) {
                     console.log(o);
                     if (o.code === 'SUCCESS') {

@@ -9,7 +9,7 @@ public class SysManger {
     private SysManger(){}
 
     // 财务管理员的账号
-    public final static String FINANCE_ACCOUNT = "";
+    public final static String FINANCE_ACCOUNT = "222222";
 
     // 系统后台管理员账号
     public final static String SYS_MANGER_ACCOUNT = "";
