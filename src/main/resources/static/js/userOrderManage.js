@@ -172,7 +172,27 @@ function getOrdersList() {
         /* 事件 */
     });
 }
-
+function sign(data){
+    if(confirm('是否确认收货？') == true){
+        $.ajax({
+            url:"/order/signOrder",
+            data:{order_id:data.id},
+            type:"POST",
+            success:function(backData){
+                console.log(backData);
+                if(backData.status == 1){
+                    alert("确认收货成功!");
+                }else{
+                    alert("确认收货失败!");
+                }
+            },
+            error:function(){
+                alert("确认收货失败!");
+            }
+        })
+    }
+    location.reload(false);
+}
 function pay(data){
     if(confirm('是否付款？') == true){
         $.ajax({
@@ -180,6 +200,7 @@ function pay(data){
             data:{order_id:data.id},
             type:"POST",
             success:function(backData){
+                console.log(backData);
                 if(backData.status == 1){
                     alert("支付成功!");
                 }else{
@@ -191,7 +212,7 @@ function pay(data){
             }
         })
     }
-    getOrdersList();
+    location.reload(false);
 }
 function queryParams(params) {
     return {
