@@ -33,10 +33,23 @@ $("#cancel").click(function(){
     window.history.go(-1);
 });
 $("#ensure").click(function(){
+    console.log(cityDatas);
+    var lists=document.getElementsByClassName("selectValue");
+    var dstCityIds = [];
+    for(var i=0;i<lists.length;i++){
+        dstCityIds.push(list[i].val());
+    }
+    console.log(dstCityIds);
+    var distance=document.getElementsByClassName("inputValue");
+    for(var i=0;i<lists.length;i++){
+        dstCityIds.push(list[i].val());
+    }
+    console.log(distance);
     $.ajax({
         data:{
             srcCityId:cityDatas.id,
-            dstCityIds:$("#editFrom").serialize()
+            dstCityIds:dstCityIds,
+            distance:distance
         },
         url:'/city/create',
         type:'POST',
@@ -86,13 +99,13 @@ let row = c => {
                 <th>下一地点</th>
                 <span></span>
                 <td>
-                    <select name="dstCityIds">
+                    <select class="selectValue">
                         ${c}
                     </select>
                 </td>
                 <th>到达下一地点的开销</th>
                 <td>
-                    <input type="text" value="0" name="distances">
+                    <input type="text" value="0" class="inputValue">
                 </td>
             </tr>`);
 };
