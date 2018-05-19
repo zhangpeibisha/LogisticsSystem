@@ -15,6 +15,7 @@ import org.nix.entity.City;
 import org.nix.entity.OrderWays;
 import org.nix.entity.SysOrder;
 import org.nix.entity.SysUser;
+import org.nix.service.base.BaseServiceImpl;
 import org.nix.util.DataUtil;
 import org.nix.util.Graph;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ import java.util.Map;
  * TODO: 订单业务服务类
  */
 @Service
-public class SysOrderServiceImpl {
+public class SysOrderServiceImpl  {
 
     private Logger logger = Logger.getLogger(SysOrderServiceImpl.class);
 
@@ -237,6 +238,10 @@ public class SysOrderServiceImpl {
 
     public List<SysOrder> list(Integer page, Integer size, String order, String sort, String conditions) {
         return sysOrderDao.list(DataUtil.offset(page,size),size,order,sort,conditions);
+    }
+
+    public SysOrder findById(Integer id) {
+        return sysOrderJpa.findOne(id);
     }
 
     public long count() {

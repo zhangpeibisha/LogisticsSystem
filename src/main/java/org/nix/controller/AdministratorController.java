@@ -10,6 +10,7 @@ import org.nix.entity.SysOrder;
 import org.nix.entity.SysUser;
 import org.nix.service.impl.AdministratorServiceImpl;
 import org.nix.service.impl.ResourcesServiceImpl;
+import org.nix.service.impl.SysOrderServiceImpl;
 import org.nix.util.ReturnUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,9 @@ public class AdministratorController {
     @Autowired
     private ResourcesServiceImpl resourcesService;
 
+    @Autowired
+    private SysOrderServiceImpl sysOrderService;
+
     /**
      * 查看订单列表
      */
@@ -68,7 +72,8 @@ public class AdministratorController {
      */
     @PostMapping(value = "/orderHandler")
     @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
-    public ReturnObject orderHandler(@ModelAttribute SysOrder order, HttpServletRequest request) {
+    public ReturnObject orderHandler(@RequestParam("id") Integer id, HttpServletRequest request) {
+        SysOrder order = sysOrderService.findById(id);
         if (administratorService.orderHandler(order, (SysUser) request
                 .getSession()
                 .getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey()))) {
