@@ -11,6 +11,7 @@ import org.nix.dao.repositories.OrderEvaluationJpa;
 import org.nix.dao.repositories.SysOrderJpa;
 import org.nix.dao.repositories.SysUserJpa;
 import org.nix.dto.order.ResultOrderInfoDto;
+import org.nix.dto.order.ResultOrderList;
 import org.nix.dto.order.ResultOrderStatistics;
 import org.nix.entity.City;
 import org.nix.entity.OrderEvaluation;
@@ -75,8 +76,10 @@ public class SysOrderController {
         sysOrder.setOrderStatus(SysOrderEnum.ORDER_PENDING_PAYMENT);
         City startCity = cityService.findById(startplace);
         City endCity = cityService.findById(endplace);
+        City currCity = cityService.findById(startplace);
         sysOrder.setStartCity(startCity);
         sysOrder.setEndCity(endCity);
+        sysOrder.setCurrentCity(currCity);
         sysOrderService.createOrder(sysOrder, request);
 
         return ReturnUtil.success(null, null);
@@ -170,15 +173,12 @@ public class SysOrderController {
                 .getSession()
                 .getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
         if (!sysUser.isSysAdmin()) {
-//            return ReturnUtil.fail(null,"权限不足",null);
             map.put("total", sysOrderService.count(sysUser.getId()));
-//            field = "sys_user";
             Map<String,Object> result = new HashMap<>();
-            result.put("user_order_list",sysOrderService.list(page,size,order,sort,"sys_user = " + sysUser.getId()));
+            result.put("user_order_list",new ResultOrderList(sysOrderService.list(page,size,order,sort,"sys_user = " + sysUser.getId())).result());
             result.put("status",1);
             result.put("msg","返回用户信息列表");
             return result;
-//            return ReturnUtil.success("返回用户订单列表",result);
         }else{
             map.put("total", sysOrderService.count());
             field = "";

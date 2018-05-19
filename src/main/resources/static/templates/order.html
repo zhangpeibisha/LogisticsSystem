@@ -65,6 +65,7 @@
             };
         },
         onLoadSuccess:function (backData) {
+            console.info(backData.data);
             $('#table').bootstrapTable('removeAll');
             $('#table').bootstrapTable('append', backData.data);
         },

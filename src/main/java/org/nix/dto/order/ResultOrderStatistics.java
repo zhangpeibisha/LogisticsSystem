@@ -96,12 +96,4 @@ public class ResultOrderStatistics implements BaseResultDto {
     public void setMemberNumber(int memberNumber) {
         this.memberNumber = memberNumber;
     }
-
-    public List<SysOrder> getSysOrderList() {
-        return sysOrderList;
-    }
-
-    public void setSysOrderList(List<SysOrder> sysOrderList) {
-        this.sysOrderList = sysOrderList;
-    }
 }
