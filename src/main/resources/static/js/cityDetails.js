@@ -34,24 +34,29 @@ $("#cancel").click(function(){
 });
 $("#ensure").click(function(){
     console.log(cityDatas);
-    var lists=document.getElementsByClassName("selectValue");
-    var dstCityIds = [];
-    for(var i=0;i<lists.length;i++){
-        dstCityIds.push(list[i].val());
-    }
-    console.log(dstCityIds);
-    var distance=document.getElementsByClassName("inputValue");
-    for(var i=0;i<lists.length;i++){
-        dstCityIds.push(list[i].val());
-    }
-    console.log(distance);
+    var length = $(".selectValue").length;
+
+    var dstCityIdsValue = "";
+    $(".selectValue").each(function(i){
+        if(i == length-1)
+            dstCityIdsValue += "dstCityIds="+$(this).val();
+        else
+            dstCityIdsValue += "dstCityIds="+$(this).val()+"&";
+    })
+    console.log(dstCityIdsValue);
+
+    length = $(".inputValue").length;
+    var distanceValue = "";
+    $(".inputValue").each(function(i){
+        if(i == length-1)
+            distanceValue += "distance="+$(this).val();
+        else
+            distanceValue += "distance="+$(this).val()+"&";
+    })
+
+    console.log(distanceValue);
     $.ajax({
-        data:{
-            srcCityId:cityDatas.id,
-            dstCityIds:dstCityIds,
-            distance:distance
-        },
-        url:'/city/create',
+        url:'/city/addNeighbor?' + "srcCityId="+cityDatas.id + "&" + dstCityIdsValue + "&" + distanceValue,
         type:'POST',
         success:function(o){
             console.log(o);
@@ -60,9 +65,11 @@ $("#ensure").click(function(){
             else{
                 alert("编辑失败！");
             }
+            window.location.href="../templates/city.html"
         },
         error:function(){
             alert("编辑失败！");
+            window.location.href="../templates/city.html"
         }
     });
 });
@@ -111,15 +118,16 @@ let row = c => {
 };
 function setIfEdit(){
     console.log(cityDatas.operation);
+    $('#cityName').attr("disabled","disabled");
     if(cityDatas.operation == 0){
-        $('#cityName,#nextCity,#costPrice,#createTime').attr("disabled","disabled");
+        $('#nextCity,#costPrice,#createTime').attr("disabled","disabled");
         $('#ensure').attr('disabled','true');
         $('select').attr('disabled','disabled');
         $('input').attr('disabled','disabled');
         $('#addnextCitybtn').attr('disabled','disabled');
         $(".haveValue").attr("disabled","disabled");
     }else if(cityDatas.operation == 1){
-        $('#cityName,#nextCity,#costPrice,#createTime').removeAttr('disabled');
+        $('#nextCity,#costPrice,#createTime').removeAttr('disabled');
         $('#ensure').removeAttr('disabled');
         $('select').removeAttr('disabled');
         $('input').removeAttr('disabled');
