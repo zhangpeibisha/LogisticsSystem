@@ -2,10 +2,13 @@ package org.nix.controller;
 
 import org.nix.annotation.LoginRequired;
 import org.nix.common.ReturnObject;
+import org.nix.common.sysenum.SysRoleEnum;
 import org.nix.dao.impl.SysUserDao;
+import org.nix.dao.repositories.SysRoleJpa;
 import org.nix.dao.repositories.SysUserJpa;
 import org.nix.entity.City;
 import org.nix.entity.SysOrder;
+import org.nix.entity.SysRole;
 import org.nix.entity.SysUser;
 import org.nix.service.impl.SysUserServiceImpl;
 import org.nix.util.ReturnUtil;
@@ -29,6 +32,9 @@ public class GeneralUserController {
     @Autowired
     private SysUserServiceImpl sysUserService;
 
+    @Autowired
+    private SysRoleJpa sysRoleJpa;
+
     /**
      * todo: 用于普通用户注册接口，默认无角色信息，需要后期添加角色信息
      * 如果账户重复：将抛出唯一约束异常
@@ -44,8 +50,10 @@ public class GeneralUserController {
         SysUser sysUser = new SysUser();
         sysUser.setAccount(account);
         sysUser.setPassword(password);
+        SysRole sysRole = sysRoleJpa.findSysRoleByRoleName(SysRoleEnum.ROLE_GENERAL.getValue());
+        sysUser.setSysRole(sysRole);
         sysUserService.register(sysUser);
-        return ReturnUtil.success(null, null);
+        return ReturnUtil.success("注册成功", null);
     }
 
 

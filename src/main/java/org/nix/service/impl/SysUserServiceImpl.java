@@ -42,7 +42,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer> {
      *                如果查询成功则将用户信息存入session中，如果没有查询成功则抛出异常
      * @throws SelectObjectException
      */
-    public void login(@CurrentUser SysUser sysUser, HttpServletRequest request) throws SelectObjectException {
+    public void login(SysUser sysUser, HttpServletRequest request) throws SelectObjectException {
         SysUser findUser = sysUserJpa
                 .findSysUserByAccount(sysUser.getAccount());
         if (findUser == null || !findUser.getPassword().equals(sysUser.getPassword())) {
