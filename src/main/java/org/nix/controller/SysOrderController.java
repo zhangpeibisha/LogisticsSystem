@@ -248,9 +248,9 @@ public class SysOrderController {
         SysUser findUser = (SysUser) request.getSession().getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
         findUser = sysUserJpa.findSysUserByAccount(findUser.getAccount());
         if (findUser.getSysRole().getRoleName().equals(SysRoleEnum.ROLE_GENERAL.getValue()))
-            return ReturnUtil.success("返回订单统计信息", new ResultOrderStatistics(findUser.getSysOrder()));
+            return ReturnUtil.success("返回订单统计信息", new ResultOrderStatistics(findUser.getSysOrder()).result());
         if (findUser.getSysRole().getRoleName().equals(SysRoleEnum.ROLE_ADMINISTRATOR.getValue()))
-            return ReturnUtil.success("返回订单统计信息", new ResultOrderStatistics(sysUserJpa.CountAllGeneralUser(),findUser.getSysOrder()));
+            return ReturnUtil.success("返回订单统计信息", new ResultOrderStatistics(sysUserJpa.CountAllGeneralUser(),findUser.getSysOrder()).result());
 
         return ReturnUtil.fail(null);
     }

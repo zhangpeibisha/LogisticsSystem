@@ -1,6 +1,7 @@
 package org.nix.dto.order;
 
 import org.nix.common.sysenum.SysOrderEnum;
+import org.nix.dto.base.AbstractResultDto;
 import org.nix.dto.base.BaseResultDto;
 import org.nix.entity.SysOrder;
 
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Create by zhangpe0312@qq.com on 2018/5/2.
  */
-public class ResultOrderStatistics implements BaseResultDto {
+public class ResultOrderStatistics extends AbstractResultDto {
     /**
      * 交易成功的订单
      */
@@ -45,11 +46,6 @@ public class ResultOrderStatistics implements BaseResultDto {
     public ResultOrderStatistics(int memberNumber, List<SysOrder> sysOrderList) {
         this.memberNumber = memberNumber;
         this.sysOrderList = sysOrderList;
-    }
-
-    @Override
-    public BaseResultDto result() {
-        return this;
     }
 
     @Override
