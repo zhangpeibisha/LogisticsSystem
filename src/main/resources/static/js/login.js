@@ -83,7 +83,7 @@ function enableregister(){
     if(checkData()) {
         var member = {
             account:$('#account').val(),
-            password:$(" input[ name='password' ] ").val(),
+            password:$(" input[ name='password' ] ").val(hex_md5($("#password").val()),
             grade:$(" input[ name='grade' ]:checked ").val()
         };
         console.log(member);
@@ -93,7 +93,7 @@ function enableregister(){
             dataType: 'json',
             data:member,
             success: function (data) {
-                if (data == 'SUCCESS') {
+                if (data.status == '1') {
                     sessionStorage.setItem("member",JSON.stringify(member));
                     location.href = "../html/index.html";
                 }else{
