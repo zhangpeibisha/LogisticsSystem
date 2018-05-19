@@ -54,13 +54,13 @@ function dissmissLookPath(){
 //返回的数据应该是姓名（name），回复日期(date)，回复内容(replyContent)三条。
 $('#evalution').click(function(){
     //var orderData = JSON.parse(sessionStorage.getItem("goodData"));
-    var datas = [{name:'张三',date:'2016-10-01',replyContent:'东西不好'},{name:'张三',date:'2016-10-01',replyContent:'东西不好'},{name:'李四',date:'2016-10-02',replyContent:'亲，有质量问题我们可以退换噢'},{name:'张三',date:'2016-10-02',replyContent:'那退吧'}];
+    //var datas = [{name:'张三',date:'2016-10-01',replyContent:'东西不好'},{name:'张三',date:'2016-10-01',replyContent:'东西不好'},{name:'李四',date:'2016-10-02',replyContent:'亲，有质量问题我们可以退换噢'},{name:'张三',date:'2016-10-02',replyContent:'那退吧'}];
     $.ajax({
         //data:{id:orderData.id},
         type:'POST',
         url:'',
         dataType:'json',
-        success:function(data) {
+        success:function(datas) {
             var evalutiondata = '<div class="ylcon"><p class="tit">所有评价 </p> <div id="messDivId" style="overflow-y: auto;max-height: 252px;">';
             if(datas.length > 0){
                 for(var i = 0; i < datas.length; i++){
@@ -81,7 +81,7 @@ $('#evalution').click(function(){
             $('#evalutionBox').css('display','block');
             $('.log-window').css('display','block');
         },
-        error:function(data){
+        error:function(datas){
             var evalutiondata = '<div class="ylcon"><p class="tit">所有评价 </p> <div id="messDivId" style="overflow-y: auto;max-height: 252px;">';
             if(datas.length > 0){
                 for(var i = 0; i < datas.length; i++){

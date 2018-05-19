@@ -34,7 +34,7 @@ public class AdministratorServiceImpl {
     @Transactional(rollbackFor = Exception.class)
     public boolean orderHandler(SysOrder order, SysUser sysUser) {
         if (sysUser.isSysAdmin()) {
-            order.setOrderStatus(SysOrderEnum.ORDER_PAID_NO_SHIPPED);
+            order.setOrderStatus(SysOrderEnum.ORDER_BEING_SHIPPED);
             sysOrderJpa.saveAndFlush(order);
             return true;
         }

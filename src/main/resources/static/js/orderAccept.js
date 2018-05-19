@@ -1,4 +1,5 @@
 //后台只返回未受理订单
+var param = {};
 function confirm(data){
     $.ajax({
         type: 'POST',
@@ -32,7 +33,7 @@ function getOrdersList() {
         cache : false,// 禁用 AJAX 数据缓存
         sortName : 'id',// 定义排序列
         sortOrder : 'asc',// 定义排序方式 getRceiptlistWithPaging
-        //url : '/Administrator/orderList',// 服务器数据的加载地址
+        url : '/order/orderListConditionalPaging',// 服务器数据的加载地址
         sidePagination : 'client',// 设置在哪里进行分页
         /*showRefresh: true, */ //显示刷新按钮
         contentType : 'application/x-www-form-urlencoded',// 发送到服务器的数据编码类型
@@ -49,12 +50,12 @@ function getOrdersList() {
         },  // 请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
-            console.log(backdata);
+            console.log(backData.user_order_list.orderList);
             $('#table').bootstrapTable('removeAll');
-            $('#table').bootstrapTable('append', newData.list);
+            $('#table').bootstrapTable('append', backData.user_order_list.orderList);
         },
-        data:[{id:'1',account:'123',password:'123456',node:'0000',money:'1000',orderStatus:'未发货',currentCity:'重庆',TimeOfArrival:'2016-12-20',startCity:'重庆',endCity:'河北',createTime:'2016-12-20'}
-            ,{id:'2',account:'234',password:'123456',node:'1111',money:'2000',orderStatus:'已发货',currentCity:'浙江',TimeOfArrival:'2018-03-20',startCity:'台湾',endCity:'新疆',createTime:'2018-03-18'}],
+        //data:[{id:'1',account:'123',password:'123456',node:'0000',money:'1000',orderStatus:'未发货',currentCity:'重庆',TimeOfArrival:'2016-12-20',startCity:'重庆',endCity:'河北',createTime:'2016-12-20'}
+        //    ,{id:'2',account:'234',password:'123456',node:'1111',money:'2000',orderStatus:'已发货',currentCity:'浙江',TimeOfArrival:'2018-03-20',startCity:'台湾',endCity:'新疆',createTime:'2018-03-18'}],
         columns : [ {
             checkbox : true,
             align : 'center',// 水平居中显示
@@ -73,22 +74,15 @@ function getOrdersList() {
             title : '订单号',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '1',// 宽度
+            width : '1'// 宽度
         }, {
-            field : 'account',// 返回值名称
+            field : 'sysUser.account',// 返回值名称
             title : '用户名',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '1',// 宽度
             visible:false
-        }, {
-            field : 'password',// 返回值名称
-            title : 'password',// 列名
-            align : 'center',// 水平居中显示
-            valign : 'middle',// 垂直居中显示
-            width : '1',// 宽度
-            visible : false
-        } ,{
+        },{
             field : 'node',// 返回值名称
             title : '备注',// 列名
             align : 'center',// 水平居中显示
@@ -96,7 +90,7 @@ function getOrdersList() {
             width : '5',// 宽度
             visible : false
         },{
-            field : 'money',// 返回值名称
+            field : 'cost',// 返回值名称
             title : '金额',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
@@ -106,27 +100,42 @@ function getOrdersList() {
             title : '订单状态',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15'// 宽度
+            width : '15',// 宽度
+            formatter:function(value){
+                switch(value){
+                    case 'ORDER_PENDING_PAYMENT':return "未支付";break;
+                    case 'ORDER_PAID_NO_SHIPPED':return "未发货";break;
+                    case 'ORDER_BEING_SHIPPED':return "已发货";break;
+                    case 'ORDER_ARRIVALS':return "已到达";break;
+                    case 'ORDER_SIGN':return "已签收";break;
+                }
+            }
         }, {
-            field : 'currentCity',// 返回值名称
+            field : 'currentCity.cityName',// 返回值名称
             title : '当前地点',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15'// 宽度
+            width : '15',// 宽度
         }, {
             field : 'TimeOfArrival',// 返回值名称
             title : '到达当前地点时的时间',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '5'// 宽度
+            width : '5',// 宽度
+            formatter:function(value){
+                if(value != undefined)
+                    return formatDateTime(new Date(value));
+                else
+                    return "-"
+            }
         },{
-            field : 'startCity',// 返回值名称
+            field : 'startCity.cityName',// 返回值名称
             title : '起点',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '5'// 宽度
         },{
-            field : 'endCity',// 返回值名称
+            field : 'endCity.cityName',// 返回值名称
             title : '终点',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
@@ -136,22 +145,67 @@ function getOrdersList() {
             title : '创建时间',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '5'// 宽度
+            width : '5',// 宽度
+            formatter:function(value){
+                if(value != undefined)
+                    return formatDateTime(new Date(value));
+                else
+                    return "-"
+            }
         },{
-            field : '',// 返回值名称
+            field : 'orderStatus',// 返回值名称
             title : '操作',// 列名
             align : 'center',// 水平居中显示
             valign :'middle',// 垂直居中显示
             width : '5',// 宽度
             formatter: function (value, row, index) {
-                return "<input class='btn btn-info' type='button' onclick='show("+JSON.stringify(row)+")' value='详情'>"+
-                    "<input class='btn btn-info' id='accept' type='button' onclick='confirm("+JSON.stringify(row)+")' value='受理'>"
+                return "<input class='btn btn-info' type='button' onclick='show("+JSON.stringify(row)+")' value='详情'>"
+                        +  "<input class='btn btn-info' type='button' onclick='handler("+JSON.stringify(row)+")' value='受理'>"
             }
         }]
         // 列配置项,详情请查看 列参数 表格
         /* 事件 */
     });
 }
+var formatDateTime = function (date) {
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    m = m < 10 ? ('0' + m) : m;
+    var d = date.getDate();
+    d = d < 10 ? ('0' + d) : d;
+    var h = date.getHours();
+    h=h < 10 ? ('0' + h) : h;
+    var minute = date.getMinutes();
+    minute = minute < 10 ? ('0' + minute) : minute;
+    var second=date.getSeconds();
+    second=second < 10 ? ('0' + second) : second;
+    return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+};
+function handler(data) {
+    console.log(data.id);
+    $.ajax({
+        type: 'POST',
+        url: "/administrator/orderHandler",
+        dataType: 'json',
+        //组装order实体参数
+        data: {
+            id: data.id
+        },
+        success: function (data) {
+            console.log(data)
+            if(data.status == 1)
+                alert("受理成功!");
+            else
+                alert("受理失败!");
+            window.location.href="../templates/orderAccept.html";
+        },
+        error:function(){
+            alert("受理失败!");
+            window.location.href="../templates/orderAccept.html";
+        }
+    })
+}
+
 /*展示方法*/
 function show(data) {
     sessionStorage.setItem("goodData",JSON.stringify(data));

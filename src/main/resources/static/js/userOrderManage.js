@@ -51,18 +51,16 @@ function getOrdersList() {
         queryParams: function queryParams(params) {
             param.page = (params.offset/params.limit) + 1;
             param.size=params.limit;
-            param.sort = params.order; // 排序列名
-            param.order = params.sort; // 排位命令（descasc）
-            param.field = 'sys_user'; //查询数据库字段
-            // param.content = 'ORDER_PAID_NO_SHIPPED'; //查询内容
+            param.sort = params.sort; // 排序列名
+            param.order = params.order; // 排位命令（descasc）
             param.fullMatch = true;
             return param;
         },
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
-            console.log(backData.user_order_list);
+            console.log(backData.user_order_list.orderList);
             $('#table').bootstrapTable('removeAll');
-            $('#table').bootstrapTable('append', backData.user_order_list);
+            $('#table').bootstrapTable('append', backData.user_order_list.orderList);
         },
         //data:[{id:'1',account:'123',password:'123456',node:'0000',money:'1000',orderStatus:'003',currentCity:'重庆',TimeOfArrival:'2016-12-20',startCity:'重庆',endCity:'河北',createTime:'2016-12-20'}
         //    ,{id:'2',account:'234',password:'123456',node:'1111',money:'2000',orderStatus:'001',currentCity:'浙江',TimeOfArrival:'2018-03-20',startCity:'台湾',endCity:'新疆',createTime:'2018-03-18'}],
@@ -134,7 +132,7 @@ function getOrdersList() {
             width : '5',// 宽度
             formatter:function(value){
                 if(value != undefined)
-                    return new Date(value);
+                    return formatDateTime(new Date(value));
                 else
                     return "-"
             }
