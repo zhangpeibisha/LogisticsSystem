@@ -71,7 +71,13 @@ function showTable() {
             title : '添加时间',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '5'// 宽度
+            width : '5',// 宽度
+            formatter:function(value){
+                if(value != undefined)
+                    return formatDateTime(new Date(value));
+                else
+                    return "-"
+            }
         }, {
             field : '',// 返回值名称
             title : '操作',// 列名
@@ -88,6 +94,20 @@ function showTable() {
         /* 事件 */
     });
 }
+var formatDateTime = function (date) {
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    m = m < 10 ? ('0' + m) : m;
+    var d = date.getDate();
+    d = d < 10 ? ('0' + d) : d;
+    var h = date.getHours();
+    h=h < 10 ? ('0' + h) : h;
+    var minute = date.getMinutes();
+    minute = minute < 10 ? ('0' + minute) : minute;
+    var second=date.getSeconds();
+    second=second < 10 ? ('0' + second) : second;
+    return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+};
 //0:查看
 //1:修改
 function showCity(data) {
