@@ -66,6 +66,25 @@ public class CityAndDistancesController {
         }
         return ReturnUtil.fail("null");
     }
+
+    /**
+     * 给一个city添加相邻的city，或者修改距离
+     * */
+    @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
+    @PostMapping("/addNeighbor")
+    public ReturnObject addNeighbor(@RequestParam("srcCityId") Integer srcCityId,
+                                        @RequestParam("dstCityIds") Integer[] dstCityIds,
+                                        @RequestParam(value = "distance",required = false) Double[] distance) {
+        Integer line = null;
+        for (int i = 0;i < dstCityIds.length;i ++) {
+            line = cityService.manageNeighborCity(srcCityId,dstCityIds[i],distance[i],CityService.manageStatus.create.name());
+        }
+        if (line != null && line > 0) {
+            return ReturnUtil.success(null);
+        }
+        return ReturnUtil.fail("null");
+    }
+
     /**
      * 删除一个城市信息
      * */
