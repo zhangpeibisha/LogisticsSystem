@@ -32,7 +32,7 @@ public class SysOrderDaoImpl extends HibernateSession {
             hql += " where " + conditions;
         }
         if (order != null && !order.isEmpty()) {
-            hql += " order by " + order + " " + (sort.isEmpty() ? " asc" : sort);
+            hql += " order by " + sort + " " + (sort.isEmpty() ? " asc" : order);
         }
         if (offset != null && offset != 0) {
             hql += " limit " + offset + "," + limit;

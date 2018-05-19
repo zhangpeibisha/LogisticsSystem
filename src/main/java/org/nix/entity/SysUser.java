@@ -95,4 +95,13 @@ public class SysUser extends BasicEntity{
     public boolean isSysAdmin() {
         return SysManger.SYS_MANGER_ACCOUNT.equals(getAccount());
     }
+
+    @Override
+    public String toString() {
+        return "SysUser{" +
+                "id='" + getId() + "'" +
+                "account='" + account + '\'' +
+                ", balance=" + balance +
+                '}';
+    }
 }

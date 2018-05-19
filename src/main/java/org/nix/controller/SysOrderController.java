@@ -172,7 +172,9 @@ public class SysOrderController {
         SysUser sysUser = (SysUser) request
                 .getSession()
                 .getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
+        System.out.println(!sysUser.isSysAdmin());
         if (!sysUser.isSysAdmin()) {
+            System.out.println(sysUser);
             map.put("total", sysOrderService.count(sysUser.getId()));
             Map<String,Object> result = new HashMap<>();
             result.put("user_order_list",new ResultOrderList(sysOrderService.list(page,size,order,sort,"sys_user = " + sysUser.getId())).result());
@@ -181,10 +183,8 @@ public class SysOrderController {
             return result;
         }else{
             map.put("total", sysOrderService.count());
-            field = "";
-            content = "";
             Map<String,Object> result = new HashMap<>();
-            result.put("user_order_list",sysOrderService.list(page, size, order, sort, field, content, fullMatch));
+            result.put("user_order_list",new ResultOrderList(sysOrderService.list(page, size, order, sort, field, content, fullMatch)).result());
             result.put("status",1);
             result.put("msg","返回所有用户信息列表");
             return result;

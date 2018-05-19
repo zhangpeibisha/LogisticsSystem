@@ -55,6 +55,9 @@ $("#ensure").click(function(){
             console.log(o);
             if(o.status == 1)
                 alert("编辑成功!");
+            else{
+                alert("编辑失败！");
+            }
         },
         error:function(){
             alert("编辑失败！");

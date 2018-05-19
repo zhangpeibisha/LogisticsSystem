@@ -60,9 +60,9 @@ function getOrdersList() {
         },
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
-            console.log(backData.user_order_list);
+            console.log(backData.user_order_list.orderList);
             $('#table').bootstrapTable('removeAll');
-            $('#table').bootstrapTable('append', backData.user_order_list);
+            $('#table').bootstrapTable('append', backData.user_order_list.orderList);
         },
         //data:[{id:'1',account:'123',password:'123456',node:'0000',money:'1000',orderStatus:'003',currentCity:'重庆',TimeOfArrival:'2016-12-20',startCity:'重庆',endCity:'河北',createTime:'2016-12-20'}
         //    ,{id:'2',account:'234',password:'123456',node:'1111',money:'2000',orderStatus:'001',currentCity:'浙江',TimeOfArrival:'2018-03-20',startCity:'台湾',endCity:'新疆',createTime:'2018-03-18'}],
@@ -134,7 +134,7 @@ function getOrdersList() {
             width : '5',// 宽度
             formatter:function(value){
                 if(value != undefined)
-                    return new Date(value);
+                    return formatDateTime(new Date(value));
                 else
                     return "-"
             }
