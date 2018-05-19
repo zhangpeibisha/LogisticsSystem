@@ -23,14 +23,10 @@ function addOrder(){
                   },
                 success: function (o) {
                     console.log(o);
-                    if (o.code === 'SUCCESS') {
+                    if (o.status == '1') {
                         alert('添加成功!');
-
-                        //添加成功后再table增加一行数据
-                        // $('#table').bootstrapTable('prepend', o.member);
-                    }else if(o.code === 'FAIL'){
+                   }else if(o.status == '-1'){
                         alert('添加失败！');
-                        dismiss();
                     }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -82,6 +78,14 @@ function setCity() {
 function addInputCheck(){
     if($('#money').val() == null || $('#money').val() == ''){
         alert('请输入金额！');
+        return false;
+    }
+    if($('#item').val() == null || $('#item').val() == ''){
+        alert('请输入物品名！');
+        return false;
+    }
+    if($('#price').val() == null || $('#price').val() == ''){
+        alert('请输入物品价格！');
         return false;
     }
     if($('#descripe').val() == null || $('#descripe').val() == ''){

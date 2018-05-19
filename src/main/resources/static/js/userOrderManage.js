@@ -51,10 +51,8 @@ function getOrdersList() {
         queryParams: function queryParams(params) {
             param.page = (params.offset/params.limit) + 1;
             param.size=params.limit;
-            param.sort = params.order; // 排序列名
-            param.order = params.sort; // 排位命令（descasc）
-            param.field = 'sys_user'; //查询数据库字段
-            // param.content = 'ORDER_PAID_NO_SHIPPED'; //查询内容
+            param.sort = params.sort; // 排序列名
+            param.order = params.order; // 排位命令（descasc）
             param.fullMatch = true;
             return param;
         },

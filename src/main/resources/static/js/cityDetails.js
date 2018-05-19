@@ -23,23 +23,8 @@ function init(){
             setCity(data);
         },
         error:function(o){
-            var datas = [{id:'4',cost:'3'},{id:'7',cost:'2'}];
-            //console.log(o.data);
-            var html = '';
-            //var data = o.data;
-            $('#cityId').html(cityDatas.id);
-            $('#cityName').val(cityDatas.cityName);
-            $('#createTime').val(cityDatas.createTime);
-            if(datas.length > 0){
-                for(var i = 0; i < datas.length; i++){
-                    html+='<tr>' +
-                        '<th>下一地点</th><td><select id="select'+i+'"></select></td>'+
-                        '<th>到达下一地点的开销</th><td><input type="text" id="cost'+i+'"></td></tr>'
-                }
-            }
-            $('#city').after(html);
-            setCity(datas);
-            setIfEdit();
+            alert('获取数据失败!');
+            window.history.go(-1);
         }
     })
 }
