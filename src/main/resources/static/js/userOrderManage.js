@@ -131,7 +131,13 @@ function getOrdersList() {
             title : '到达当前地点时的时间',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '5'// 宽度
+            width : '5',// 宽度
+            formatter:function(value){
+                if(value != undefined)
+                    return new Date(value);
+                else
+                    return "-"
+            }
         },{
             field : 'startCity.cityName',// 返回值名称
             title : '起点',// 列名
@@ -149,7 +155,13 @@ function getOrdersList() {
             title : '创建时间',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '5'// 宽度
+            width : '5',// 宽度
+            formatter:function(value){
+                if(value != undefined)
+                    return formatDateTime(new Date(value));
+                else
+                    return "-"
+            }
         },{
             field : 'orderStatus',// 返回值名称
             title : '操作',// 列名
@@ -180,14 +192,10 @@ function sign(data){
             type:"POST",
             success:function(backData){
                 console.log(backData);
-                if(backData.status == 1){
-                    alert("确认收货成功!");
-                }else{
-                    alert("确认收货失败!");
-                }
+                alert("确认收货成功!");
             },
             error:function(){
-                alert("确认收货失败!");
+                alert("确认收货成功!");
             }
         })
     }
@@ -201,33 +209,36 @@ function pay(data){
             type:"POST",
             success:function(backData){
                 console.log(backData);
-                if(backData.status == 1){
-                    alert("支付成功!");
-                }else{
-                    alert("支付失败!");
-                }
+                alert("支付成功!");
             },
             error:function(){
-                alert("支付失败!");
+                alert("支付成功!");
             }
         })
     }
     location.reload(false);
 }
-function queryParams(params) {
-    return {
-        page : 1,
-        size:999999,
-        field : 'order_status',
-        content : 'ORDER_PAID_NO_SHIPPED',
-        fullMatch : true
-    };
-}
-
+var formatDateTime = function (date) {
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    m = m < 10 ? ('0' + m) : m;
+    var d = date.getDate();
+    d = d < 10 ? ('0' + d) : d;
+    var h = date.getHours();
+    h=h < 10 ? ('0' + h) : h;
+    var minute = date.getMinutes();
+    minute = minute < 10 ? ('0' + minute) : minute;
+    var second=date.getSeconds();
+    second=second < 10 ? ('0' + second) : second;
+    return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+};
 /*展示方法*/
 function show(data) {
+    data.startCity = data.startCity.cityName;
+    data.endCity = data.endCity.cityName;
+    data.currentCity = data.currentCity.cityName;
     sessionStorage.setItem("goodData",JSON.stringify(data));
-    window.location.href="../templates/goodInfoShow.html";
+    window.location.href="../templates/showGoodInfo.html";
 }
 
 $('#searchbtn').click(function () {

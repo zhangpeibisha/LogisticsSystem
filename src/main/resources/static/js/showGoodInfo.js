@@ -56,7 +56,7 @@ $('#evalution').click(function(){
     //var orderData = JSON.parse(sessionStorage.getItem("goodData"));
     var datas = [{name:'张三',date:'2016-10-01',replyContent:'东西不好'},{name:'张三',date:'2016-10-01',replyContent:'东西不好'},{name:'李四',date:'2016-10-02',replyContent:'亲，有质量问题我们可以退换噢'},{name:'张三',date:'2016-10-02',replyContent:'那退吧'}];
     $.ajax({
-        //data:orderData.id,
+        //data:{id:orderData.id},
         type:'POST',
         url:'',
         dataType:'json',
@@ -127,22 +127,45 @@ function replyCancel(){
 function setValue(){
     var sData = JSON.parse(sessionStorage.getItem("goodData"));
     var member = JSON.parse(sessionStorage.getItem("member"));
-
+    console.log(sData);
     $("#money,#status,#nowPlace,#arriveedTime,#startplace,#endplace,#descripe,#createTime").attr("disabled","true");
     $("#orderId").val(sData.id);
-    $("#account").val(sData.account);
-    $("#accountpassword").val(sData.password);
-    $('#money').text(sData.money);
-    $('#status').text(sData.orderStatus);
+    $("#account").val(sData.sysUser.account);
+    $("#accountpassword").val(sData.sysUser.password);
+    $('#money').text(sData.cost);
+    switch(sData.orderStatus){
+        case 'ORDER_PENDING_PAYMENT':$('#status').text("未支付");break;
+        case 'ORDER_PAID_NO_SHIPPED':$('#status').text("未发货");break;
+        case 'ORDER_BEING_SHIPPED':$('#status').text("已发货");break;
+        case 'ORDER_ARRIVALS':$('#status').text("已到达");break;
+        case 'ORDER_SIGN':$('#status').text("已签收");break;
+    }
     $('#nowPlace').text(sData.currentCity);
-    $('#arriveedTime').text(sData.TimeOfArrival);
+    if(sData.TimeOfArrival > 0)
+        $('#arriveedTime').text(formatDateTime(new Date(sData.TimeOfArrival)));
+    else
+        $('#arriveedTime').text("-");
     $('#startplace').text(sData.startCity);
     $('#endplace').text(sData.endCity);
     $('#descripe').text(sData.node);
-    $('#createTime').text(sData.createTime);
+    $('#createTime').text(formatDateTime(new Date(sData.createTime)));
     $("#operationGoodmodule").css('display','block');
     $("#enable").attr('disabled','disabled');
 }
+var formatDateTime = function (date) {
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    m = m < 10 ? ('0' + m) : m;
+    var d = date.getDate();
+    d = d < 10 ? ('0' + d) : d;
+    var h = date.getHours();
+    h=h < 10 ? ('0' + h) : h;
+    var minute = date.getMinutes();
+    minute = minute < 10 ? ('0' + minute) : minute;
+    var second=date.getSeconds();
+    second=second < 10 ? ('0' + second) : second;
+    return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+};
 $("#cancel").click(function(){
     window.history.go(-1);
 });
