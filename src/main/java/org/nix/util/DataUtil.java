@@ -5,7 +5,10 @@ package org.nix.util;
  * @date 2018/04/12 17:54
  */
 public final class DataUtil {
-    public static int offset(int page,int size) {
+    public static Integer offset(Integer page,Integer size) {
+        if (page == null || size == null) {
+            return null;
+        }
         return (page - 1) * size;
     }
     public static String getConditions(String field, String content,Boolean fullMatch) {
