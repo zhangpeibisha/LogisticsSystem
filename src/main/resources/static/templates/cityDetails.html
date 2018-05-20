@@ -52,13 +52,16 @@
 <hr/>
 <div>
 <form id="editFrom" action="" >
-    <table class="gridtable" style="margin-left: 15px;">
+    <table class="gridtable" style="margin-left: 15px;" id="cityOperation">
         <tr class="tableDissData">
             <th>ID</th>
             <td id="cityId"></td>
         </tr>
         <tr id="city">
             <th>城市名</th><td><input id="cityName"/></td>
+            <td>
+                <input id="addnextCitybtn" type="button" class="btn btn-default" onclick="addNextCity()" value="添加一个相邻城市"/>
+            </td>
         </tr>
     </table>
 </form>

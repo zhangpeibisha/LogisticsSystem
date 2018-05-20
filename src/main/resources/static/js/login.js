@@ -81,24 +81,15 @@ function register(){
 }
 function enableregister(){
     if(checkData()) {
-        var member = {
-            account:$('#account').val(),
-            password:$(" input[ name='password' ] ").val(),
-            grade:$(" input[ name='grade' ]:checked ").val()
-        };
-        console.log(member);
         $.ajax({
             type: 'POST',
-            url: "/generalUser/register",
+            url: "/generalUser/register?"+"account="+$('#registerAccount').val()+"&password=" +hex_md5($("#registerPassword").val()),
             dataType: 'json',
-            data:member,
             success: function (data) {
-                if (data == 'SUCCESS') {
-                    sessionStorage.setItem("member",JSON.stringify(member));
-                    location.href = "../html/index.html";
-                }else{
-                    alert('用户名或者密码错误！');
-                    location.href='https://www.baidu.com/';
+                console.log(data)
+                if (data.status == '1') {
+                    alert("注册成功!");
+                    window.location.href="../templates/login.html"
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {

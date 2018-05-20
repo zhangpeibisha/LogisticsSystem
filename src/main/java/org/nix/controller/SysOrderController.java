@@ -255,10 +255,10 @@ public class SysOrderController {
         return ReturnUtil.fail(null);
     }
 
-    @PostMapping("/goNextCity")
+    @PostMapping("/shippedOrder")
     @LoginRequired(value = SysRoleEnum.ROLE_ADMINISTRATOR)
-    public ReturnObject goNextCity(@RequestParam("orderId")int orderId){
-        sysOrderService.findNextCityBySysOrder(sysOrderJpa.findOne(orderId));
+    public ReturnObject shippedOrder(@RequestParam("orderId")int orderId){
+        sysOrderService.shippedOrder(sysOrderJpa.findOne(orderId));
         return ReturnUtil.success("处理成功","");
     }
 }
