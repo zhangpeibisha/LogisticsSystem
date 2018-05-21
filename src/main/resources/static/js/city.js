@@ -1,4 +1,4 @@
-var param = {}
+var param = {};
 var search = false;
 function showTable() {
     var member = JSON.parse(sessionStorage.getItem('member'));
@@ -66,18 +66,6 @@ function showTable() {
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '5'// 宽度
-        }, {
-            field : 'createTime',// 返回值名称
-            title : '添加时间',// 列名
-            align : 'center',// 水平居中显示
-            valign : 'middle',// 垂直居中显示
-            width : '5',// 宽度
-            formatter:function(value){
-                if(value != undefined)
-                    return formatDateTime(new Date(value));
-                else
-                    return "-"
-            }
         }, {
             field : '',// 返回值名称
             title : '操作',// 列名
@@ -220,8 +208,20 @@ function checkInput(){
     }
     return true;
 }
-function searchList() {
-    $("#table").bootstrapTable('refresh');
-    search = true;
+function searchCity() {
+    // $.ajax({
+    //     url:'/city/search?' + "name="+ $("#search").val(),
+    //     type:'POST',
+    //     dataType:'JSON',
+    //     success:function(data){
+    //         console.log(data);
+    //         $('#table').bootstrapTable('removeAll');
+    //         $('#table').bootstrapTable('refresh', data.data);
+    //     },
+    //     error:function(){
+    //         alert("查询失败!");
+    //     }
+    // })
+    $('#table').bootstrapTable('refresh', {url:'/city/search?' + "name="+ $("#search").val()}.data);
 }
 showTable();

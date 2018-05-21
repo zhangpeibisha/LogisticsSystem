@@ -101,7 +101,8 @@ public class CityAndDistancesController {
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @LoginRequired(SysRoleEnum.ROLE_ADMINISTRATOR)
     public ReturnObject searchCity(@RequestParam("name") String name) {
-        return ReturnUtil.success(cityService.list(-1, 0, null, null, "cityName", name, false));
+        System.out.println(name);
+        return ReturnUtil.success(cityService.list(1, 10, null, null, "city_name", name, false));
     }
 
     /**
