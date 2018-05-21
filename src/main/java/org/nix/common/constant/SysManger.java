@@ -12,5 +12,5 @@ public class SysManger {
     public final static String FINANCE_ACCOUNT = "222222";
 
     // 系统后台管理员账号
-    public final static String SYS_MANGER_ACCOUNT = "222222";
+    public final static String SYS_MANGER_ACCOUNT = "admin";
 }

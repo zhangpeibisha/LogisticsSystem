@@ -1,5 +1,25 @@
 $(document).ready(function(){
     setValue();
+    $("#next").click(function () {
+        
+        if (JSON.parse(sessionStorage.getItem("goodData")).orderStatus === "ORDER_ARRIVALS") {
+            alert("货物已达到目的地！！！");
+            $("#next").hide();
+            return;
+        }
+        
+        $.ajax({
+            type:'GET',
+            url:'/order/transport?orderId=' + JSON.parse(sessionStorage.getItem("goodData")).id,
+            dataType:'json',
+            success:function(datas) {
+                if (datas.status == 1) {
+                    $("#next").hide();
+                }
+                alert(datas.msg);
+            }
+        });
+    });
 });
 function getPath(){
     var data=[{time:'2016-3-5',massage:'到达太原'},{time:'2016-3-5',massage:'到达太原'},{time:'2016-3-6',massage:'从太原站发出'},{time:'2016-3-7',massage:'到达杭州'}];
@@ -9,16 +29,19 @@ function getPath(){
       dataType:'json',
       success:function(data){
           var ways = data.data.way;
+          console.log("++++")
+          console.log(ways[ways.length-1].arriveDate)
+          console.log("++++")
           var htmldata = '<div class="track-rcol" style="position: relative;left: 80px;"><div class="track-list" style="max-height: 350px;overflow-y: auto;"><span>物流信息</span><ul>';
           htmldata = htmldata + '<li class="first">' +
               '<i class="node-icon"></i>' +
-              '<span class="time">'+ formatDateTime(new Date(ways[ways.length-1].arriveDate)) + '</span>'+
-              '<span class="txt">'+ (ways[ways.length-1].finish ? "运输中：" : "完成：") + ways[ways.length-1].city.cityName + '</span></li>';
+              '<span class="time">'+ (ways[ways.length-1].arriveDate == undefined ? "未达到" : formatDateTime(new Date(ways[ways.length-1].arriveDate))) + '</span>'+
+              '<span class="txt">'+ (ways[ways.length-1].finish ? "到达：" : "运输中：") + ways[ways.length-1].city.cityName + '</span></li>';
           for(var i = ways.length-2; i >=0; i--){
               htmldata = htmldata + '<li>' +
                   '<i class="node-icon"></i>' +
-                  '<span class="time">'+ formatDateTime(new Date(ways[i].arriveDate)) + '</span>'+
-                  '<span class="txt">'+ (ways[i].finish ? "运输中：" : "完成：") + ways[i].city.cityName + '</span></li>'
+                  '<span class="time">'+ (ways[i].arriveDate == undefined ? "未达到" : formatDateTime(new Date(ways[i].arriveDate))) + '</span>'+
+                  '<span class="txt">'+ (ways[i].finish ? "到达：" : "运输中：") + ways[i].city.cityName + '</span></li>'
           }
           htmldata = htmldata + '</ul> </div> </div>' + '<button class="btn btn-default" style="float: right;margin-right: 40px;" onclick="dissmissLookPath()">返回</button>';
           var s = document.getElementById('goodPath');
@@ -128,8 +151,8 @@ function replyCancel(){
 function setValue(){
     var sData = JSON.parse(sessionStorage.getItem("goodData"));
     var member = JSON.parse(sessionStorage.getItem("member"));
-    console.log("====")
-    console.log(sData);
+    console.log("----")
+    console.log(sData)
     $("#money,#status,#nowPlace,#arriveedTime,#startplace,#endplace,#descripe,#createTime").attr("disabled","true");
     $("#orderId").val(sData.id);
     $("#account").val(sData.sysUser.account);
@@ -142,16 +165,13 @@ function setValue(){
         case 'ORDER_ARRIVALS':$('#status').text("已到达");break;
         case 'ORDER_SIGN':$('#status').text("已签收");break;
     }
-    $('#nowPlace').text(sData.currentCity.cityName);
-    if(sData.TimeOfArrival > 0)
-        $('#arriveedTime').text(formatDateTime(new Date(sData.TimeOfArrival)));
+    $('#nowPlace').text(sData.currentCity);
+    if(sData.timeOfArrival > 0)
+        $('#arriveedTime').text(formatDateTime(new Date(sData.timeOfArrival)));
     else
         $('#arriveedTime').text("-");
-    console.log("------");
-    console.log(sData.startCity);
-    console.log("------");
-    $('#startplace').text(sData.startCity.cityName);
-    $('#endplace').text(sData.endCity.cityName);
+    $('#startplace').text(sData.startCity);
+    $('#endplace').text(sData.endCity);
     $('#descripe').text(sData.node);
     $('#createTime').text(formatDateTime(new Date(sData.createTime)));
     $("#operationGoodmodule").css('display','block');

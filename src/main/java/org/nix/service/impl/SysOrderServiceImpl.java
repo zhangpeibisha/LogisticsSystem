@@ -74,7 +74,7 @@ public class SysOrderServiceImpl  {
 
         sysOrder.setCreateTime(new Date());
         // 设置订单状态
-        sysOrder.setOrderStatus(SysOrderEnum.ORDER_PENDING_PAYMENT);
+        sysOrder.setOrderStatus(SysOrderEnum.ORDER_PAID_NO_SHIPPED);
 
         sysOrderJpa.save(sysOrder);
 
@@ -188,8 +188,11 @@ public class SysOrderServiceImpl  {
                 orderWays.setOrderId(order);
                 ways.add(orderWays);
             }
+            ways.get(0).setArriveDate(new Date());
+            ways.get(0).setFinish(true);
         }
         order.setOrderWays(ways);
+        order.setTimeOfArrival(new Date());
     }
 
     /**

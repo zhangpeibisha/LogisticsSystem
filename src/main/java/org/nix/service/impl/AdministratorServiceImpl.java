@@ -35,6 +35,7 @@ public class AdministratorServiceImpl {
     public boolean orderHandler(SysOrder order, SysUser sysUser) {
         if (sysUser.isSysAdmin()) {
             order.setOrderStatus(SysOrderEnum.ORDER_BEING_SHIPPED);
+            order.setCurrentCity(order.getOrderWays().get(0).getCity());
             sysOrderJpa.saveAndFlush(order);
             return true;
         }

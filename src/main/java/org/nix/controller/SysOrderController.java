@@ -22,10 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Create by zhangpe0312@qq.com on 2018/4/9.
@@ -72,13 +69,14 @@ public class SysOrderController {
                                      @RequestParam("startplaceId") int startplace,
                                      @RequestParam("endplaceId") int endplace,
                                      HttpServletRequest request) {
-        sysOrder.setOrderStatus(SysOrderEnum.ORDER_PENDING_PAYMENT);
+        sysOrder.setOrderStatus(SysOrderEnum.ORDER_PAID_NO_SHIPPED);
         City startCity = cityService.findById(startplace);
         City endCity = cityService.findById(endplace);
         City currCity = cityService.findById(startplace);
         sysOrder.setStartCity(startCity);
         sysOrder.setEndCity(endCity);
         sysOrder.setCurrentCity(currCity);
+
         sysOrderService.createOrder(sysOrder, request);
 
         return ReturnUtil.success(null, null);
@@ -275,10 +273,12 @@ public class SysOrderController {
 
         SysUser findUser = (SysUser) request.getSession().getAttribute(SessionKeyEnum.SESSION_KEY_CURRENT_USER.getKey());
         findUser = sysUserJpa.findSysUserByAccount(findUser.getAccount());
-        if (findUser.getSysRole().getRoleName().equals(SysRoleEnum.ROLE_GENERAL.getValue()))
+        if (findUser.getSysRole().getRoleName().equals(SysRoleEnum.ROLE_GENERAL.getValue())) {
             return ReturnUtil.success("返回订单统计信息", new ResultOrderStatistics(findUser.getSysOrder()).result());
-        if (findUser.getSysRole().getRoleName().equals(SysRoleEnum.ROLE_ADMINISTRATOR.getValue()))
+        }
+        if (findUser.getSysRole().getRoleName().equals(SysRoleEnum.ROLE_ADMINISTRATOR.getValue())) {
             return ReturnUtil.success("返回订单统计信息", new ResultOrderStatistics(sysUserJpa.CountAllGeneralUser(),findUser.getSysOrder()).result());
+        }
 
         return ReturnUtil.fail(null);
     }
@@ -288,5 +288,33 @@ public class SysOrderController {
     public ReturnObject shippedOrder(@RequestParam("orderId")int orderId){
         sysOrderService.shippedOrder(sysOrderJpa.findOne(orderId));
         return ReturnUtil.success("处理成功","");
+    }
+
+    /**
+     * 模拟物流运送
+     * */
+    @GetMapping("/transport")
+    public Map<String,Object> autoTransport(@RequestParam("orderId")int orderId) {
+        Map<String,Object> map = new HashMap<>();
+        SysOrder sysOrder = sysOrderService.findById(orderId);
+        List<OrderWays> orderWays = sysOrder.getOrderWays();
+        City currentCity = sysOrder.getCurrentCity();
+        for (int i = 0;i < orderWays.size();i ++) {
+            if (currentCity.getCityName().equals(orderWays.get(i).getCity().getCityName())) {
+                if (i != orderWays.size() - 1) {
+                    sysOrder.setCurrentCity(orderWays.get(i + 1).getCity());
+                    orderWays.get(i + 1).setFinish(true);
+                    orderWays.get(i + 1).setArriveDate(new Date());
+                    map.put("msg","订单已到达下一站");
+                } else {
+                    sysOrder.setOrderStatus(SysOrderEnum.ORDER_ARRIVALS);
+                    map.put("msg","订单已到达目的地");
+                    map.put("status",1);
+                }
+            }
+        }
+        sysOrder.setTimeOfArrival(new Date());
+        sysOrderJpa.saveAndFlush(sysOrder);
+        return map;
     }
 }

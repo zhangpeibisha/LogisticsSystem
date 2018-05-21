@@ -39,7 +39,8 @@ public class ResultOrderList extends AbstractResultDto {
             city.setCityName(sysOrder.getCurrentCity().getCityName());
             city.setId(sysOrder.getCurrentCity().getId());
             sysOrder1.setCurrentCity(city);
-
+            sysOrder1.setNode(sysOrder.getNode());
+            sysOrder1.setTimeOfArrival(sysOrder.getTimeOfArrival());
             City endCity = new City();
             endCity.setCityName(sysOrder.getEndCity().getCityName());
             endCity.setId(sysOrder.getEndCity().getId());

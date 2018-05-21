@@ -93,7 +93,7 @@ function getOrdersList() {
             valign : 'middle',// 垂直居中显示
             width : '15',// 宽度
         }, {
-            field : 'TimeOfArrival',// 返回值名称
+            field : 'timeOfArrival',// 返回值名称
             title : '到达当前地点时的时间',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
@@ -162,6 +162,7 @@ function show(data) {
     data.startCity = data.startCity.cityName;
     data.endCity = data.endCity.cityName;
     data.currentCity = data.currentCity.cityName;
+    console.log(data);
     sessionStorage.setItem("goodData",JSON.stringify(data));
     window.location.href="../templates/showGoodInfo.html";
 }
