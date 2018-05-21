@@ -13,10 +13,7 @@ import org.nix.dao.repositories.SysUserJpa;
 import org.nix.dto.order.ResultOrderInfoDto;
 import org.nix.dto.order.ResultOrderList;
 import org.nix.dto.order.ResultOrderStatistics;
-import org.nix.entity.City;
-import org.nix.entity.OrderEvaluation;
-import org.nix.entity.SysOrder;
-import org.nix.entity.SysUser;
+import org.nix.entity.*;
 import org.nix.service.impl.CityServiceImpl;
 import org.nix.service.impl.OrderEvaluationServiceImpl;
 import org.nix.service.impl.SysOrderServiceImpl;
@@ -25,7 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -121,6 +120,35 @@ public class SysOrderController {
             throw new SelectObjectException();
         }
         return ReturnUtil.success(new ResultOrderInfoDto(sysOrder));
+    }
+
+    /**
+     * todo: 查看指定订单的详细信息
+     * 使用角色: 管理员能够查看全部的，用户只能查看自己的
+     *
+     * @param order_id 需要处理订单的id
+     * @return 操作回馈
+     */
+    @RequestMapping(value = "/ways", method = RequestMethod.POST)
+    @LoginRequired({SysRoleEnum.ROLE_GENERAL, SysRoleEnum.ROLE_ADMINISTRATOR})
+    public ReturnObject ways(@RequestParam("order_id") int order_id) {
+        Map<String,Object> map = new HashMap<>();
+        SysOrder sysOrder = sysOrderJpa.findOne(order_id);
+        map.put("order",new ResultOrderInfoDto(sysOrder));
+        List<OrderWays> ways = new ArrayList<>();
+        for (OrderWays orderWays:sysOrder.getOrderWays()) {
+            OrderWays way = new OrderWays();
+            way.setExpectedDate(orderWays.getExpectedDate());
+            way.setArriveDate(orderWays.getArriveDate());
+            way.setFinish(orderWays.getFinish());
+            way.setCity(new City(orderWays.getCity().getCityName()));
+            ways.add(way);
+        }
+        map.put("way",ways);
+        if (sysOrder == null) {
+            throw new SelectObjectException();
+        }
+        return ReturnUtil.success(map);
     }
 
     /**
