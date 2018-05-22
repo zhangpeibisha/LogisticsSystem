@@ -7,6 +7,7 @@ import org.nix.common.ReturnObject;
 import org.nix.common.sysenum.SessionKeyEnum;
 import org.nix.common.sysenum.SysOrderEnum;
 import org.nix.common.sysenum.SysRoleEnum;
+import org.nix.dao.impl.OrderEvaluationDaoImpl;
 import org.nix.dao.impl.SysOrderDaoImpl;
 import org.nix.dao.repositories.OrderEvaluationJpa;
 import org.nix.dao.repositories.SysOrderJpa;
@@ -53,6 +54,8 @@ public class SysOrderController {
 
     @Autowired
     private SysOrderDaoImpl sysOrderDao;
+
+
     /**
      * todo: 用户下订单接口
      * <p>
@@ -258,8 +261,8 @@ public class SysOrderController {
                                         @RequestParam("message") String message,
                                         HttpServletRequest request) {
 
-        OrderEvaluation orderEvaluation = orderEvaluationJpa.findOne(evaluation_id);
-        orderEvaluationService.evaluationReply(orderEvaluation, message, request);
+//        OrderEvaluation orderEvaluation = orderEvaluationJpa.findOne(evaluation_id);
+//        orderEvaluationService.evaluationReply(orderEvaluation, message, request);
         return ReturnUtil.success(null, null);
     }
 
@@ -331,7 +334,12 @@ public class SysOrderController {
             return map;
         }
 
-        List<OrderEvaluation> orderEvaluations = sysOrder.getOrderEvaluation();
+        List<OrderEvaluation> orderEvaluations = orderEvaluationJpa.findByOrderId(orderId);
+        for (OrderEvaluation orderEvaluation : orderEvaluations) {
+            SysUser sysUser = new SysUser();
+            sysUser.setAccount(orderEvaluation.getSysUser().getAccount());
+            orderEvaluation.setSysUser(sysUser);
+        }
         map.put("status",1);
         map.put("msg","获取订单评价成功");
         map.put("data",orderEvaluations);

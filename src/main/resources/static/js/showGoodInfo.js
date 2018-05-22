@@ -77,20 +77,27 @@ function dissmissLookPath(){
 }
 //返回的数据应该是姓名（name），回复日期(date)，回复内容(replyContent)三条。
 $('#evalution').click(function(){
+    console.info("点击评价按钮");
+    console.info(orderData.id);
     $.ajax({
         data:{orderId:orderData.id},
         type:'GET',
         url:'/order/findAllOrderEvaluationByOrderId',
         dataType:'json',
-        success:function(data) {
-            var datas = data.data;
+        success:function(datas) {
+            console.info("评价信息data");
+            console.info(datas);
+            console.info(datas.data[0].sysUser.account);
+            console.info("用户名");
             var evalutiondata = '<div class="ylcon"><p class="tit">所有评价 </p> <div id="messDivId" style="overflow-y: auto;max-height: 252px;">';
-            if(datas.length > 0){
-                for(var i = 0; i < datas.length; i++){
+            if(datas.data.length > 0){
+                var evalu =  datas.data;
+                for(var i = 0; i <evalu.length; i++){
                     evalutiondata = evalutiondata + '<div class="story"><div class="opbtn"></div>'+
-                        '<p class="story_t">'+ datas[i].id+'</p>'+
-                        '<p class="story_time">'+ datas[i].createTime+'</p>' +
-                        '<p class="story_m">'+ datas[i].evaluation+'</p></div>'
+                        '<p class="story_t">'+ "发送用户："+ evalu[i].sysUser.account+'</p>'+
+                        //+  evalu[i].createTime.getFullYear()
+                        '<p class="story_time">'+ "评价时间："+ formatDateTime(new Date(evalu[i].createTime)) + '</p>' +
+                        '<p class="story_m">'+  "评价信息："+ evalu[i].evaluation+'</p></div>'
                 }
                 evalutiondata = evalutiondata + '</div>';
             }
@@ -111,12 +118,50 @@ $('#evalution').click(function(){
 });
 function reply(){
     $.ajax({
-        url:'/order/evaluationReply',
+        url:'/order/orderEvaluation',
         dataType:'json',
         type:'POST',
-        data:{evaluation_id:orderData.id,message:$('#massage').val(),account:member.account},
+        data:{order_id:orderData.id,message:$('#massage').val(),account:member.account},
         success:function(){
             alert('评论成功');
+            console.info("点击评价按钮");
+            console.info(orderData.id);
+            $.ajax({
+                data:{orderId:orderData.id},
+                type:'GET',
+                url:'/order/findAllOrderEvaluationByOrderId',
+                dataType:'json',
+                success:function(datas) {
+                    console.info("评价信息data");
+                    console.info(datas);
+                    console.info(datas.data[0].sysUser.account);
+                    console.info("用户名");
+                    var evalutiondata = '<div class="ylcon"><p class="tit">所有评价 </p> <div id="messDivId" style="overflow-y: auto;max-height: 252px;">';
+                    if(datas.data.length > 0){
+                        var evalu =  datas.data;
+                        for(var i = 0; i <evalu.length; i++){
+                            evalutiondata = evalutiondata + '<div class="story"><div class="opbtn"></div>'+
+                                '<p class="story_t">'+ "发送用户："+ evalu[i].sysUser.account+'</p>'+
+                                //+  evalu[i].createTime.getFullYear()
+                                '<p class="story_time">'+ "评价时间："+ formatDateTime(new Date(evalu[i].createTime)) + '</p>' +
+                                '<p class="story_m">'+  "评价信息："+ evalu[i].evaluation+'</p></div>'
+                        }
+                        evalutiondata = evalutiondata + '</div>';
+                    }
+                    evalutiondata = evalutiondata +'<div>'+
+                        '<div><textarea id="massage" style="margin-top: 5px;width: 30%;height: 150px;margin-left: 15px;min-width: 400px;"></textarea>'+
+                        '<button type="button" style="margin-left: 15px;position: relative;top: 120px;" class="btn btn-default" onclick="reply()">评价</button>'+
+                        '<button type="button" style="margin-left: 15px;position: relative;top: 120px;" class="btn btn-default" onclick="replyCancel()">取消</button></div>'+
+                        '</div>';
+                    var s = document.getElementById('evalutionBox');
+                    s.innerHTML=evalutiondata;
+                    $('#evalutionBox').css('display','block');
+                    $('.log-window').css('display','block');
+                },
+                error:function(datas){
+                    alert("获取评价信息失败!");
+                }
+            });
         },
         error:function(){
             alert('评论失败');
@@ -152,8 +197,7 @@ function setValue(){
     $('#descripe').text(sData.node);
     $('#createTime').text(formatDateTime(new Date(sData.createTime)));
     $("#operationGoodmodule").css('display','block');
-    console.log(member)
-    if (sData.endCity == sData.currentCity || member.account != "admin") {
+    if (sData.endCity == sData.currentCity) {
         $("#next").hide();
     }
     $("#enable").attr('disabled','disabled');

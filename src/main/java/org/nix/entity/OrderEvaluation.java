@@ -21,8 +21,6 @@ public class OrderEvaluation extends BasicEntity {
     private String evaluation;
     //评论对应的订单
     private SysOrder sysOrder;
-    //这条评论下的回复信息
-    private List<OrderEvaluation> nextEvaluations;
     //这条评论的作者,一个用户有多个评论，一个评论有一个用户
     private SysUser sysUser;
 
@@ -39,15 +37,10 @@ public class OrderEvaluation extends BasicEntity {
         return sysOrder;
     }
 
-    @OneToMany()
-    @JoinColumn(name = "nextEvaluations")
-    public List<OrderEvaluation> getNextEvaluations() {
-        return nextEvaluations;
-    }
 
     @ManyToOne(targetEntity = SysUser.class , fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @JoinColumn(name = "sysUser")
-    @JSONField(serialize = false)
+//    @JSONField(serialize = false)
     public SysUser getSysUser() {
         return sysUser;
     }
@@ -58,10 +51,6 @@ public class OrderEvaluation extends BasicEntity {
 
     public void setSysOrder(SysOrder sysOrder) {
         this.sysOrder = sysOrder;
-    }
-
-    public void setNextEvaluations(List<OrderEvaluation> nextEvaluations) {
-        this.nextEvaluations = nextEvaluations;
     }
 
     public void setSysUser(SysUser sysUser) {

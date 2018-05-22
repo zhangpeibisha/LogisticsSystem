@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 
 /**
  * Create by zhangpe0312@qq.com on 2018/4/4.
@@ -39,6 +40,11 @@ public class Application {
 
         return new HttpMessageConverters(converter);
 
+    }
+
+    @Bean
+    public OpenEntityManagerInViewFilter openEntityManagerInViewFilter() {
+        return new OpenEntityManagerInViewFilter();
     }
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
