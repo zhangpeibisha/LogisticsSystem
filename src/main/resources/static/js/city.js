@@ -192,6 +192,9 @@ function enableAdd(){
         success:function(o){
             if(o.status == 1)
                 alert("添加成功!");
+            else {
+                alert("添加失败");
+            }
         },
         error:function(){
             alert("添加失败！");

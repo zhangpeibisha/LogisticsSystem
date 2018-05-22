@@ -1,5 +1,6 @@
 package org.nix.controller;
 
+import io.jsonwebtoken.Header;
 import org.nix.Exception.SelectObjectException;
 import org.nix.annotation.LoginRequired;
 import org.nix.common.ReturnObject;
@@ -232,7 +233,7 @@ public class SysOrderController {
                                         @RequestParam("message") String message,
                                         HttpServletRequest request) {
 
-        SysOrder sysOrder = sysOrderJpa.findOne(order_id);
+        SysOrder sysOrder = sysOrderJpa.findByOrderId(order_id);
         if (sysOrder == null) {
             throw new SelectObjectException();
         }
@@ -316,5 +317,25 @@ public class SysOrderController {
         sysOrder.setTimeOfArrival(new Date());
         sysOrderJpa.saveAndFlush(sysOrder);
         return map;
+    }
+
+    @GetMapping(value = "/findAllOrderEvaluationByOrderId")
+    public Map<String,Object> findAllOrderEvaluationByOrderId(@RequestParam("orderId")int orderId){
+
+        Map<String,Object> map = new HashMap<>();
+
+        SysOrder sysOrder = sysOrderJpa.findByOrderId(orderId);
+        if (sysOrder == null){
+            map.put("status",-1);
+            map.put("msg","查询失败，订单不存在");
+            return map;
+        }
+
+        List<OrderEvaluation> orderEvaluations = sysOrder.getOrderEvaluation();
+        map.put("status",1);
+        map.put("msg","获取订单评价成功");
+        map.put("data",orderEvaluations);
+        return map;
+
     }
 }
