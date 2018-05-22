@@ -208,6 +208,9 @@ function handler(data) {
 
 /*展示方法*/
 function show(data) {
+    data.startCity = data.startCity.cityName;
+    data.endCity = data.endCity.cityName;
+    data.currentCity = data.currentCity.cityName;
     sessionStorage.setItem("goodData",JSON.stringify(data));
     window.location.href="../templates/showGoodInfo.html";
 }
