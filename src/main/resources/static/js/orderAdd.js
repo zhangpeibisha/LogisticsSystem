@@ -22,7 +22,6 @@ function addOrder(){
                     cargoPrice:$('#price').val()
                   },
                 success: function (o) {
-                    console.log(o);
                     if (o.status == '1') {
                         alert('添加成功!');
                    }else if(o.status == '-1'){
@@ -47,7 +46,6 @@ function setCity() {
         success: function (o) {
             var data = o.data;
             if (data.length > 0) {
-                console.log(data);
                 if (data.length > 0) {
                     var option = '';
                     for (var i = 0; i < data.length; i++) {

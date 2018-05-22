@@ -6,7 +6,6 @@ function init(){
         type:'GET',
         dataType:'JSON',
         success:function(o){
-            console.log(o.data.dstCityList);
             var html = '';
             var data = o.data.dstCityList;
             $('#cityId').html(cityDatas.id);
@@ -33,7 +32,6 @@ $("#cancel").click(function(){
     window.history.go(-1);
 });
 $("#ensure").click(function(){
-    console.log(cityDatas);
     var length = $(".selectValue").length;
 
     var dstCityIdsValue = "";
@@ -43,7 +41,6 @@ $("#ensure").click(function(){
         else
             dstCityIdsValue += "dstCityIds="+$(this).val()+"&";
     })
-    console.log(dstCityIdsValue);
 
     length = $(".inputValue").length;
     var distanceValue = "";
@@ -54,12 +51,10 @@ $("#ensure").click(function(){
             distanceValue += "distance="+$(this).val()+"&";
     })
 
-    console.log(distanceValue);
     $.ajax({
         url:'/city/addNeighbor?' + "srcCityId="+cityDatas.id + "&" + dstCityIdsValue + "&" + distanceValue,
         type:'POST',
         success:function(o){
-            console.log(o);
             if(o.status == 1)
                 alert("编辑成功!");
             else{
@@ -97,7 +92,6 @@ $(document).ready(function(){
 /*添加一行下一地*/
 function addNextCity(){
     // $("#nextBtn").remote();
-    console.log(clone);
     $("#cityOperation").append(row(clone));
 }
 var clone;
@@ -117,7 +111,6 @@ let row = c => {
             </tr>`);
 };
 function setIfEdit(){
-    console.log(cityDatas.operation);
     $('#cityName').attr("disabled","disabled");
     if(cityDatas.operation == 0){
         $('#nextCity,#costPrice,#createTime').attr("disabled","disabled");
@@ -143,7 +136,6 @@ function setCity(citys) {
         success: function (o) {
             var data = o.data;
             if (data.length > 0) {
-                console.log(data);
                 if (data.length > 0) {
                     var option = '';
                     for (var i = 0; i < data.length; i++) {

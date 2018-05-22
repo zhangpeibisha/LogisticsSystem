@@ -29,9 +29,6 @@ function getPath(){
       dataType:'json',
       success:function(data){
           var ways = data.data.way;
-          console.log("++++")
-          console.log(ways[ways.length-1].arriveDate)
-          console.log("++++")
           var htmldata = '<div class="track-rcol" style="position: relative;left: 80px;"><div class="track-list" style="max-height: 350px;overflow-y: auto;"><span>物流信息</span><ul>';
           htmldata = htmldata + '<li class="first">' +
               '<i class="node-icon"></i>' +
@@ -151,8 +148,6 @@ function replyCancel(){
 function setValue(){
     var sData = JSON.parse(sessionStorage.getItem("goodData"));
     var member = JSON.parse(sessionStorage.getItem("member"));
-    console.log("----")
-    console.log(sData)
     $("#money,#status,#nowPlace,#arriveedTime,#startplace,#endplace,#descripe,#createTime").attr("disabled","true");
     $("#orderId").val(sData.id);
     $("#account").val(sData.sysUser.account);
@@ -175,6 +170,9 @@ function setValue(){
     $('#descripe').text(sData.node);
     $('#createTime').text(formatDateTime(new Date(sData.createTime)));
     $("#operationGoodmodule").css('display','block');
+    if (sData.endCity == sData.currentCity) {
+        $("#next").hide();
+    }
     $("#enable").attr('disabled','disabled');
 }
 var formatDateTime = function (date) {

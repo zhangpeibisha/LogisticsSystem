@@ -28,7 +28,6 @@ function getOrdersList() {
         },
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
-            console.log(backData.user_order_list.orderList);
             $('#table').bootstrapTable('removeAll');
             $('#table').bootstrapTable('append', backData.user_order_list.orderList);
         },
@@ -162,7 +161,6 @@ function show(data) {
     data.startCity = data.startCity.cityName;
     data.endCity = data.endCity.cityName;
     data.currentCity = data.currentCity.cityName;
-    console.log(data);
     sessionStorage.setItem("goodData",JSON.stringify(data));
     window.location.href="../templates/showGoodInfo.html";
 }
@@ -180,7 +178,6 @@ $('#searchbtn').click(function () {
             content: info
         },
         success: function (data) {
-            console.log(data);
             if (data.code === 'SUCCESS') {
                 $('#table').bootstrapTable('removeAll');
                 $('#table').bootstrapTable('append', data.list);

@@ -8,6 +8,8 @@ import org.nix.util.DataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,6 +38,9 @@ public class AdministratorServiceImpl {
         if (sysUser.isSysAdmin()) {
             order.setOrderStatus(SysOrderEnum.ORDER_BEING_SHIPPED);
             order.setCurrentCity(order.getOrderWays().get(0).getCity());
+            order.getOrderWays().get(0).setFinish(true);
+            order.getOrderWays().get(0).setArriveDate(new Date());
+            order.setTimeOfArrival(new Date());
             sysOrderJpa.saveAndFlush(order);
             return true;
         }

@@ -50,7 +50,6 @@ function getOrdersList() {
         },  // 请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
-            console.log(backData.user_order_list.orderList);
             $('#table').bootstrapTable('removeAll');
             $('#table').bootstrapTable('append', backData.user_order_list.orderList);
         },
@@ -117,7 +116,7 @@ function getOrdersList() {
             valign : 'middle',// 垂直居中显示
             width : '15',// 宽度
         }, {
-            field : 'TimeOfArrival',// 返回值名称
+            field : 'timeOfArrival',// 返回值名称
             title : '到达当前地点时的时间',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
@@ -182,7 +181,6 @@ var formatDateTime = function (date) {
     return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
 };
 function handler(data) {
-    console.log(data.id);
     $.ajax({
         type: 'POST',
         url: "/administrator/orderHandler",
@@ -192,7 +190,6 @@ function handler(data) {
             id: data.id
         },
         success: function (data) {
-            console.log(data)
             if(data.status == 1)
                 alert("受理成功!");
             else
@@ -228,7 +225,6 @@ $('#searchbtn').click(function () {
             content: info
         },
         success: function (data) {
-            console.log(data);
             if (data.code === 'SUCCESS') {
                 $('#table').bootstrapTable('removeAll');
                 $('#table').bootstrapTable('append', data.list);

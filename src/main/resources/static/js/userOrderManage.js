@@ -58,7 +58,6 @@ function getOrdersList() {
         },
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
-            console.log(backData.user_order_list.orderList);
             $('#table').bootstrapTable('removeAll');
             $('#table').bootstrapTable('append', backData.user_order_list.orderList);
         },
@@ -125,7 +124,7 @@ function getOrdersList() {
             valign : 'middle',// 垂直居中显示
             width : '15',// 宽度
         }, {
-            field : 'TimeOfArrival',// 返回值名称
+            field : 'timeOfArrival',// 返回值名称
             title : '到达当前地点时的时间',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
@@ -189,7 +188,6 @@ function sign(data){
             data:{order_id:data.id},
             type:"POST",
             success:function(backData){
-                console.log(backData);
                 alert("确认收货成功!");
             },
             error:function(){
@@ -206,7 +204,6 @@ function pay(data){
             data:{order_id:data.id},
             type:"POST",
             success:function(backData){
-                console.log(backData);
                 alert("支付成功!");
             },
             error:function(){
@@ -252,7 +249,6 @@ $('#searchbtn').click(function () {
             content: info
         },
         success: function (data) {
-            console.log(data);
             if (data.code === 'SUCCESS') {
                 $('#table').bootstrapTable('removeAll');
                 $('#table').bootstrapTable('append', data.list);

@@ -188,11 +188,8 @@ public class SysOrderServiceImpl  {
                 orderWays.setOrderId(order);
                 ways.add(orderWays);
             }
-            ways.get(0).setArriveDate(new Date());
-            ways.get(0).setFinish(true);
         }
         order.setOrderWays(ways);
-        order.setTimeOfArrival(new Date());
     }
 
     /**

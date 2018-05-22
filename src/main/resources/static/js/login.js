@@ -46,7 +46,6 @@ function checkData() {
 function checkLogin(){
     if(checkData()) {
         $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
-        console.log($(" input[ name='password' ] ").val());
         var member = {
             account:$('#account').val(),
             password:$(" input[ name='password' ] ").val(),
@@ -86,7 +85,6 @@ function enableregister(){
             url: "/generalUser/register?"+"account="+$('#registerAccount').val()+"&password=" +hex_md5($("#registerPassword").val()),
             dataType: 'json',
             success: function (data) {
-                console.log(data)
                 if (data.status == '1') {
                     alert("注册成功!");
                     window.location.href="../templates/login.html"

@@ -136,7 +136,6 @@ $(document).ready(function(){
 /*添加一行下一地*/
 function addNextCity(){
     // $("#nextBtn").remote();
-    console.log(clone);
     $("#addCity").append(row(clone));
 }
 let row = c => {
@@ -191,7 +190,6 @@ function enableAdd(){
         url:'/city/create',
         type:'POST',
         success:function(o){
-            console.log(o);
             if(o.status == 1)
                 alert("添加成功!");
         },
