@@ -25,6 +25,10 @@ public interface SysOrderJpa extends JpaRepository<SysOrder,Integer> {
 
     @Query(nativeQuery = true,
     value = "select * from sys_order where sys_user = ?1 order by asc id")
-    List<Order> findSysOrderByUserId(int userId);
+    List<SysOrder> findSysOrderByUserId(int userId);
+
+    @Query(nativeQuery = true,
+            value = "select * from sys_order where id=?1")
+    SysOrder findByOrderId(int orderId);
 
 }

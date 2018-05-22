@@ -36,7 +36,13 @@ public class CityAndDistancesController {
     @PostMapping("/create")
     public ReturnObject createCity(@RequestParam("name") String cityName,
                                    @RequestParam(value = "dstCityIds",required = false) Integer[] dstCityIds,
-                                   @RequestParam(value = "distances",required = false) Double[] distances) {
+                                   @RequestParam(value = "distances",required = false) Double[] distances) throws Exception {
+
+        for (Double dou : distances) {
+            if (dou < 0)
+                throw new Exception("两个城市之间的距离小于0");
+        }
+
         City city = new City(cityName);
         city = cityService.save(city);
         if (dstCityIds != null) {
