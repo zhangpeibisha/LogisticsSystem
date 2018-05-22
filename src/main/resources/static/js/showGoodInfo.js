@@ -82,14 +82,15 @@ $('#evalution').click(function(){
         type:'GET',
         url:'/order/findAllOrderEvaluationByOrderId',
         dataType:'json',
-        success:function(datas) {
+        success:function(data) {
+            var datas = data.data;
             var evalutiondata = '<div class="ylcon"><p class="tit">所有评价 </p> <div id="messDivId" style="overflow-y: auto;max-height: 252px;">';
             if(datas.length > 0){
                 for(var i = 0; i < datas.length; i++){
                     evalutiondata = evalutiondata + '<div class="story"><div class="opbtn"></div>'+
-                        '<p class="story_t">'+ data[i].name+'</p>'+
-                        '<p class="story_time">'+ data[i].date+'</p>' +
-                        '<p class="story_m">'+ data[i].replyContent+'</p></div>'
+                        '<p class="story_t">'+ datas[i].id+'</p>'+
+                        '<p class="story_time">'+ datas[i].createTime+'</p>' +
+                        '<p class="story_m">'+ datas[i].evaluation+'</p></div>'
                 }
                 evalutiondata = evalutiondata + '</div>';
             }
