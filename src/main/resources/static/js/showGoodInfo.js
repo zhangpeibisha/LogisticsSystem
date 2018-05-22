@@ -1,3 +1,5 @@
+var orderData = JSON.parse(sessionStorage.getItem("goodData"));
+var member = JSON.parse(sessionStorage.getItem("member"));
 $(document).ready(function(){
     setValue();
     $("#next").click(function () {
@@ -21,6 +23,7 @@ $(document).ready(function(){
         });
     });
 });
+
 function getPath(){
     var data=[{time:'2016-3-5',massage:'到达太原'},{time:'2016-3-5',massage:'到达太原'},{time:'2016-3-6',massage:'从太原站发出'},{time:'2016-3-7',massage:'到达杭州'}];
     $.ajax({
@@ -74,10 +77,8 @@ function dissmissLookPath(){
 }
 //返回的数据应该是姓名（name），回复日期(date)，回复内容(replyContent)三条。
 $('#evalution').click(function(){
-    //var orderData = JSON.parse(sessionStorage.getItem("goodData"));
-    //var datas = [{name:'张三',date:'2016-10-01',replyContent:'东西不好'},{name:'张三',date:'2016-10-01',replyContent:'东西不好'},{name:'李四',date:'2016-10-02',replyContent:'亲，有质量问题我们可以退换噢'},{name:'张三',date:'2016-10-02',replyContent:'那退吧'}];
     $.ajax({
-        //data:{id:orderData.id},
+        data:{id:orderData.id},
         type:'POST',
         url:'',
         dataType:'json',
@@ -103,31 +104,11 @@ $('#evalution').click(function(){
             $('.log-window').css('display','block');
         },
         error:function(datas){
-            var evalutiondata = '<div class="ylcon"><p class="tit">所有评价 </p> <div id="messDivId" style="overflow-y: auto;max-height: 252px;">';
-            if(datas.length > 0){
-                for(var i = 0; i < datas.length; i++){
-                    evalutiondata = evalutiondata + '<div class="story"><div class="opbtn"></div>'+
-                        '<p class="story_t">'+ datas[i].name+'</p>'+
-                        '<p class="story_time">'+ datas[i].date+'</p>' +
-                        '<p class="story_m">'+ datas[i].replyContent+'</p></div>'
-                }
-                evalutiondata = evalutiondata + '</div>';
-            }
-            evalutiondata = evalutiondata +'<div>'+
-                '<div><textarea id="massage" style="margin-top: 5px;width: 30%;height: 150px;margin-left: 15px;min-width: 400px;"></textarea>'+
-                '<button type="button" style="margin-left: 15px;position: relative;top: 120px;" class="btn btn-default" onclick="reply()">评价</button>'+
-                '<button type="button" style="margin-left: 15px;position: relative;top: 120px;" class="btn btn-default" onclick="replyCancel()">取消</button></div>'+
-                '</div>';
-            var s = document.getElementById('evalutionBox');
-            s.innerHTML=evalutiondata;
-            $('#evalutionBox').css('display','block');
-            $('.log-window').css('display','block');
+            alert("获取评价信息失败!");
         }
     });
 });
 function reply(){
-    var orderData = JSON.parse(sessionStorage.getItem("goodData"));
-    var member = JSON.parse(sessionStorage.getItem("member"));
     $.ajax({
         url:'/order/evaluationReply',
         dataType:'json',
