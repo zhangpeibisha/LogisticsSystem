@@ -170,7 +170,8 @@ function setValue(){
     $('#descripe').text(sData.node);
     $('#createTime').text(formatDateTime(new Date(sData.createTime)));
     $("#operationGoodmodule").css('display','block');
-    if (sData.endCity == sData.currentCity) {
+    console.log(member)
+    if (sData.endCity == sData.currentCity || member.account != "admin") {
         $("#next").hide();
     }
     $("#enable").attr('disabled','disabled');
