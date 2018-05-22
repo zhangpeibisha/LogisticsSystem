@@ -78,9 +78,9 @@ function dissmissLookPath(){
 //返回的数据应该是姓名（name），回复日期(date)，回复内容(replyContent)三条。
 $('#evalution').click(function(){
     $.ajax({
-        data:{id:orderData.id},
-        type:'POST',
-        url:'',
+        data:{orderId:orderData.id},
+        type:'GET',
+        url:'/order/findAllOrderEvaluationByOrderId',
         dataType:'json',
         success:function(datas) {
             var evalutiondata = '<div class="ylcon"><p class="tit">所有评价 </p> <div id="messDivId" style="overflow-y: auto;max-height: 252px;">';
